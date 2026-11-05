@@ -15,7 +15,7 @@
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
     min-height: 44px; padding: 10px 16px; border: 1px solid var(--line);
     border-radius: 10px; background: var(--surface); cursor: pointer;
-    font-size: 13px; font-weight: 500; line-height: 1.5; white-space: nowrap;
+    font-size: 14px; font-weight: 500; line-height: 1.5; white-space: nowrap;
   }
   button:hover:not(:disabled) { background: var(--surface-2); }
   button:disabled { opacity: .55; cursor: not-allowed; }
@@ -32,9 +32,9 @@
   textarea:focus, input:focus, select:focus { border-color: var(--primary); }
   ::placeholder { color: var(--muted); opacity: .85; }
   :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
-  label { display: grid; gap: 8px; font-size: 13px; font-weight: 500; line-height: 1.5; }
+  label { display: grid; gap: 8px; font-size: 14px; font-weight: 500; line-height: 1.5; }
   h2 label { font: inherit; }
-  small, .muted { color: var(--muted); font-size: 13px; font-weight: 400; }
+  small, .muted { color: var(--muted); font-size: 14px; font-weight: 400; }
   [hidden] { display: none !important; }
   pre { white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; margin: 0; }
   hr { border: 0; border-top: 1px solid var(--line); margin: 20px 0; }
@@ -44,31 +44,32 @@
 }
 
 @layer layout {
-  .shell { min-height: 100vh; display: grid; grid-template-columns: 216px minmax(0, 1fr); }
+  .shell { min-height: 100vh; display: grid; grid-template-columns: 224px minmax(0, 1fr); }
   .rail { padding: 28px 16px 20px; border-right: 1px solid var(--line); display: flex; flex-direction: column; gap: 36px; background: var(--surface); position: sticky; top: 0; height: 100vh; }
   .brand { display: flex; align-items: center; gap: 11px; padding: 0 8px; }
   .brand-mark { display: grid; place-items: center; flex: 0 0 34px; height: 34px; background: var(--primary); color: var(--on-primary); border-radius: 12px 12px 4px 12px; font-size: 22px; font-weight: 500; }
-  .brand-name { font-size: 17px; font-weight: 650; line-height: 1.35; letter-spacing: -.025em; white-space: nowrap; }
+  .brand-name { font-size: 18px; font-weight: 650; line-height: 1.35; letter-spacing: -.025em; white-space: nowrap; }
   .brand-sub { font-size: 11px; line-height: 1.5; color: var(--muted); margin-top: 3px; }
   nav { display: grid; gap: 6px; }
-  nav button { text-align: left; justify-content: flex-start; gap: 11px; padding: 12px; border-color: transparent; background: transparent; border-radius: 10px; font-size: 13px; font-weight: 400; }
+  nav button { text-align: left; justify-content: flex-start; gap: 11px; padding: 12px; border-color: transparent; background: transparent; border-radius: 10px; font-size: 14px; font-weight: 400; }
   nav button[aria-current='page'] { background: var(--primary-soft); color: var(--primary); font-weight: 600; }
   .nav-icon { width: 18px; height: 18px; flex: 0 0 18px; stroke-width: 1.6; }
   .rail-foot { margin-top: auto; padding: 18px 8px 0; border-top: 1px solid var(--line); font-size: 11px; line-height: 1.8; color: var(--muted); }
   main { padding: 30px 36px 48px; max-width: 1720px; width: 100%; margin: 0 auto; align-self: start; min-width: 0; }
   .page-head { margin-bottom: 24px; display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; }
-  .page-head p { color: var(--muted); margin-top: 6px; font-size: 13px; line-height: 1.7; }
+  .page-head p { color: var(--muted); margin-top: 6px; font-size: 14px; line-height: 1.7; }
   .connection { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--muted); white-space: nowrap; padding-top: 8px; }
   .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); }
   .dot.ok { background: var(--primary); }
-  .toolbar { display: flex; align-items: flex-end; gap: 16px; flex-wrap: wrap; padding: 16px 18px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 12px; margin-bottom: 24px; }
-  .toolbar label { min-width: 158px; font-size: 12px; gap: 7px; }
+  .toolbar { display: flex; align-items: flex-end; gap: 16px; flex-wrap: wrap; padding: 12px 16px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 12px; margin-bottom: 24px; }
+  .toolbar label { min-width: 158px; font-size: 13px; gap: 6px; }
   .toolbar label:first-child { flex: 1 1 220px; max-width: 270px; }
   .toolbar select { width: 100%; }
   .toolbar .engine { margin-left: auto; display: flex; align-items: center; min-height: 44px; }
   .toolbar > button { background: var(--surface); }
-  .workspace { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; }
-  .workspace > .card { display: flex; flex-direction: column; }
+  .workspace { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); overflow: hidden; }
+  .workspace > .card { display: flex; flex-direction: column; border: 0; border-radius: 0; box-shadow: none; }
+  .workspace > .card + .card { border-left: 1px solid var(--line); }
   .workspace .card-head { min-height: 36px; }
   .workspace .card-foot { margin-top: auto; }
   .stack { display: grid; gap: 20px; }
@@ -79,8 +80,8 @@
   .card-head { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 20px; }
   .card-head h2 { min-width: 0; overflow-wrap: anywhere; }
   .card-head > button { min-height: 36px; padding: 7px 12px; font-size: 12px; }
-  .editor { border: 0; border-radius: 0; padding: 0; min-height: 320px; background: transparent; font: 400 16px/1.85 var(--font-sans); resize: vertical; margin-bottom: 24px; }
-  .output { min-height: 320px; font: 400 16px/1.85 var(--font-sans); padding-bottom: 24px; }
+  .editor { border: 0; border-radius: 0; padding: 0; min-height: 180px; background: transparent; font: 400 18px/1.85 var(--font-sans); resize: vertical; margin-bottom: 24px; }
+  .output { min-height: 180px; font: 400 18px/1.85 var(--font-sans); padding-bottom: 24px; }
   .card-foot { border-top: 1px solid var(--line); padding-top: 16px; margin-top: 20px; }
   .document-layout { display: grid; grid-template-columns: 196px minmax(0, 1fr); gap: 20px; align-items: start; }
   .document-list { padding: 20px 12px; }
@@ -109,7 +110,7 @@
   .pair-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0; margin-top: 12px; }
   .pair-grid > div { min-width: 0; padding-right: 24px; }
   .pair-grid > div + div { border-left: 1px solid var(--line); padding: 0 0 0 24px; }
-  .pair pre { font: 400 15px/1.9 var(--font-sans); }
+  .pair pre { font: 400 16px/1.9 var(--font-sans); }
   .pair h3 { color: var(--muted); font-size: 12px; margin-bottom: 10px; font-weight: 500; }
   .empty { padding: 40px 12px; text-align: center; color: var(--muted); font-size: 14px; }
   .profile-row { display: flex; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
@@ -145,7 +146,8 @@
     .brand-name { font-size: 15px; }
     nav button { padding: 11px 8px; gap: 8px; font-size: 12px; }
     .workspace { grid-template-columns: 1fr; }
-    .editor, .output { min-height: 240px; }
+    .editor, .output { min-height: 180px; }
+    .workspace > .card + .card { border-left: 0; border-top: 1px solid var(--line); }
     .page-head { flex-direction: column; gap: 10px; }
     .connection { padding-top: 0; }
     .toolbar label, .toolbar label:first-child { flex: 1 1 160px; max-width: none; }
@@ -165,7 +167,7 @@
     .pair-grid { grid-template-columns: 1fr; gap: 20px; }
     .pair-grid > div { padding: 0; }
     .pair-grid > div + div { padding: 0; border-left: 0; }
-    .pair pre { font-size: 15px; }
+    .pair pre { font-size: 16px; }
     .fields { grid-template-columns: 1fr; }
     .row > button, .profile-row > button { white-space: normal; max-width: 100%; }
     .job-actions > .row:last-child { margin-left: 0; }
@@ -179,7 +181,7 @@
   .notice { padding: 14px 18px; border-radius: 10px; margin: 0 0 20px; border: 1px solid var(--line); background: var(--surface-2); white-space: pre-wrap; font-size: 14px; }
   .notice.error, .warning { color: var(--error); background: var(--error-bg); }
   .warning { font-size: 13px; padding: 12px; border-radius: 8px; margin-top: 12px; }
-  .metrics { font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .metrics { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
   .table-wrap { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; font-size: 14px; }
   th { text-align: left; font-weight: 500; background: var(--surface-2); color: var(--muted); font-size: 12px; }

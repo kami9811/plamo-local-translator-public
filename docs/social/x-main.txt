@@ -2,4 +2,4 @@
 選択文もページ全体も、翻訳処理はPC内で完結。動作は動画のとおりです。
 非公式の開発版として公開しました。
 Built with PLaMo
-https://github.com/kami9811/plamo-local-translator-public/releases/tag/v0.1.2
+https://github.com/kami9811/plamo-local-translator-public/releases/tag/v0.1.3

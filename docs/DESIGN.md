@@ -45,3 +45,10 @@ Carbonのproductive typographyの考え方を参照し、M3の主操作・状態
 
 参照: https://www.carbondesignsystem.com/building-blocks/foundations/typography/overview
 フォントの取得元・変換条件・ハッシュ: `licenses/fonts/provenance.json`。
+
+
+## 2026-11-05: 画像の取り違えと対訳画面の再修正
+
+v0.1.2の紹介画像workspace-light.pngには、撮影開始時の保存テーマがダークであったため誤った画面が入っていた。フォント確認・axe成功だけでは画像とテーマの一致を保証できていなかった。撮影をscripts/capture_ui.mjsへ移し、名前・htmlのテーマ属性・color-scheme・実際の背景色を照合してから撮影する。
+
+本文を18px、ナビゲーション・主要操作を14pxへ変更し、短文の入力欄は180pxから内容に応じて最大480pxまで伸ばす。左右のカードを一つの対訳領域にまとめ、共通の区切り・見出し・本文・操作の位置を使う。処理が終わった後のキャンセルは隠す。原稿の対訳は16pxへ上げる。

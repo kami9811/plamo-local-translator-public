@@ -70,3 +70,10 @@ Built with PLaMo。本文中の訳文・benchmarks.jsonのtranslation値・画�
 - このUI修正での推論検証は2B。8Bの速度・品質については以前の実測を継続して記載し、今回再測定したとは扱いません。
 
 根拠: `validation-evidence/typography-v0.1.2.json`。
+
+
+## v0.1.3 画像と実表示の照合（2026-11-05）
+
+v0.1.2ではworkspace-light.pngの撮影前に保存テーマを上書きしておらず、ダーク画面が誤名で登録されていた。今回の撮影は保存状態を意図的にdarkにして開始し、light/darkを切り替え、テーマ属性・color-scheme・実背景色を検証した。再生成画像のSHA256と状態はvalidation-evidence/capture-v0.1.3.jsonに記録。
+
+本文18px、原稿対訳16px。短文の入力欄180pxから長文で480pxまで伸縮することを実測。4画面×2テーマのaxe対象検出0件、390px幅の4画面ではみ出しなし。修正後の実2Bブラウザ6導線成功。Windows ChromeからPrivate版への接続・フォント描画も再確認。PrivateのPython7件、PublicのPython10件、両版の型とビルドは成功。

@@ -144,7 +144,7 @@ class Handler(BaseHTTPRequestHandler):
     def dispatch(self):
         if not self._origin_ok():self.json({'error':'接続元またはHostが許可されていません。'},403);return
         parsed=urlsplit(self.path);path=parsed.path
-        if path=='/api/health' and self.command=='GET':self.json({'ok':True,'version':'0.1.2'});return
+        if path=='/api/health' and self.command=='GET':self.json({'ok':True,'version':'0.1.3'});return
         if path=='/api/bootstrap' and self.command=='GET':
             if self.headers.get('Sec-Fetch-Site') in {'same-origin','none'} and self.headers.get('Origin',f'http://127.0.0.1:{API_PORT}') in LOCAL_ORIGINS:self.json({'token':self.app.token});return
             self.json({'error':'ローカルの原稿画面から接続してください。'},403);return

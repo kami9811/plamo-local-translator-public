@@ -55,18 +55,19 @@ async function showJob(){
 }
 async function translate(){
  const text=$<HTMLTextAreaElement>('source').value.trim();if(!text)throw new Error('原文を入力してください。');
- await saveSettings();$('notice').hidden=true;$<HTMLButtonElement>('translate').disabled=true;$<HTMLButtonElement>('cancel-translation').disabled=false;$<HTMLButtonElement>('copy-translation').disabled=true;$('translation').textContent='';$('translation-warnings').hidden=true;$('translation-metrics').textContent='';
+ fitSource();await saveSettings();$('notice').hidden=true;$<HTMLButtonElement>('translate').disabled=true;$<HTMLButtonElement>('cancel-translation').disabled=false;$('cancel-translation').hidden=false;$<HTMLButtonElement>('copy-translation').disabled=true;$('translation').textContent='';$('translation-warnings').hidden=true;$('translation-metrics').textContent='';
  try{let task=await api<Task>('/api/translations','POST',{text,options:readOptions()});translationId=task.id;
   for(;;){$('translation').textContent=task.translation;$('translation-status').textContent=labels[task.status]||task.status;
    if(['done','error','cancelled'].includes(task.status))break;await wait(120);task=await api<Task>(`/api/translations/${translationId}`);}
   if(task.status==='error')throw new Error(task.error||'翻訳に失敗しました。');
   if(task.status==='done'){$<HTMLButtonElement>('copy-translation').disabled=false;if(task.warnings.length){$('translation-warnings').textContent=task.warnings.join('\n');$('translation-warnings').hidden=false;}if(task.metrics)$('translation-metrics').textContent=task.metrics.cache_hit?'キャッシュから表示':`最初の応答 ${task.metrics.ttft_seconds.toFixed(2)}秒 · 完了 ${task.metrics.elapsed_seconds.toFixed(2)}秒`;}
- }finally{translationId='';$<HTMLButtonElement>('translate').disabled=false;$<HTMLButtonElement>('cancel-translation').disabled=true;refresh();}
+ }finally{translationId='';$<HTMLButtonElement>('translate').disabled=false;$<HTMLButtonElement>('cancel-translation').disabled=true;$('cancel-translation').hidden=true;refresh();}
 }
 action('translate',translate);action('cancel-translation',async()=>{if(translationId)await api(`/api/translations/${translationId}/cancel`,'POST',{});});
 action('copy-translation',async()=>{await navigator.clipboard.writeText($('translation').textContent||'');notify('訳文をコピーしました。');});
-action('insert-sample',()=>{$<HTMLTextAreaElement>('source').value=select('direction').value==='en-ja'?'Our results suggest that the proposed method improves accuracy by 12.5%. However, the effect was not statistically significant.':'本研究の結果は、提案手法が精度を12.5%改善する可能性を示唆する。ただし、その効果は統計的に有意ではなかった。';$('char-count').textContent=$<HTMLTextAreaElement>('source').value.length+'文字';});
-$<HTMLTextAreaElement>('source').oninput=()=>{$('char-count').textContent=$<HTMLTextAreaElement>('source').value.length+'文字';};
+action('insert-sample',()=>{$<HTMLTextAreaElement>('source').value=select('direction').value==='en-ja'?'Our results suggest that the proposed method improves accuracy by 12.5%. However, the effect was not statistically significant.':'本研究の結果は、提案手法が精度を12.5%改善する可能性を示唆する。ただし、その効果は統計的に有意ではなかった。';$('char-count').textContent=$<HTMLTextAreaElement>('source').value.length+'文字';fitSource();});
+function fitSource(){const source=$<HTMLTextAreaElement>('source');source.style.height='auto';source.style.height=Math.min(480,Math.max(180,source.scrollHeight))+'px';}
+$<HTMLTextAreaElement>('source').oninput=()=>{fitSource();$('char-count').textContent=$<HTMLTextAreaElement>('source').value.length+'文字';};
 action('load-model',async()=>{await saveSettings();await api('/api/models/load','POST',{model:select('model').value});notify('モデルを読み込んでいます。状態表示をご確認ください。');});
 action('stop-engine',async()=>{await api('/api/models/stop','POST',{});notify('翻訳を中断し、モデルを停止します。');});
 for(const id of ['model','direction','form','theme'])select(id).onchange=()=>saveSettings().catch(failure);

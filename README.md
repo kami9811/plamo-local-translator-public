@@ -16,7 +16,7 @@ PLaMo 3 Translateを使って、Chromeの選択文・ページ・論文原稿を
 
 ## 動作確認環境
 
-開発版 v0.1.2。WSL2 Ubuntu / Python 3.10 / NVIDIA RTX 4090 24GB / CUDA 12.6 / Windows Chromeで確認しています。Chrome 123以降が必要です。Mac、CPUのみ、他のGPUでの動作を保証するものではありません。
+開発版 v0.1.3。WSL2 Ubuntu / Python 3.10 / NVIDIA RTX 4090 24GB / CUDA 12.6 / Windows Chromeで確認しています。Chrome 123以降が必要です。Mac、CPUのみ、他のGPUでの動作を保証するものではありません。
 
 モデル・Node.js・推論ランタイム・開発依存は初回に取得します。重みだけで約7.1GB、セットアップ全体には20GB程度以上の空き容量を推奨します。取得後の翻訳はローカルで実行します。
 
