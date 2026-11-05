@@ -27,6 +27,8 @@ final class FakeBackend: ControllerBackend {
         check(!controller.copyButton.isEnabled && controller.visibleKey == nil, "key hidden")
         controller.startButton.performClick(nil); check(backend.actions == ["start"] && controller.lastState == "running", "start dispatch")
         controller.keyButton.performClick(nil); check(controller.visibleKey?.count == 32 && controller.copyButton.isEnabled, "explicit key")
+        controller.copyButton.performClick(nil); check(NSPasteboard.general.string(forType: .string) == String(repeating: "x", count: 32), "explicit copy")
+        NSPasteboard.general.clearContents()
         controller.stopButton.performClick(nil); check(controller.visibleKey == nil && controller.lastState == "stopped", "stop clears key")
         backend.fail = true; controller.startButton.performClick(nil); check(controller.status.stringValue == "要確認" && !controller.busy, "errors visible and controls restored")
         backend.fail = false; controller.startButton.performClick(nil)

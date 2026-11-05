@@ -45,7 +45,7 @@ final class ControllerWindow: NSWindowController, NSWindowDelegate, NSTextFieldD
         pathField.font = .systemFont(ofSize: 14); pathField.setAccessibilityLabel("プロジェクトのフォルダー"); pathField.delegate = self
         let config = configurationBody; config.orientation = .vertical; config.alignment = .leading; config.spacing = 12
 
-        let pathRow = NSStackView(views: [pathField, browseButton]); config.addArrangedSubview(pathRow)
+        let pathRow = NSStackView(views: [pathField, browseButton]); pathRow.distribution = .fill; config.addArrangedSubview(pathRow)
         pathRow.widthAnchor.constraint(equalTo: config.widthAnchor).isActive = true
         pathField.setContentHuggingPriority(.defaultLow, for: .horizontal)
         config.addArrangedSubview(label("scripts/start.py があるフォルダーを指定します。", size: 12, secondary: true))
@@ -56,7 +56,11 @@ final class ControllerWindow: NSWindowController, NSWindowDelegate, NSTextFieldD
         configurationButton.title = configurationBody.isHidden ? "実行先の設定 ▸" : "実行先の設定 ▾"
         add(card(configuration))
         configurationButton.target = self; configurationButton.action = #selector(toggleConfiguration)
-        configurationButton.bezelStyle = .inline; configurationButton.font = .systemFont(ofSize: 14, weight: .semibold)
+        configurationButton.bezelStyle = .regularSquare; configurationButton.isBordered = false
+        configurationButton.font = .systemFont(ofSize: 14, weight: .semibold); configurationButton.contentTintColor = .labelColor
+        configurationButton.alignment = .left; configurationButton.focusRingType = .exterior
+        configurationButton.widthAnchor.constraint(equalTo: configuration.widthAnchor).isActive = true
+        configurationButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 32).isActive = true
         configurationButton.setAccessibilityLabel("実行先の設定を開く・閉じる")
         let actions = NSStackView(); actions.orientation = .vertical; actions.alignment = .leading; actions.spacing = 14
         let heading = NSStackView(views: [label("起動と停止", size: 15, weight: .semibold), status]); heading.distribution = .equalSpacing
@@ -70,7 +74,7 @@ final class ControllerWindow: NSWindowController, NSWindowDelegate, NSTextFieldD
         keys.addArrangedSubview(keyButton)
         keyField.isEditable = false; keyField.isSelectable = false; keyField.font = .monospacedSystemFont(ofSize: 13, weight: .regular)
         keyField.setAccessibilityLabel("接続キー")
-        let keyRow = NSStackView(views: [keyField, copyButton]); keys.addArrangedSubview(keyRow)
+        let keyRow = NSStackView(views: [keyField, copyButton]); keyRow.distribution = .fill; keyRow.alignment = .centerY; keys.addArrangedSubview(keyRow)
         keyRow.widthAnchor.constraint(equalTo: keys.widthAnchor).isActive = true; keyField.setContentHuggingPriority(.defaultLow, for: .horizontal)
         keys.addArrangedSubview(label("接続キーは、このMacのChrome拡張だけで使います。", size: 12, secondary: true)); add(card(keys))
         add(label("ウィンドウを閉じてもAPIは動作を続けます。終了するときは「停止」を押してください。", size: 12, secondary: true))
