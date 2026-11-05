@@ -1,0 +1,114 @@
+{
+  "date": "2026-11-05",
+  "change": "Japanese typography and layout revision, v0.1.2",
+  "font": "Bundled Noto Sans JP variable WOFF2, SIL OFL 1.1",
+  "common_ui_identical_in_public_and_private": true,
+  "browser_flows": {
+    "passed": 6,
+    "failed": 0,
+    "real_model": "PLaMo 3 Translate 2B Q4_K_M",
+    "includes": [
+      "selection with strict CSP and bundled font",
+      "full-page translation and restoration",
+      "manuscript translation and source-inclusive export",
+      "pause and resume",
+      "glossary and reusable profile",
+      "light/dark accessibility"
+    ]
+  },
+  "view_checks": [
+    {
+      "font_faces": [
+        {
+          "family": "PLaMo Sans",
+          "status": "loaded"
+        }
+      ],
+      "actual_translation_fonts": {
+        "fonts": [
+          {
+            "familyName": "Noto Sans JP Thin",
+            "postScriptName": "NotoSansJP-Thin",
+            "isCustomFont": true,
+            "glyphCount": 64
+          }
+        ]
+      }
+    },
+    {
+      "theme": "light",
+      "view": "テキスト翻訳",
+      "violations": [],
+      "horizontal_overflow": false
+    },
+    {
+      "theme": "light",
+      "view": "原稿ワークスペース",
+      "violations": [],
+      "horizontal_overflow": false
+    },
+    {
+      "theme": "light",
+      "view": "用語と文脈",
+      "violations": [],
+      "horizontal_overflow": false
+    },
+    {
+      "theme": "light",
+      "view": "接続と設定",
+      "violations": [],
+      "horizontal_overflow": false
+    },
+    {
+      "theme": "dark",
+      "view": "テキスト翻訳",
+      "violations": [],
+      "horizontal_overflow": false
+    },
+    {
+      "theme": "dark",
+      "view": "原稿ワークスペース",
+      "violations": [],
+      "horizontal_overflow": false
+    },
+    {
+      "theme": "dark",
+      "view": "用語と文脈",
+      "violations": [],
+      "horizontal_overflow": false
+    },
+    {
+      "theme": "dark",
+      "view": "接続と設定",
+      "violations": [],
+      "horizontal_overflow": false
+    },
+    {
+      "mobile_overflow": false
+    }
+  ],
+  "windows_private_font_check": {
+    "platform": "Windows Chrome → existing private WSL2 API",
+    "browser": "156.0.8078.76",
+    "fonts": {
+      "fonts": [
+        {
+          "familyName": "Noto Sans JP Thin",
+          "postScriptName": "NotoSansJP-SemiBold",
+          "isCustomFont": true,
+          "glyphCount": 6
+        }
+      ]
+    },
+    "heading": "テキスト翻訳",
+    "horizontal_overflow": false,
+    "settings_changed": false
+  },
+  "python_tests": {
+    "public": 10,
+    "private": 7
+  },
+  "typecheck": "passed for both",
+  "build": "passed for both",
+  "scope": "UI regression uses real 2B; the prior 8B performance/quality results remain historical evidence, not rerun for this typography change."
+}

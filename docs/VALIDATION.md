@@ -59,3 +59,14 @@ Built with PLaMo。本文中の訳文・benchmarks.jsonのtranslation値・画�
 ## 証拠
 
 `benchmarks.json`、`validation-evidence/`、`screenshots/`に実測・検査結果・画面を保存しています。個人の接続キーや原稿は含めていません。
+
+
+## v0.1.2 日本語UIの修正検証（2026-11-05）
+
+- PublicとPrivateの画面・共有トークン・吹き出しのソースをそろえ、両方の型チェック・ビルドに成功。Python検証はPublic 10件、Private 7件が成功。
+- 共通UIの実ブラウザ検証6件が成功。実2Bで選択文、全文と復帰、原稿、用語集、出力、中断再開を操作。厳しいCSPのサンプルページでも吹き出しの同梱フォント読み込みを確認。
+- 全4画面×ライト/ダークのaxe WCAG 2.2 AA対象チェックで検出0件。1440pxと390px幅で横はみ出しなし。これは全WCAG要件への適合認証ではありません。
+- CDPの実際のグリフ描画情報でNoto Sans JPの使用を確認。さらにWindows Chrome 156.0.8078.76から、既存Private版のWSL2 APIを開いて同梱書体の描画と横はみ出しなしを確認。既存の設定は変更していません。
+- このUI修正での推論検証は2B。8Bの速度・品質については以前の実測を継続して記載し、今回再測定したとは扱いません。
+
+根拠: `validation-evidence/typography-v0.1.2.json`。

@@ -7,7 +7,7 @@ parser=argparse.ArgumentParser();parser.add_argument('--quiet',action='store_tru
 DATA.mkdir(exist_ok=True,mode=0o700)
 def healthy():
     try:
-        with urllib.request.urlopen(f'http://127.0.0.1:{os.environ.get("PLAMO_API_PORT","8765")}/api/health',timeout=1) as r:return json.load(r).get('version')=='0.1.1'
+        with urllib.request.urlopen(f'http://127.0.0.1:{os.environ.get("PLAMO_API_PORT","8765")}/api/health',timeout=1) as r:return json.load(r).get('version')=='0.1.2'
     except Exception:return False
 if not healthy():
     env=os.environ.copy();env['PYTHONPATH']=str(ROOT/'server')

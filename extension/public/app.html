@@ -1,11 +1,119 @@
-<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PLaMo Local — 翻訳ワークスペース</title><link rel="stylesheet" href="styles.css"><script defer src="app.js"></script></head><body>
-<a class="skip" href="#main">本文へ移動</a><div class="shell"><aside class="rail"><div class="brand"><span class="brand-mark" aria-hidden="true">P</span><div><div class="brand-name">PLaMo Local</div><div class="eyebrow">Built with PLaMo · 非公式</div></div></div>
-<nav aria-label="メイン"><button data-view="translate" aria-current="page"><span class="num" aria-hidden="true">01</span>テキスト翻訳</button><button data-view="documents"><span class="num" aria-hidden="true">02</span>原稿ワークスペース</button><button data-view="glossary"><span class="num" aria-hidden="true">03</span>用語と文脈</button><button data-view="settings"><span class="num" aria-hidden="true">04</span>接続と設定</button></nav>
-<div class="rail-foot">Built with PLaMo<br>PFNとは独立した非公式ツール。<br><a href="licenses/PLaMo-Community-License-ja.txt" target="_blank" rel="noopener">モデルの利用条件</a></div></aside><main id="main"><div class="topline"><span class="eyebrow">Local translation workspace</span><div class="connection"><span id="connection-dot" class="dot"></span><span id="connection-state" role="status">接続を確認中</span></div></div>
-<div id="notice" class="notice" role="alert" hidden></div>
-<div class="toolbar"><label>モデル<select id="model"><option value="2b">2B · 日常の翻訳</option><option value="8b">8B · 原稿の下訳</option></select></label><label>翻訳方向<select id="direction"><option value="en-ja">英語 → 日本語</option><option value="ja-en">日本語 → 英語</option></select></label><label>日本語の文体<select id="form"><option value="plain">常体（だ・である）</option><option value="polite">敬体（です・ます）</option></select></label><div class="engine"><span id="engine-state" class="badge">モデル停止中</span></div><button id="load-model">モデルを読み込む</button></div>
-<section id="view-translate"><header class="page-head"><div><h1>伝わる言葉へ。</h1><p>選んだモデルで翻訳し、原文と見比べながら整える。</p></div><span class="badge">ローカル処理</span></header><div class="workspace"><section class="card"><div class="card-head"><h2><label for="source">原文</label></h2><button id="insert-sample">サンプル</button></div><textarea id="source" class="editor" placeholder="翻訳する文章を入力してください。" spellcheck="false"></textarea><div class="card-foot row spread"><span id="char-count" class="muted">0文字</span><button id="translate" class="primary">翻訳する ↗</button></div></section><section class="card"><div class="card-head"><h2>訳文</h2><span id="translation-status" class="muted" role="status"></span></div><pre id="translation" class="output" tabindex="0" aria-label="訳文">訳文がここに表示されます。</pre><div id="translation-warnings" class="warning" hidden></div><div class="card-foot row spread"><span id="translation-metrics" class="metrics"></span><div class="row"><button id="cancel-translation" disabled>キャンセル</button><button id="copy-translation" disabled>コピー</button></div></div></section></div></section>
-<section id="view-documents" hidden><header class="page-head"><div><h1>原稿を、次の段階へ。</h1><p>段落ごとに下訳を作り、原文と一緒にレビューへ引き渡す。</p></div></header><div class="stack"><details class="card" id="new-document" open><summary>原稿を追加する</summary><div class="stack"><div class="fields"><label>原稿名<input id="doc-title" maxlength="200" placeholder="研究原稿の下訳"></label><label>ファイル形式<select id="doc-format"><option value="txt">テキスト (.txt)</option><option value="md">Markdown (.md)</option><option value="tex">LaTeX (.tex)</option></select></label><label class="wide">ファイルから読み込む<input id="doc-file" class="file" type="file" accept=".txt,.md,.tex,text/plain,text/markdown,application/x-tex"></label><label class="wide">原稿<textarea id="doc-source" rows="8" maxlength="500000" placeholder="原稿を貼り付けるか、ファイルを選んでください。"></textarea></label></div><div class="row spread"><span class="muted">数式・引用キー・コードなどを保護します。訳文の確認は必要です。</span><button id="create-job" class="primary">下訳を作成する ↗</button></div></div></details><div class="document-layout"><aside class="card"><h2>保存した原稿</h2><div id="job-list" class="job-list"></div></aside><section class="card"><div id="job-empty" class="empty">原稿を追加するか、保存した原稿を選んでください。</div><div id="job-detail" hidden><div class="card-head"><h2 id="job-title"></h2><span id="job-status" class="badge" role="status"></span></div><progress id="job-progress" max="1" value="0" aria-label="原稿の翻訳進捗"></progress><div class="row card-foot"><button id="pause-job">中断</button><button id="resume-job">続きから再開</button><button id="retry-job">失敗箇所を再実行</button><button id="delete-job" class="danger">原稿を削除</button></div><div class="row card-foot"><button data-export="json">レビュー用JSON</button><button data-export="md">レビュー用Markdown</button><button data-export="translated">訳文ファイル</button></div><p class="subtle">レビュー用出力には原文・下訳・用語集・モデル情報・確認指示・PLaMo利用条件を含めます。訳文ファイルを第三者へ渡す場合も、契約コピーと生成元表示を添えてください。</p><div id="job-segments"></div></div></section></div></div></section>
-<section id="view-glossary" hidden><header class="page-head"><div><h1>言葉の軸をそろえる。</h1><p>専門用語と文脈を、翻訳のたびに共有する。</p></div></header><div class="stack"><section class="card"><div class="card-head"><h2>プロジェクト設定</h2></div><div class="row"><label>保存した設定<select id="profile-select"><option value="">選択してください</option></select></label><button id="load-profile">読み込む</button><button id="delete-profile" class="danger">設定を削除</button><label>新しい設定名<input id="profile-name" maxlength="100" placeholder="例：機械学習の投稿原稿"></label><button id="save-profile">名前を付けて保存</button></div></section><section class="card"><div class="fields"><label class="wide">分野<input id="domain" maxlength="500" placeholder="例：機械学習、学術論文"></label><label class="wide">参考文脈<textarea id="context" rows="4" maxlength="10000" placeholder="研究の背景や、この原稿での用語の意味など。"></textarea></label></div></section><section class="card"><div class="card-head"><h2>用語集</h2><button id="add-term">＋ 用語を追加</button></div><div class="table-wrap"><table><thead><tr><th scope="col">原語</th><th scope="col">訳語</th><th scope="col">操作</th></tr></thead><tbody id="glossary-rows"></tbody></table></div><div class="row card-foot"><label>JSONを読み込む<input id="glossary-file" type="file" accept=".json,application/json"></label><button id="export-glossary">用語集を書き出す</button></div></section><div class="row end"><span id="settings-saved" class="muted" role="status"></span><button id="save-settings" class="primary">用語と文脈を保存</button></div></div></section>
-<section id="view-settings" hidden><header class="page-head"><div><h1>自分の環境で使う。</h1><p>接続と表示、PC内に保存するデータを管理する。</p></div></header><div class="stack"><section class="card"><h2>ローカルエンジンとの接続</h2><p class="muted">起動スクリプトで表示される接続キーを、拡張に一度登録してください。</p><div class="row card-foot"><label>接続キー<input id="connection-key" type="password" autocomplete="off" spellcheck="false" placeholder="接続キーを貼り付ける"></label><button id="pair" class="primary">接続する</button><button id="refresh">接続を再確認</button><button id="stop-engine">モデルを停止</button></div><p id="engine-detail" class="subtle"></p><div id="shortcut-settings" class="card-foot" hidden><p id="shortcut-state" class="muted"></p><button id="open-shortcuts">Chromeのショートカット設定を開く</button></div></section><section class="card"><h2>表示</h2><label>カラーテーマ<select id="theme"><option value="system">システムに合わせる</option><option value="light">ライト</option><option value="dark">ダーク</option></select></label></section><section class="card"><h2>保存データ</h2><p class="muted">原稿・対訳・用語集・翻訳キャッシュは、リポジトリの .data/state.sqlite3 に保存します。モデル停止後も原稿は残ります。</p><div class="row card-foot"><button id="clear-cache">翻訳キャッシュを削除</button><button id="clear-data" class="danger">原稿・設定・キャッシュをすべて削除</button></div></section></div></section>
-</main></div></body></html>
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>PLaMo Local — 翻訳ワークスペース</title>
+  <link rel="preload" href="fonts/NotoSansJP-VF.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="app.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">本文へ移動</a>
+<div class="shell">
+  <aside class="rail">
+    <div class="brand"><span class="brand-mark" aria-hidden="true">P</span><div><div class="brand-name">PLaMo Local</div><div class="brand-sub">ローカル翻訳</div></div></div>
+    <nav aria-label="メイン">
+      <button data-view="translate" aria-current="page"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 5h11M8 3v2m-4 3c1 5 4 8 8 10M12 5c0 6-3 11-8 14m10 1 4-11 4 11m-6.5-4h5"/></svg>テキスト翻訳</button>
+      <button data-view="documents"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M6 3h8l4 4v14H6zM14 3v5h4M9 12h6m-6 4h6"/></svg>原稿ワークスペース</button>
+      <button data-view="glossary"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M12 5c-3-2-6-2-9-1v15c3-1 6-1 9 1 3-2 6-2 9-1V4c-3-1-6-1-9 1Zm0 0v15"/></svg>用語と文脈</button>
+      <button data-view="settings"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="3" fill="var(--surface)"/><circle cx="15" cy="17" r="3" fill="var(--surface)"/></svg>接続と設定</button>
+    </nav>
+    <div class="rail-foot">Built with PLaMo<br>PFNとは独立した非公式ツール<br><a href="licenses/PLaMo-Community-License-ja.txt" target="_blank" rel="noopener">モデルの利用条件</a></div>
+  </aside>
+  <main id="main">
+    <header class="page-head">
+      <div><h1 id="page-title">テキスト翻訳</h1><p id="page-description">原文と訳文を並べて、PC内で翻訳します。</p></div>
+      <div class="connection"><span id="connection-dot" class="dot"></span><span id="connection-state" role="status">接続を確認中</span></div>
+    </header>
+    <div id="notice" class="notice" role="alert" hidden></div>
+    <div class="toolbar" aria-label="翻訳設定">
+      <label>モデル<select id="model"><option value="2b">PLaMo 3 Translate · 2B</option><option value="8b">PLaMo 3 Translate · 8B</option></select></label>
+      <label>翻訳方向<select id="direction"><option value="en-ja">英語 → 日本語</option><option value="ja-en">日本語 → 英語</option></select></label>
+      <label>日本語の文体<select id="form"><option value="plain">常体（だ・である）</option><option value="polite">敬体（です・ます）</option></select></label>
+      <div class="engine"><span id="engine-state" class="badge">モデル停止中</span></div>
+      <button id="load-model">読み込む</button>
+    </div>
+
+    <section id="view-translate" aria-label="テキスト翻訳">
+      <div class="workspace">
+        <section class="card">
+          <div class="card-head"><h2><label for="source">原文</label></h2><button id="insert-sample">サンプルを入力</button></div>
+          <textarea id="source" class="editor" placeholder="翻訳する文章を入力してください。" spellcheck="false"></textarea>
+          <div class="card-foot row spread"><span id="char-count" class="muted">0文字</span><button id="translate" class="primary">翻訳する</button></div>
+        </section>
+        <section class="card">
+          <div class="card-head"><h2>訳文</h2><span id="translation-status" class="muted" role="status"></span></div>
+          <pre id="translation" class="output" tabindex="0" aria-label="訳文">訳文がここに表示されます。</pre>
+          <div id="translation-warnings" class="warning" hidden></div>
+          <div class="card-foot row spread"><span id="translation-metrics" class="metrics"></span><div class="row"><button id="cancel-translation" disabled>キャンセル</button><button id="copy-translation" disabled>コピー</button></div></div>
+        </section>
+      </div>
+    </section>
+
+    <section id="view-documents" aria-label="原稿ワークスペース" hidden>
+      <div class="stack">
+        <details class="card" id="new-document" open>
+          <summary>原稿を追加する</summary>
+          <div class="stack">
+            <div class="fields">
+              <label>原稿名<input id="doc-title" maxlength="200" placeholder="研究原稿の下訳"></label>
+              <label>ファイル形式<select id="doc-format"><option value="txt">テキスト (.txt)</option><option value="md">Markdown (.md)</option><option value="tex">LaTeX (.tex)</option></select></label>
+              <label class="wide">ファイルから読み込む<input id="doc-file" class="file" type="file" accept=".txt,.md,.tex,text/plain,text/markdown,application/x-tex"></label>
+              <label class="wide">原稿<textarea id="doc-source" rows="8" maxlength="500000" placeholder="原稿を貼り付けるか、ファイルを選んでください。"></textarea></label>
+            </div>
+            <div class="row spread"><span class="muted">数式・引用キー・コードを保護します。下訳は原文と照合してください。</span><button id="create-job" class="primary">下訳を作成する</button></div>
+          </div>
+        </details>
+        <div class="document-layout">
+          <aside class="card document-list"><h2>保存した原稿</h2><div id="job-list" class="job-list"></div></aside>
+          <section class="card document-content">
+            <div id="job-empty" class="empty">原稿を追加するか、保存した原稿を選んでください。</div>
+            <div id="job-detail" hidden>
+              <div class="card-head"><h2 id="job-title"></h2><span id="job-status" class="badge" role="status"></span></div>
+              <progress id="job-progress" max="1" value="0" aria-label="原稿の翻訳進捗"></progress>
+              <div class="job-actions">
+                <div class="row"><button id="pause-job">中断</button><button id="resume-job">続きから再開</button><button id="retry-job">失敗箇所を再実行</button><details class="overflow-menu"><summary aria-label="原稿のその他の操作">その他</summary><div><button id="delete-job" class="danger">原稿を削除</button></div></details></div>
+                <div class="row" aria-label="書き出し"><button data-export="json">レビュー用JSON</button><button data-export="md">レビュー用Markdown</button><button data-export="translated">訳文ファイル</button></div>
+              </div>
+              <details class="export-note"><summary>出力に含まれる情報と利用条件</summary><p>レビュー用出力には原文・下訳・用語集・モデル情報・確認指示・PLaMo利用条件を含めます。訳文ファイルを第三者へ渡す場合も、契約コピーと生成元表示を添えてください。</p></details>
+              <div id="job-segments"></div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <section id="view-glossary" class="glossary-view" aria-label="用語と文脈" hidden>
+      <div class="stack">
+        <section class="card">
+          <div class="card-head"><h2>プロジェクト設定</h2></div>
+          <div class="profile-row"><label>保存した設定<select id="profile-select"><option value="">選択してください</option></select></label><button id="load-profile">読み込む</button><button id="delete-profile" class="danger">設定を削除</button></div>
+          <div class="profile-row"><label>新しい設定名<input id="profile-name" maxlength="100" placeholder="例：機械学習の投稿原稿"></label><button id="save-profile">名前を付けて保存</button></div>
+        </section>
+        <section class="card"><div class="fields"><label class="wide">分野<input id="domain" maxlength="500" placeholder="例：機械学習、学術論文"></label><label class="wide">参考文脈<textarea id="context" rows="4" maxlength="10000" placeholder="研究の背景や、この原稿での用語の意味など。"></textarea></label></div></section>
+        <section class="card">
+          <div class="card-head"><h2>用語集</h2><button id="add-term">用語を追加</button></div>
+          <div class="table-wrap"><table><thead><tr><th scope="col">原語</th><th scope="col">訳語</th><th scope="col">操作</th></tr></thead><tbody id="glossary-rows"></tbody></table></div>
+          <div class="row card-foot"><label>JSONを読み込む<input id="glossary-file" type="file" accept=".json,application/json"></label><button id="export-glossary">用語集を書き出す</button></div>
+        </section>
+        <div class="row end"><span id="settings-saved" class="muted" role="status"></span><button id="save-settings" class="primary">用語と文脈を保存</button></div>
+      </div>
+    </section>
+
+    <section id="view-settings" class="settings-view" aria-label="接続と設定" hidden>
+      <div class="stack">
+        <section class="card">
+          <h2>ローカルエンジンとの接続</h2><p class="muted">起動スクリプトで表示される接続キーを、拡張に一度登録してください。</p>
+          <div class="row card-foot"><label>接続キー<input id="connection-key" type="password" autocomplete="off" spellcheck="false" placeholder="接続キーを貼り付ける"></label><button id="pair" class="primary">接続する</button><button id="refresh">接続を再確認</button><button id="stop-engine">モデルを停止</button></div>
+          <p id="engine-detail" class="subtle"></p>
+          <div id="shortcut-settings" class="card-foot" hidden><p id="shortcut-state" class="muted"></p><button id="open-shortcuts">Chromeのショートカット設定を開く</button></div>
+        </section>
+        <section class="card"><h2>表示</h2><label>カラーテーマ<select id="theme"><option value="system">システムに合わせる</option><option value="light">ライト</option><option value="dark">ダーク</option></select></label></section>
+        <section class="card"><h2>保存データ</h2><p class="muted">原稿・対訳・用語集・翻訳キャッシュは、ローカルの .data/state.sqlite3 に保存します。</p><div class="row card-foot"><button id="clear-cache">翻訳キャッシュを削除</button><button id="clear-data" class="danger">原稿・設定・キャッシュをすべて削除</button></div></section>
+      </div>
+    </section>
+  </main>
+</div>
+</body>
+</html>

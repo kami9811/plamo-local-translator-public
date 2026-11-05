@@ -6,7 +6,8 @@ let state:State|undefined;let activeJob='';let renderedJob='';let translationId=
 function notify(message:string,error=false){const n=$('notice');n.textContent=message;n.className='notice'+(error?' error':'');n.setAttribute('role',error?'alert':'status');n.hidden=false;}
 function failure(error:unknown){notify(error instanceof Error?error.message:String(error),true);}
 function action(id:string,fn:()=>Promise<unknown>|unknown){$(id).addEventListener('click',()=>Promise.resolve().then(fn).catch(failure));}
-function view(name:string){document.querySelectorAll<HTMLElement>('[id^="view-"]').forEach(n=>n.hidden=n.id!=='view-'+name);document.querySelectorAll<HTMLButtonElement>('nav [data-view]').forEach(n=>{if(n.dataset.view===name)n.setAttribute('aria-current','page');else n.removeAttribute('aria-current');});}
+const views:Record<string,[string,string]>={translate:['テキスト翻訳','原文と訳文を並べて、PC内で翻訳します。'],documents:['原稿ワークスペース','段落ごとの下訳を確認し、原文付きのレビュー用ファイルに書き出します。'],glossary:['用語と文脈','専門用語と参考文脈を、プロジェクトごとに保存します。'],settings:['接続と設定','ローカルエンジンとの接続、表示、保存データを管理します。']};
+function view(name:string){if(!$('notice').classList.contains('error'))$('notice').hidden=true;const current=views[name]||views.translate;$('page-title').textContent=current[0];$('page-description').textContent=current[1];document.title=current[0]+' — PLaMo Local';document.querySelectorAll<HTMLElement>('[id^="view-"]').forEach(n=>n.hidden=n.id!=='view-'+name);document.querySelectorAll<HTMLButtonElement>('nav [data-view]').forEach(n=>{if(n.dataset.view===name)n.setAttribute('aria-current','page');else n.removeAttribute('aria-current');});}
 document.querySelectorAll<HTMLButtonElement>('[data-view]').forEach(n=>n.onclick=()=>view(n.dataset.view!));
 function theme(value:string){if(value==='system')delete document.documentElement.dataset.theme;else document.documentElement.dataset.theme=value;}
 function dirty(){$('settings-saved').textContent='変更はまだ保存されていません。';}
@@ -45,6 +46,8 @@ async function showJob(){
  const done=job.segments.filter(s=>s.status==='done').length;$('job-status').textContent=`${labels[job.status]||job.status} · ${done}/${job.segments.length}`;
  $<HTMLProgressElement>('job-progress').max=job.segments.length||1;$<HTMLProgressElement>('job-progress').value=done;
  $<HTMLButtonElement>('pause-job').disabled=!['running','queued'].includes(job.status);$<HTMLButtonElement>('resume-job').disabled=['running','queued','done'].includes(job.status);$<HTMLButtonElement>('retry-job').disabled=!job.segments.some(s=>s.status==='error')||['running','queued'].includes(job.status);$<HTMLButtonElement>('delete-job').disabled=['running','queued'].includes(job.status);
+ const processing=['running','queued'].includes(job.status);
+ $('pause-job').hidden=!processing;$('resume-job').hidden=processing||job.status==='done';$('retry-job').hidden=!job.segments.some(s=>s.status==='error');
  const target=$('job-segments');target.replaceChildren();
  if(job.error)target.append(el('p',job.error,'warning'));
  for(const s of job.segments){if(s.skip)continue;const row=el('article',undefined,'pair');row.append(el('span',`${s.id} · ${labels[s.status]||s.status}`,'badge'));const grid=el('div',undefined,'pair-grid');for(const [title,text]of [['原文',s.source],['下訳',s.translation||'未翻訳']]){const col=el('div');col.append(el('h3',title),el('pre',text));grid.append(col);}row.append(grid);for(const w of s.warnings)row.append(el('p',w,'warning'));if(s.error)row.append(el('p',s.error,'warning'));target.append(row);}

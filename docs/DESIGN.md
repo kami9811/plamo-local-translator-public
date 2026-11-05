@@ -33,3 +33,15 @@ Material 3 Expressiveの色・形・文字の階層・主要操作の強調を�
 - Material Design 3: https://m3.material.io/
 - Carbon Accessibility: https://www.carbondesignsystem.com/building-blocks/foundations/accessibility/overview
 - Chrome extension network requests: https://developer.chrome.com/docs/extensions/develop/concepts/network-requests
+
+
+## 2026-11-05: 日本語の文字組みと配置の見直し
+
+未導入のフォントに依存して日本語が意図しない書体へ落ちていたため、Noto Sans JPの可変WOFF2を同梱しました。初回セットアップ後はフォントにも外部通信を行いません。原文・訳文・入力・吹き出しまで同じ書体を使い、日本語への負の字間指定を撤去しています。本文は400、ラベルは500、見出しは600を基本とし、見出し26px、本文15〜16px、補助情報11〜13pxに役割を整理しました。フォントはOFLの別ライセンスです。
+
+画面先頭を機能名と短い説明に統一し、その下に翻訳設定、本文、操作を配置しました。大きな宣伝的コピーと装飾的な英字ラベルを取り除き、原文と訳文の見出し・本文・下端の操作をそろえています。原稿は段落対訳の幅を優先し、処理状況に不要な中断・再開操作は隠し、削除は「その他」へ移動しました。プロジェクトの読込と保存は別の行に分けています。
+
+Carbonのproductive typographyの考え方を参照し、M3の主操作・状態の強調はアクセント色と限定した丸みに残しています。準拠認証を主張するものではありません。
+
+参照: https://www.carbondesignsystem.com/building-blocks/foundations/typography/overview
+フォントの取得元・変換条件・ハッシュ: `licenses/fonts/provenance.json`。
