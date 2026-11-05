@@ -7,7 +7,7 @@ flowchart LR
   SW -->|認証付きループバックHTTP| API
   API --> Store[(SQLite: 原稿・対訳・設定・キャッシュ)]
   API --> Engine[モデルプロセス管理 / PFML3]
-  Engine -->|内部用APIキー / SSE| Llama[llama.cpp / RTX 4090]
+  Engine -->|内部用APIキー / SSE| Llama[llama.cpp / CUDA・Metal・CPU]
   API --> Export[原文付きJSON / Markdown]
 ```
 

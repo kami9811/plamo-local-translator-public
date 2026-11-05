@@ -1,0 +1,17 @@
+{
+  "artifact": "plamo-local-controller-windows-0.1.0.zip",
+  "bytes": 31180,
+  "sha256": "2a959882bdc0cb96921f60bf8a7899fdb958291ebf9f6afb888fe0bedc826647",
+  "embedded_bridge_matches_source": true,
+  "known_private_information_matches": 0,
+  "contains_settings_or_local_data": false,
+  "members": [
+    "LICENSE",
+    "NOTICE.md",
+    "PLaMoLocalController.exe",
+    "PLaMoLocalController.exe.config",
+    "licenses/PLaMo-Community-License-en.txt",
+    "licenses/PLaMo-Community-License-ja.txt",
+    "はじめに.txt"
+  ]
+}

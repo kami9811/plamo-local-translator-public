@@ -38,3 +38,12 @@ READMEとSETUPを、読み込むフォルダーの用意、Windows側へのコ�
 - Public作業ブランチへのpushでmacOSホストのCIを実行する。権限はcontents:read、fork PRでは起動しない。API・重み・接続キーを成果物に含めない。
 - Linux上の隔離APIテスト6件が通過。WindowsのネイティブWPF操作とWSL文字列受け渡しは通過。MacはこれからCIで確認する。
 - ユーザーが使うローカルAPI・モデルは起動していない。検証結果と配布物がそろうまで完成扱いにしない。
+
+### デスクトップ対応の完了記録
+
+- Windows/Macの3操作を実装し、配布ZIPと日本語導入手順を用意。Public/Privateのソースを同期。
+- 最終Mac CI 42007817736（eb9d83e）は両CPUとも成功。AppKit→実APIの起動/キー/停止と、arm64 2B / Intel 2B→8BをCPUで確認。
+- Windows WPF 16項目、Public Python16件/Private13件、型チェック/拡張/Windowsビルドも成功。手元の実API/モデルは起動していない。
+- docs/DESKTOP-VALIDATION.md と docs/validation/desktop/ に代替・実API・実モデルの証拠を分けて保存。Metal、Apple Silicon 8B、Mac Chrome全操作、包括的な支援技術監査は未検証。
+- 配布ZIPのライセンス・Universal構成・組み込みソース一致・実キー/個人パス混入なしを確認。配布先はPublicのcontroller-v0.1.0を使用する。
+- mainへの直接push/マージなし。PrivateはPrivateを維持。GitHub操作ごとに元のアカウントへ戻す。
