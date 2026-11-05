@@ -47,3 +47,10 @@ READMEとSETUPを、読み込むフォルダーの用意、Windows側へのコ�
 - docs/DESKTOP-VALIDATION.md と docs/validation/desktop/ に代替・実API・実モデルの証拠を分けて保存。Metal、Apple Silicon 8B、Mac Chrome全操作、包括的な支援技術監査は未検証。
 - 配布ZIPのライセンス・Universal構成・組み込みソース一致・実キー/個人パス混入なしを確認。配布先はPublicのcontroller-v0.1.0を使用する。
 - mainへの直接push/マージなし。PrivateはPrivateを維持。GitHub操作ごとに元のアカウントへ戻す。
+
+### 配布・リモート反映
+
+- controller-v0.1.0を開発版として公開済み: https://github.com/kami9811/plamo-local-translator-public/releases/tag/controller-v0.1.0
+- Windows/MacのZIPとSHA256の計4ファイルを掲載し、GitHub側のdigestとローカル配布物の一致を確認。リリースのソースはe0ab760。
+- Public/Privateの作業ブランチをpushし、既存PRの説明を最終仕様・検証範囲に更新済み。mainのpush/マージなし。Privateの公開範囲は変更していない。
+- 公開履歴全体のgitleaks検出0件、公開ファイル中の既知の個人パス等も検出0件。GitHub操作後は元のアカウントへ復帰済み。
