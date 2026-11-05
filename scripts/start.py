@@ -1,23 +1,30 @@
-import os
-"""Start the loopback API. Run --quiet for automation, otherwise show pairing key locally."""
+"""Start this checkout's loopback API, without reusing another installation."""
 from pathlib import Path
-import argparse, json, os, subprocess, sys, time, urllib.request
-ROOT=Path(__file__).resolve().parents[1];DATA=ROOT/'.data'
-parser=argparse.ArgumentParser();parser.add_argument('--quiet',action='store_true');args=parser.parse_args()
-DATA.mkdir(exist_ok=True,mode=0o700)
-def healthy():
+import argparse
+import os
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from desktop.controller_bridge import execute, ControlError
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--quiet', action='store_true')
+    args = parser.parse_args()
+    port = int(os.environ.get('PLAMO_API_PORT', '8765'))
+    inference = int(os.environ.get('PLAMO_INFERENCE_PORT', '8766'))
+    data = os.environ.get('PLAMO_DATA_DIR')
     try:
-        with urllib.request.urlopen(f'http://127.0.0.1:{os.environ.get("PLAMO_API_PORT","8765")}/api/health',timeout=1) as r:return json.load(r).get('version')=='0.1.3'
-    except Exception:return False
-if not healthy():
-    env=os.environ.copy();env['PYTHONPATH']=str(ROOT/'server')
-    with (DATA/'api.log').open('ab') as log:
-        process=subprocess.Popen([sys.executable,'-m','plamo_local.service'],cwd=ROOT,env=env,stdout=log,stderr=log,start_new_session=True)
-    (DATA/'api.pid').write_text(str(process.pid))
-    for _ in range(50):
-        if healthy():break
-        if process.poll() is not None:raise SystemExit('起動に失敗しました。.data/api.logを確認してください。')
-        time.sleep(.1)
-    else:raise SystemExit('APIの起動待ちがタイムアウトしました。')
-print(f'PLaMo Local: http://127.0.0.1:{os.environ.get("PLAMO_API_PORT","8765")}/app.html')
-if not args.quiet:print('拡張の接続設定に貼り付けるキー（公開しないでください）: '+(DATA/'token').read_text())
+        execute('start', str(ROOT), port, inference, data)
+        print(f'PLaMo Local: http://127.0.0.1:{port}/app.html')
+        if not args.quiet:
+            key = execute('key', str(ROOT), port, inference, data)['key']
+            print('拡張の接続設定に貼り付けるキー（公開しないでください）: ' + key)
+    except ControlError as error:
+        raise SystemExit(error.message)
+
+
+if __name__ == '__main__':
+    main()

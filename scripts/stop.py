@@ -1,14 +1,18 @@
+"""Stop only this checkout's verified API process; preserve documents/settings."""
 from pathlib import Path
-import os,signal,time
-root=Path(__file__).resolve().parents[1];pidfile=root/'.data/api.pid'
-if pidfile.exists():
-    pid=int(pidfile.read_text());cmd=Path(f'/proc/{pid}/cmdline')
-    if cmd.exists() and b'plamo_local.service' in cmd.read_bytes():
-        os.kill(pid,signal.SIGTERM)
-        for _ in range(200):
-            if not cmd.exists() or b'plamo_local.service' not in cmd.read_bytes():break
-            time.sleep(.1)
-        else:raise SystemExit('停止を待っています。処理状態を確認してください。')
-        print('ローカルAPIとモデルを停止しました。')
-    else:print('APIは停止済みです。')
-else:print('APIは起動していません。')
+import os
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from desktop.controller_bridge import execute, ControlError
+
+
+if __name__ == '__main__':
+    try:
+        result = execute('stop', str(ROOT), int(os.environ.get('PLAMO_API_PORT', '8765')),
+                         int(os.environ.get('PLAMO_INFERENCE_PORT', '8766')),
+                         os.environ.get('PLAMO_DATA_DIR'))
+        print(result['message'])
+    except ControlError as error:
+        raise SystemExit(error.message)

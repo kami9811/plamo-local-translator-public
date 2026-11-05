@@ -33,5 +33,17 @@
     "url": "https://github.com/ggml-org/llama.cpp/archive/refs/tags/b12121.tar.gz",
     "sha256": "0b6fbcaa41a51782ccb3454ae6a1cf6b2f7d0530e8dfe6d2f9de2df8c916a33a"
   },
-  "llama_commit": "e56f006ed6b416ae8b7ccb5243b204743f09df1e"
+  "llama_commit": "e56f006ed6b416ae8b7ccb5243b204743f09df1e",
+  "macos_assets": {
+    "darwin-arm64": {
+      "name": "llama-b12121-bin-macos-arm64.tar.gz",
+      "url": "https://github.com/ggml-org/llama.cpp/releases/download/b12121/llama-b12121-bin-macos-arm64.tar.gz",
+      "sha256": "75e2176148b2d79ff20f503fa131f3d66d74176ed06c58f48e273e20383c32c2"
+    },
+    "darwin-x64": {
+      "name": "llama-b12121-bin-macos-x64.tar.gz",
+      "url": "https://github.com/ggml-org/llama.cpp/releases/download/b12121/llama-b12121-bin-macos-x64.tar.gz",
+      "sha256": "c68c96e267d3c3391356d71fc03c6d61eca5ccda25b29bd2417d0c04f3edf9bc"
+    }
+  }
 }

@@ -1,0 +1,61 @@
+name: Desktop controllers
+
+on:
+  push:
+    branches: [main, fix/japanese-typography-layout]
+    paths: ['desktop/**', 'scripts/**', 'server/**', 'tests/test_desktop.py', 'runtime-manifest.json', '.github/workflows/desktop-controller.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: desktop-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  macos:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-15
+            models: 2b
+          - runner: macos-15-intel
+            models: all
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
+      - name: Build native universal application and tests
+        run: |
+          python3 scripts/build_macos_controller.py
+          python3 scripts/build_macos_controller.py --tests
+          mkdir -p artifacts/desktop-validation
+          artifacts/macos-controller/ControllerTests artifacts/desktop-validation
+      - name: Isolated controller integration tests (fixture API)
+        run: python3 -m unittest discover -s tests -p test_desktop.py -v
+      - name: Set up official runtime and models
+        run: python3 scripts/setup_runtime.py --accept-model-license --models ${{ matrix.models }}
+      - name: Real model translation and shutdown
+        env:
+          PLAMO_GPU_LAYERS: '0'
+        run: |
+          models='2b'
+          if [ '${{ matrix.models }}' = all ]; then models='2b 8b'; fi
+          python3 scripts/macos_model_smoke.py --models $models --output artifacts/desktop-validation/real-models.json
+      - name: Upload application and sanitized evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: controller-${{ matrix.runner }}
+          path: |
+            artifacts/plamo-local-controller-macos-*.zip
+            artifacts/plamo-local-controller-macos-*.sha256
+            artifacts/desktop-validation/*.png
+            artifacts/desktop-validation/*tests.json
+            artifacts/desktop-validation/real-models.json
+          if-no-files-found: warn
+          retention-days: 14
