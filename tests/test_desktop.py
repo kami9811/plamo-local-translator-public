@@ -10,6 +10,7 @@ import sys
 import tempfile
 import time
 import unittest
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -48,6 +49,12 @@ class ControllerIntegration(unittest.TestCase):
             path = self.root / name; path.parent.mkdir(parents=True, exist_ok=True); path.write_text('{}')
         (self.root / 'server/plamo_local/service.py').write_text(FIXTURE)
         self.port = unused_port()
+        self.children = []
+        original = subprocess.Popen
+        def spawn(*args, **kwargs):
+            child = original(*args, **kwargs); self.children.append(child); return child
+        self.spawn_patch = patch.object(bridge.subprocess, 'Popen', side_effect=spawn)
+        self.spawn_patch.start()
 
     def call(self, action, root=None):
         return bridge.execute(action, str(root or self.root), self.port, unused_port())
@@ -56,6 +63,9 @@ class ControllerIntegration(unittest.TestCase):
         pid = bridge.owner_pid(self.root.resolve(), self.port)
         if pid:
             self.call('stop')
+        for child in self.children:
+            child.wait(timeout=3)
+        self.spawn_patch.stop()
         self.temp.cleanup()
 
     def test_lifecycle_and_key_is_explicit(self):

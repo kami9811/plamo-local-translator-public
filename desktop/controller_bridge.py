@@ -128,6 +128,9 @@ def health(port):
         with opener.open("http://127.0.0.1:%d/api/health" % port, timeout=1.5) as response:
             data = json.loads(response.read(65536))
         return data if data.get("ok") and isinstance(data.get("version"), str) else None
+    except urllib.error.HTTPError as error:
+        error.close()
+        return None
     except (OSError, ValueError):
         return None
 
@@ -148,20 +151,20 @@ def operation_lock(port):
         os.close(fd)
 
 
-def foreign_port():
-    raise ControlError("port_in_use", "8765番は別の場所から起動したAPI、または別のアプリが使用しています。実行先を確認し、先に起動した側で停止してください。")
+def foreign_port(port):
+    raise ControlError("port_in_use", f"{port}番は別の場所から起動したAPI、または別のアプリが使用しています。実行先を確認し、先に起動した側で停止してください。")
 
 
-def snapshot(root, port):
+def snapshot(root, port, data_dir=None):
     pid = owner_pid(root, port)
     if port_open(port) and pid is None:
-        foreign_port()
+        foreign_port(port)
     data = health(port) if pid is not None else None
     if pid is not None and data is None:
         raise ControlError("not_ready", "選択したAPIはまだ応答していません。少し待って確認してください。")
     if pid is None:
         try:
-            recorded = int((root / '.data/api.pid').read_text())
+            recorded = int(((data_dir or root / '.data') / 'api.pid').read_text())
         except (OSError, ValueError):
             recorded = None
         if recorded and owned_process(root, recorded):
@@ -175,7 +178,7 @@ def execute(action, location, port=8765, inference_port=8766, data_dir=None):
     root = project(location)
     data_dir = Path(data_dir).resolve() if data_dir is not None else root / '.data'
     with operation_lock(port):
-        pid, state = snapshot(root, port)
+        pid, state = snapshot(root, port, data_dir)
         if action == "start":
             if pid is None:
                 env = os.environ.copy()
@@ -242,7 +245,9 @@ def execute(action, location, port=8765, inference_port=8766, data_dir=None):
                 with opener.open(request, timeout=2) as response:
                     if response.status != 200:
                         raise ValueError()
-            except (OSError, ValueError):
+            except (OSError, ValueError) as error:
+                if isinstance(error, urllib.error.HTTPError):
+                    error.close()
                 raise ControlError("key_unavailable", "起動中APIの接続キーを確認できません。「停止」してから、同じ実行先で起動し直してください。")
             return {"ok": True, "state": "running", "key": key, "version": state["version"],
                     "message": "接続キーを表示しました。拡張側の「接続と設定」に登録してください。"}
@@ -262,7 +267,7 @@ def main():
     except Exception:
         # Do not copy exceptions or subprocess output: they may contain a key.
         result = {"ok": False, "state": "unknown", "error": "operation_failed",
-                  "message": "操作に失敗しました。実行先とWSL環境を確認してください。"}
+                  "message": "操作に失敗しました。実行先とPython環境を確認してください。"}
     print(json.dumps(result, ensure_ascii=True))
     return 0 if result["ok"] else 1
 

@@ -6,6 +6,8 @@ Built with PLaMo。非公式ツールです。モデルの契約条件は[日本
 
 Linux x86_64 / WSL2 Ubuntu / Python 3.10以上。検証済みGPUはRTX 4090。Chrome 123以降。初回はネット接続と約20GB以上の空き容量を推奨。Pythonサーバーの実行依存は標準ライブラリのみです。
 
+Mac版は[Windows / Mac操作アプリの手順](DESKTOP.md#macの初回セットアップ)を参照してください。Apple SiliconとIntelに対応するセットアップを用意しています。
+
 ## 初回
 
 ```bash
@@ -28,6 +30,8 @@ PLAMO_CUDA_COMPILER=/path/to/cuda/bin/nvcc PLAMO_CUDA_ARCH=89 \
 GPUアーキテクチャ89はRTX 4090向けです。別GPUへ変更した構成は未検証です。OSのglibcやセキュリティ設定を自動で置き換えません。
 
 ## Windowsから起動
+
+日常の起動・停止・キーのコピーには[Windowsコントローラー](DESKTOP.md)を使えます。最初にプロジェクトの場所を保存すれば、以降はボタン操作だけで使えます。以下は従来の補助スクリプトを使う方法です。
 
 ソースはWSL内の任意のディレクトリに置きます。Windows補助スクリプトには自分のLinux側チェックアウト先を指定します。
 
@@ -96,6 +100,8 @@ plamo-local-translator-public/
 ## 拡張とローカルAPIを接続する
 
 ### 1. 接続キーをコピーする
+
+Windows / Macコントローラーを使う場合は「起動」→「接続キーを表示」→「コピー」を押し、次の「Chrome拡張側の設定を開く」へ進んでください。以下はCLIでコピーする方法です。
 
 モデルを実行する側のターミナルで、リポジトリのルートから次を実行します。
 

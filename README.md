@@ -16,14 +16,20 @@ PLaMo 3 Translateを使って、Chromeの選択文・ページ・論文原稿を
 
 ## 動作確認環境
 
-開発版 v0.1.3。WSL2 Ubuntu / Python 3.10 / NVIDIA RTX 4090 24GB / CUDA 12.6 / Windows Chromeで確認しています。Chrome 123以降が必要です。Mac、CPUのみ、他のGPUでの動作を保証するものではありません。
+開発版 v0.1.3。WSL2 Ubuntu / Python 3.10 / NVIDIA RTX 4090 24GB / CUDA 12.6 / Windows Chromeで確認しています。Chrome 123以降が必要です。Windows用の操作アプリと、Apple Silicon / Intel向けMacアプリを追加しました。Macの検証条件は[デスクトップ版の検証記録](docs/DESKTOP-VALIDATION.md)に分けて記載しています。
 
 モデル・Node.js・推論ランタイム・開発依存は初回に取得します。重みだけで約7.1GB、セットアップ全体には20GB程度以上の空き容量を推奨します。取得後の翻訳はローカルで実行します。
+
+## 起動・停止をアプリで操作する
+
+初回セットアップ済みなら、Windows / Macのコントローラーから「起動」「停止」「接続キーを表示・コピー」を操作できます。日常の起動にターミナルは不要です。アプリを開くだけではAPIを起動しません。
+
+[ダウンロードと使い方](docs/DESKTOP.md) · [検証した範囲](docs/DESKTOP-VALIDATION.md)
 
 ## セットアップ
 
 ```bash
-git clone https://github.com/kami9811/plamo-local-translator-public.git
+git clone --branch controller-v0.1.0 https://github.com/kami9811/plamo-local-translator-public.git
 cd plamo-local-translator-public
 
 # licenses/のPLaMo利用条件を読み、同意する場合のみ実行します。
@@ -64,7 +70,7 @@ PLaMoLocalExtension/  ← Chromeでこのフォルダーを選択
 
 ### 拡張に接続キーを登録する
 
-1. リポジトリのターミナルで `python3 scripts/start.py` を実行します。表示された「拡張の接続設定に貼り付けるキー」の、コロン `:` より後ろの文字列だけをコピーします。
+1. コントローラーの「起動」→「接続キーを表示」→「コピー」を押します。CLIの場合は、リポジトリのターミナルで `python3 scripts/start.py` を実行します。CLIでは、表示された「拡張の接続設定に貼り付けるキー」の、コロン `:` より後ろの文字列だけをコピーします。
 2. Chrome右上のパズルアイコン（拡張機能）を押し、一覧から「PLaMo Local」を開きます。ピン留めすると、次回からツールバーのアイコンで開けます。
 3. 小さなメニューの「原稿・用語集・接続設定」をクリックします。
 4. 新しいタブが開いたら、左メニューの「接続と設定」を選びます。

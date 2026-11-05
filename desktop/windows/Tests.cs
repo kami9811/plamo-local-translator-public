@@ -73,6 +73,11 @@ namespace PlamoLocalController
                 ProcessResult result = WslBackend.RunAsync(WslBackend.Arguments(echo, python, values)).GetAwaiter().GetResult();
                 string[] returned = new JavaScriptSerializer().Deserialize<string[]>(result.Output);
                 Check(result.ExitCode == 0 && returned.SequenceEqual(values), "real WSL argument and UTF-8 roundtrip without shell");
+                Settings production = Settings.Normalize("", args.Length > 1 ? args[1] : "/tmp", "light");
+                if (args.Length > 1) {
+                    ControlResult status = new WslBackend().ExecuteAsync("status", production).GetAwaiter().GetResult();
+                    Check(status != null && status.key == null && !String.IsNullOrEmpty(status.message), "embedded production bridge status without starting API");
+                }
                 File.WriteAllText(Path.Combine(output, "windows-tests.json"), new JavaScriptSerializer().Serialize(new { passed = passed, real_api_started = false, real_models_started = false, native_wpf_render = true, actual_wsl_argv = true }), new UTF8Encoding(false));
                 Console.WriteLine("Windows controller: " + passed + " checks passed. No real API/model was started."); return 0;
             }

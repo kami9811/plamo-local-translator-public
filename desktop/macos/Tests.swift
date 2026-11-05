@@ -35,8 +35,10 @@ final class FakeBackend: ControllerBackend {
             guard let view = controller.window?.contentView, let bitmap = view.bitmapImageRepForCachingDisplay(in: view.bounds) else { fatalError("render failed") }
             view.cacheDisplay(in: view.bounds, to: bitmap)
             try bitmap.representation(using: .png, properties: [:])!.write(to: output.appendingPathComponent("controller-" + theme + ".png"))
+            let header = controller.themeButton.convert(controller.themeButton.bounds, to: view)
+            check(view.bounds.contains(header), "header and theme visible without clipping")
             let visible = controller.startButton.convert(controller.startButton.bounds, to: view)
-            check(visible.width >= 44 && visible.height >= 38 && view.bounds.intersects(visible), "primary action visible")
+            check(visible.width >= 44 && visible.height >= 44 && view.bounds.intersects(visible), "primary action visible")
         }
         let saved = try String(contentsOf: store.url)
         check(!saved.contains("key") && !saved.contains(String(repeating: "x", count: 32)), "keys never saved")
