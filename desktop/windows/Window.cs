@@ -92,6 +92,7 @@ namespace PlamoLocalController
             SaveButton.Click += delegate { try { SaveConfiguration(); SetMessage("設定を保存しました。", false); } catch (Exception error) { SetMessage(error.Message, true); } };
             config.Children.Add(SaveButton);
             Configuration = new Expander { Header = "実行先の設定", Content = config, IsExpanded = String.IsNullOrWhiteSpace(saved.Repository) };
+            Configuration.SetResourceReference(Control.ForegroundProperty, "Text");
             content.Children.Add(Card(Configuration));
 
             StackPanel actions = new StackPanel();
