@@ -39,6 +39,8 @@ jobs:
         run: python3 -m unittest discover -s tests -p test_desktop.py -v
       - name: Set up official runtime and models
         run: python3 scripts/setup_runtime.py --accept-model-license --models ${{ matrix.models }}
+      - name: Native application to actual API lifecycle
+        run: artifacts/macos-controller/ControllerTests artifacts/desktop-validation --backend "$GITHUB_WORKSPACE"
       - name: Real model translation and shutdown
         env:
           PLAMO_GPU_LAYERS: '0'
@@ -46,6 +48,9 @@ jobs:
           models='2b'
           if [ '${{ matrix.models }}' = all ]; then models='2b 8b'; fi
           python3 scripts/macos_model_smoke.py --models $models --output artifacts/desktop-validation/real-models.json
+      - name: Ensure CI API is stopped
+        if: always()
+        run: python3 scripts/stop.py
       - name: Upload application and sanitized evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

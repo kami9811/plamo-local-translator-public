@@ -53,6 +53,7 @@ final class ControllerWindow: NSWindowController, NSWindowDelegate, NSTextFieldD
         let configuration = NSStackView(views: [configurationButton, config]); configuration.orientation = .vertical; configuration.alignment = .leading; configuration.spacing = 12; configuration.detachesHiddenViews = true
         config.widthAnchor.constraint(equalTo: configuration.widthAnchor).isActive = true
         configurationBody.isHidden = !settings.repository.isEmpty
+        configurationButton.title = configurationBody.isHidden ? "実行先の設定 ▸" : "実行先の設定 ▾"
         add(card(configuration))
         configurationButton.target = self; configurationButton.action = #selector(toggleConfiguration)
         configurationButton.bezelStyle = .inline; configurationButton.font = .systemFont(ofSize: 14, weight: .semibold)
@@ -186,4 +187,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         controller?.showWindow(nil); NSApp.activate(ignoringOtherApps: true)
     }
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool { true }
+    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+        if controller?.busy == true { controller?.updateMessage("処理が終わるまでお待ちください。", error: false); return .terminateCancel }
+        return .terminateNow
+    }
 }

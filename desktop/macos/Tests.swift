@@ -14,6 +14,9 @@ final class FakeBackend: ControllerBackend {
 @main struct ControllerTests {
     static func main() throws {
         let app = NSApplication.shared; app.setActivationPolicy(.regular)
+        if CommandLine.arguments.count > 3 && CommandLine.arguments[2] == "--backend" {
+            try verifyRealBackend(output: URL(fileURLWithPath: CommandLine.arguments[1]), repository: CommandLine.arguments[3]); return
+        }
         let output = URL(fileURLWithPath: CommandLine.arguments[1]); try FileManager.default.createDirectory(at: output, withIntermediateDirectories: true)
         let store = SettingsStore(url: output.appendingPathComponent("test-settings.json"))
         try store.save(ControllerSettings(repository: "/Users/example/plamo-local-translator", theme: "light"))
@@ -49,4 +52,33 @@ final class FakeBackend: ControllerBackend {
         print("macOS controller: \(checks) checks passed. No real API/model was started by UI tests.")
         controller.window?.orderOut(nil)
     }
+    static func verifyRealBackend(output: URL, repository: String) throws {
+        guard ProcessInfo.processInfo.environment["GITHUB_ACTIONS"] == "true" else { throw ControllerError.message("Isolated CI only") }
+        try FileManager.default.createDirectory(at: output, withIntermediateDirectories: true)
+        let bridge = URL(fileURLWithPath: repository).appendingPathComponent("desktop/controller_bridge.py")
+        let store = SettingsStore(url: output.appendingPathComponent("backend-settings.json"))
+        try store.save(ControllerSettings(repository: repository, theme: "light"))
+        let controller = ControllerWindow(backend: PythonBackend(bridge: bridge), store: store)
+        func waitForAction(_ action: String) throws {
+            controller.perform(action)
+            let deadline = Date().addingTimeInterval(95)
+            while controller.busy && Date() < deadline { RunLoop.current.run(until: Date().addingTimeInterval(0.02)) }
+            if controller.busy || controller.lastState == "unknown" { throw ControllerError.message("Native backend action failed: " + action + ": " + controller.message.stringValue) }
+        }
+        try waitForAction("start")
+        do {
+            guard controller.lastState == "running" else { throw ControllerError.message("Native start failed") }
+            try waitForAction("key")
+            guard let key = controller.visibleKey, key.count >= 32, controller.copyButton.isEnabled else { throw ControllerError.message("Native key display failed") }
+            let saved = try String(contentsOf: store.url)
+            guard !saved.contains(key) else { throw ControllerError.message("Key was persisted") }
+            try waitForAction("stop")
+            guard controller.lastState == "stopped", controller.visibleKey == nil else { throw ControllerError.message("Native stop failed") }
+        } catch { try? waitForAction("stop"); throw error }
+        let report: [String: Any] = ["native_ui_to_python": true, "real_api_started": true, "real_models_started": false,
+                                     "start_verified": true, "explicit_key_verified": true, "key_not_saved": true, "stop_verified": true]
+        try JSONSerialization.data(withJSONObject: report, options: [.prettyPrinted, .sortedKeys]).write(to: output.appendingPathComponent("macos-backend-tests.json"))
+        print("Native AppKit → Python → actual API: start / explicit key / stop verified. Keys omitted.")
+    }
+
 }
