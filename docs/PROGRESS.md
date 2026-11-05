@@ -8,3 +8,6 @@
 型・ビルド・Python検証と共通UIの実モデル6導線、4画面のライト/ダーク、390px幅、Windows ChromeからPrivate版への接続・実フォント使用を確認。詳細はVALIDATION.mdとtypography-v0.1.2.jsonを参照。
 
 修正後UIで等倍の紹介動画と架空論文の対訳画面を撮影。Xへの投稿は行わず、投稿用文面・ファイルを作成する。mainへの直接push・マージは行わず、Publicは修正PR、Privateは既存レビューPRに変更を載せる。
+
+
+修正はPublicのPR #1とPrivateの既存PR #1へpush済み。Privateの実行中APIもv0.1.2に更新し、保存データ・設定と読み込み済み2Bを維持した。Publicのv0.1.2プレビューは修正ブランチのコミットから配布し、mainの直接更新・マージを行わない。X投稿文の案内先はv0.1.2リリースとする。
