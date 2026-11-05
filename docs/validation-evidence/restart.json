@@ -1,0 +1,9 @@
+{
+  "recovered_status": "paused",
+  "completed_before_stop": 2,
+  "completed_before_resume": 6,
+  "completed_translations_preserved": true,
+  "completed_after_resume": 24,
+  "source_roundtrip": true,
+  "raw_inference_unauthenticated_status": 401
+}

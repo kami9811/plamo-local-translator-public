@@ -1,0 +1,81 @@
+[
+  {
+    "package": "typescript",
+    "version": "7.0.2",
+    "license": "Apache-2.0",
+    "files": [
+      "licenses/dependencies/typescript-LICENSE",
+      "licenses/dependencies/typescript-NOTICE.txt"
+    ]
+  },
+  {
+    "package": "esbuild",
+    "version": "0.28.2",
+    "license": "MIT",
+    "files": [
+      "licenses/dependencies/esbuild-LICENSE.md"
+    ]
+  },
+  {
+    "package": "playwright",
+    "version": "1.64.1",
+    "license": "Apache-2.0",
+    "files": [
+      "licenses/dependencies/playwright-LICENSE",
+      "licenses/dependencies/playwright-NOTICE",
+      "licenses/dependencies/playwright-ThirdPartyNotices.txt"
+    ]
+  },
+  {
+    "package": "playwright-core",
+    "version": "1.64.1",
+    "license": "Apache-2.0",
+    "files": [
+      "licenses/dependencies/playwright-core-LICENSE",
+      "licenses/dependencies/playwright-core-NOTICE",
+      "licenses/dependencies/playwright-core-ThirdPartyNotices.txt"
+    ]
+  },
+  {
+    "package": "axe-core",
+    "version": "4.14.0",
+    "license": "MPL-2.0",
+    "files": [
+      "licenses/dependencies/axe-core-LICENSE",
+      "licenses/dependencies/axe-core-LICENSE-3RD-PARTY.txt"
+    ]
+  },
+  {
+    "package": "@playwright/test",
+    "version": "1.64.1",
+    "license": "Apache-2.0",
+    "files": [
+      "licenses/dependencies/playwright-test-LICENSE",
+      "licenses/dependencies/playwright-test-NOTICE"
+    ]
+  },
+  {
+    "package": "@axe-core/playwright",
+    "version": "4.14.0",
+    "license": "MPL-2.0",
+    "files": [
+      "licenses/dependencies/axe-core-playwright-LICENSE"
+    ]
+  },
+  {
+    "package": "@types/chrome",
+    "version": "0.3.7",
+    "license": "MIT",
+    "files": [
+      "licenses/dependencies/types-chrome-LICENSE"
+    ]
+  },
+  {
+    "package": "@types/har-format",
+    "version": "1.2.16",
+    "license": "MIT",
+    "files": [
+      "licenses/dependencies/types-har-format-LICENSE"
+    ]
+  }
+]

@@ -1,0 +1,13 @@
+.runtime/
+.venv/
+node_modules/
+dist/
+artifacts/
+work/
+__pycache__/
+*.pyc
+.data/
+.env
+
+node_modules
+*.log

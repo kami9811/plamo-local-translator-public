@@ -1,0 +1,37 @@
+{
+  "llama_tag": "b12121",
+  "node_version": "v26.13.0",
+  "assets": [
+    {
+      "name": "cudart-llama-b12121-bin-ubuntu-cuda-12.8-x64.tar.gz",
+      "url": "https://github.com/ggml-org/llama.cpp/releases/download/b12121/cudart-llama-b12121-bin-ubuntu-cuda-12.8-x64.tar.gz",
+      "sha256": "bdcee8540810018ea22757d49a366edcc5dd18d1e7eaa0e09ff3a80d82058bf0"
+    },
+    {
+      "name": "llama-b12121-bin-ubuntu-cuda-12.8-x64.tar.gz",
+      "url": "https://github.com/ggml-org/llama.cpp/releases/download/b12121/llama-b12121-bin-ubuntu-cuda-12.8-x64.tar.gz",
+      "sha256": "628ad6714bd6a0d5b61315e36023c3ab3f1f212d3af7f9f4889e5140d4e727d8"
+    }
+  ],
+  "models": {
+    "2b": {
+      "repo": "pfnet/plamo-3-translate-2b-GGUF",
+      "revision": "f2b4599dff9b3e45c62567eac15e83186b4cb64e",
+      "file": "plamo-3-translate-2b-Q4_K_M.gguf",
+      "bytes": 1807192480,
+      "sha256": "2c288ecc7ebfe60c3561726580da3583767f3c41ca3ef5c6825bf6c4cc060787"
+    },
+    "8b": {
+      "repo": "pfnet/plamo-3-translate-8b-GGUF",
+      "revision": "c420296e9694ccb2455f038b3f29eee5a2200217",
+      "file": "plamo-3-translate-8b-Q4_K_M.gguf",
+      "bytes": 5280435168,
+      "sha256": "6b429549113ce0a61281ac72be195697241f89266f4247efec4893e4f580cf10"
+    }
+  },
+  "source": {
+    "url": "https://github.com/ggml-org/llama.cpp/archive/refs/tags/b12121.tar.gz",
+    "sha256": "0b6fbcaa41a51782ccb3454ae6a1cf6b2f7d0530e8dfe6d2f9de2df8c916a33a"
+  },
+  "llama_commit": "e56f006ed6b416ae8b7ccb5243b204743f09df1e"
+}

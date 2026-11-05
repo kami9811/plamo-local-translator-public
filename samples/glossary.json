@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "glossary": [
+    {
+      "source": "提案手法",
+      "target": "proposed method"
+    },
+    {
+      "source": "平均精度",
+      "target": "mean accuracy"
+    }
+  ]
+}

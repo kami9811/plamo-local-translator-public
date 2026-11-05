@@ -1,0 +1,47 @@
+[
+  {
+    "name": "health",
+    "expected": 200,
+    "actual": 200
+  },
+  {
+    "name": "unauthenticated state",
+    "expected": 401,
+    "actual": 401
+  },
+  {
+    "name": "cross-origin bootstrap",
+    "expected": 403,
+    "actual": 403
+  },
+  {
+    "name": "no browser context bootstrap",
+    "expected": 403,
+    "actual": 403
+  },
+  {
+    "name": "DNS rebinding host",
+    "expected": 403,
+    "actual": 403
+  },
+  {
+    "name": "authenticated state",
+    "expected": 200,
+    "actual": 200
+  },
+  {
+    "name": "bad model rejected",
+    "expected": 400,
+    "actual": 400
+  },
+  {
+    "name": "wrong content type",
+    "expected": 400,
+    "actual": 400
+  },
+  {
+    "name": "path traversal",
+    "expected": 404,
+    "actual": 404
+  }
+]

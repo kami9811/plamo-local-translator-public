@@ -1,0 +1,44 @@
+{
+  "manifest_version": 3,
+  "name": "PLaMo Local — 翻訳と論文の下訳",
+  "version": "0.1.1",
+  "description": "Built with PLaMo — 非公式のローカル翻訳ツール。選択文・ページ・論文原稿をPC内で翻訳します。",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "contextMenus",
+    "clipboardWrite"
+  ],
+  "host_permissions": [
+    "http://127.0.0.1/*",
+    "http://localhost/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "PLaMo Local"
+  },
+  "options_page": "app.html",
+  "commands": {
+    "translate-selection": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Y",
+        "mac": "Command+Shift+Y"
+      },
+      "description": "選択した文章を翻訳"
+    },
+    "translate-page": {
+      "suggested_key": {
+        "default": "Alt+Shift+U"
+      },
+      "description": "ページ全体を翻訳・原文へ戻す"
+    }
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'none'; base-uri 'none'"
+  },
+  "minimum_chrome_version": "123"
+}

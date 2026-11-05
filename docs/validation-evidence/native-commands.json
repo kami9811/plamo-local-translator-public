@@ -1,0 +1,17 @@
+[
+  {
+    "description": "",
+    "name": "_execute_action",
+    "shortcut": ""
+  },
+  {
+    "description": "ページ全体を翻訳・原文へ戻す",
+    "name": "translate-page",
+    "shortcut": "Alt+Shift+U"
+  },
+  {
+    "description": "選択した文章を翻訳",
+    "name": "translate-selection",
+    "shortcut": "Ctrl+Shift+Y"
+  }
+]

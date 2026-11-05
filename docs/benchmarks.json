@@ -1,0 +1,416 @@
+{
+  "hardware": "RTX 4090 24564 MiB / Core i9-14900KF / WSL2",
+  "runtime": "b12121, locally built CUDA 12.6, sm89, context 16384, Q4_K_M",
+  "application_cache": "cleared before each run",
+  "native_prompt_cache": true,
+  "repeats": 3,
+  "results": [
+    {
+      "model": "2b",
+      "sample": "short_en_ja",
+      "source": "Our results suggest that the proposed method improves accuracy by 12.5%. However, the effect was not statistically significant.",
+      "load_seconds": 2.005,
+      "runs": [
+        {
+          "ttft_seconds": 0.3533,
+          "elapsed_seconds": 0.436,
+          "input_tokens": 55,
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 55,
+            "prompt_ms": 349.282,
+            "prompt_per_token_ms": 6.350581818181817,
+            "prompt_per_second": 157.4658871628083,
+            "predicted_n": 25,
+            "predicted_ms": 82.763,
+            "predicted_per_token_ms": 3.4484583333333334,
+            "predicted_per_second": 289.98465497867403
+          },
+          "truncated": false,
+          "cache_hit": false
+        },
+        {
+          "ttft_seconds": 0.0143,
+          "elapsed_seconds": 0.0951,
+          "input_tokens": 55,
+          "timings": {
+            "cache_n": 50,
+            "prompt_n": 5,
+            "prompt_ms": 13.582,
+            "prompt_per_token_ms": 2.7164,
+            "prompt_per_second": 368.1342953909586,
+            "predicted_n": 25,
+            "predicted_ms": 80.714,
+            "predicted_per_token_ms": 3.3630833333333334,
+            "predicted_per_second": 297.34618529623117
+          },
+          "truncated": false,
+          "cache_hit": false
+        },
+        {
+          "ttft_seconds": 0.0123,
+          "elapsed_seconds": 0.0927,
+          "input_tokens": 55,
+          "timings": {
+            "cache_n": 50,
+            "prompt_n": 5,
+            "prompt_ms": 11.693,
+            "prompt_per_token_ms": 2.3386,
+            "prompt_per_second": 427.60626015564867,
+            "predicted_n": 25,
+            "predicted_ms": 80.28,
+            "predicted_per_token_ms": 3.345,
+            "predicted_per_second": 298.9536621823617
+          },
+          "truncated": false,
+          "cache_hit": false
+        }
+      ],
+      "median_seconds": 0.0951,
+      "median_ttft_seconds": 0.0143,
+      "translation": "我々の結果は、提案手法によって精度が12.5%向上することを示唆している。しかし、その効果は統計的に有意ではなかった。",
+      "warnings": []
+    },
+    {
+      "model": "2b",
+      "sample": "paper_ja_en",
+      "source": "# 実験結果\n\n本研究では、提案手法を120件のデータで評価した。平均精度は92.5%であり、ベースラインより2.1ポイント高かった。\n\nただし、この差は統計的に有意ではなかった（p = 0.08）。結果は改善の可能性を示唆するが、因果関係を証明するものではない。\n\n損失関数を $L = \\sum_{i=1}^{120}(y_i-\\hat{y}_i)^2$ とした。詳細は \\cite{smith2024} と https://example.org/study を参照されたい。\n\n```python\naccuracy = 0.925\n```\n",
+      "load_seconds": 2.005,
+      "runs": [
+        {
+          "ttft_seconds": 0.0206,
+          "elapsed_seconds": 0.4244,
+          "input_tokens": 172,
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 172,
+            "prompt_ms": 17.415,
+            "prompt_per_token_ms": 0.10124999999999999,
+            "prompt_per_second": 9876.543209876545,
+            "predicted_n": 122,
+            "predicted_ms": 403.83,
+            "predicted_per_token_ms": 3.3374380165289255,
+            "predicted_per_second": 299.63103286036204
+          },
+          "truncated": false,
+          "cache_hit": false
+        },
+        {
+          "ttft_seconds": 0.0157,
+          "elapsed_seconds": 0.4178,
+          "input_tokens": 172,
+          "timings": {
+            "cache_n": 167,
+            "prompt_n": 5,
+            "prompt_ms": 15.054,
+            "prompt_per_token_ms": 3.0108,
+            "prompt_per_second": 332.13763783711966,
+            "predicted_n": 122,
+            "predicted_ms": 401.982,
+            "predicted_per_token_ms": 3.3221652892561986,
+            "predicted_per_second": 301.0085028682876
+          },
+          "truncated": false,
+          "cache_hit": false
+        },
+        {
+          "ttft_seconds": 0.0142,
+          "elapsed_seconds": 0.4151,
+          "input_tokens": 172,
+          "timings": {
+            "cache_n": 167,
+            "prompt_n": 5,
+            "prompt_ms": 13.523,
+            "prompt_per_token_ms": 2.7046,
+            "prompt_per_second": 369.7404422095689,
+            "predicted_n": 122,
+            "predicted_ms": 400.832,
+            "predicted_per_token_ms": 3.3126611570247935,
+            "predicted_per_second": 301.8721060194795
+          },
+          "truncated": false,
+          "cache_hit": false
+        }
+      ],
+      "median_seconds": 0.4178,
+      "median_ttft_seconds": 0.0157,
+      "translation": "# Experimental Results\n\nIn this study, we evaluated the proposed method on 120 data points. The average accuracy was 92.5%, which was 2.1 percentage points higher than the baseline.\n\nHowever, this difference was not statistically significant (p = 0.08). While the results suggest potential for improvement, they do not prove a causal relationship.\n\nThe loss function was $L = \\sum_{i=1}^{120}(y_i-\\hat{y}_i)^2$. For details, refer to \\cite{smith2024} and https://example.org/study.\n\n```python\naccuracy = 0.925\n```",
+      "warnings": []
+    },
+    {
+      "model": "2b",
+      "sample": "long_ja_en",
+      "source": "実験1では、提案手法を120件のデータで評価した。平均精度は92.5%であり、ベースラインより2.1ポイント高かった。ただし、この差は統計的に有意ではなかった。結果は改善の可能性を示唆するが、因果関係を証明するものではない。今後は別のデータセットと異なる実験条件でも再現性を検証する必要がある。\n\n実験2では、提案手法を121件のデータで評価した。平均精度は92.5%であり、ベースラインより2.1ポイント高かった。ただし、この差は統計的に有意ではなかった。結果は改善の可能性を示唆するが、因果関係を証明するものではない。今後は別のデータセットと異なる実験条件でも再現性を検証する必要がある。\n\n実験3では、提案手法を122件のデータで評価した。平均精度は92.5%であり、ベースラインより2.1ポイント高かった。ただし、この差は統計的に有意ではなかった。結果は改善の可能性を示唆するが、因果関係を証明するものではない。今後は別のデータセットと異なる実験条件でも再現性を検証する必要がある。\n\n実験4では、提案手法を123件のデータで評価した。平均精度は92.5%であり、ベースラインより2.1ポイント高かった。ただし、この差は統計的に有意ではなかった。結果は改善の可能性を示唆するが、因果関係を証明するものではない。今後は別のデータセットと異なる実験条件でも再現性を検証する必要がある。\n\n実験5では、提案手法を124件のデータで評価した。平均精度は92.5%であり、ベースラインより2.1ポイント高かった。ただし、この差は統計的に有意ではなかった。結果は改善の可能性を示唆するが、因果関係を証明するものではない。今後は別のデータセットと異なる実験条件でも再現性を検証する必要がある。\n\n実験6では、提案手法を125件のデータで評価した。平均精度は92.5%であり、ベースラインより2.1ポイント高かった。ただし、この差は統計的に有意ではなかった。結果は改善の可能性を示唆するが、因果関係を証明するものではない。今後は別のデータセットと異なる実験条件でも再現性を検証する必要がある。\n\n実験7では、提案手法を126件のデータで評価した。平均精度は92.5%であり、ベースラインより2.1ポイント高かった。ただし、この差は統計的に有意ではなかった。結果は改善の可能性を示唆するが、因果関係を証明するものではない。今後は別のデータセットと異なる実験条件でも再現性を検証する必要がある。\n\n実験8では、提案手法を127件のデータで評価した。平均精度は92.5%であり、ベースラインより2.1ポイント高かった。ただし、この差は統計的に有意ではなかった。結果は改善の可能性を示唆するが、因果関係を証明するものではない。今後は別のデータセットと異なる実験条件でも再現性を検証する必要がある。\n\n実験9では、提案手法を128件のデータで評価した。平均精度は92.5%であり、ベースラインより2.1ポイント高かった。ただし、この差は統計的に有意ではなかった。結果は改善の可能性を示唆するが、因果関係を証明するものではない。今後は別のデータセットと異なる実験条件でも再現性を検証する必要がある。\n\n実験10では、提案手法を129件のデータで評価した。平均精度は92.5%であり、ベースラインより2.1ポイント高かった。ただし、この差は統計的に有意ではなかった。結果は改善の可能性を示唆するが、因果関係を証明するものではない。今後は別のデータセットと異なる実験条件でも再現性を検証する必要がある。\n\n実験11では、提案手法を130件のデータで評価した。平均精度は92.5%であり、ベースラインより2.1ポイント高かった。ただし、この差は統計的に有意ではなかった。結果は改善の可能性を示唆するが、因果関係を証明するものではない。今後は別のデータセットと異なる実験条件でも再現性を検証する必要がある。\n\n実験12では、提案手法を131件のデータで評価した。平均精度は92.5%であり、ベースラインより2.1ポイント高かった。ただし、この差は統計的に有意ではなかった。結果は改善の可能性を示唆するが、因果関係を証明するものではない。今後は別のデータセットと異なる実験条件でも再現性を検証する必要がある。\n\n実験13では、提案手法を132件のデータで評価した。平均精度は92.5%であり、ベースラインより2.1ポイント高かった。ただし、この差は統計的に有意ではなかった。結果は改善の可能性を示唆するが、因果関係を証明するものではない。今後は別のデータセットと異なる実験条件でも再現性を検証する必要がある。\n\n実験14では、提案手法を133件のデータで評価した。平均精度は92.5%であり、ベースラインより2.1ポイント高かった。ただし、この差は統計的に有意ではなかった。結果は改善の可能性を示唆するが、因果関係を証明するものではない。今後は別のデータセットと異なる実験条件でも再現性を検証する必要がある。\n\n実験15では、提案手法を134件のデータで評価した。平均精度は92.5%であり、ベースラインより2.1ポイント高かった。ただし、この差は統計的に有意ではなかった。結果は改善の可能性を示唆するが、因果関係を証明するものではない。今後は別のデータセットと異なる実験条件でも再現性を検証する必要がある。\n\n実験16では、提案手法を135件のデータで評価した。平均精度は92.5%であり、ベースラインより2.1ポイント高かった。ただし、この差は統計的に有意ではなかった。結果は改善の可能性を示唆するが、因果関係を証明するものではない。今後は別のデータセットと異なる実験条件でも再現性を検証する必要がある。\n\n実験17では、提案手法を136件のデータで評価した。平均精度は92.5%であり、ベースラインより2.1ポイント高かった。ただし、この差は統計的に有意ではなかった。結果は改善の可能性を示唆するが、因果関係を証明するものではない。今後は別のデータセットと異なる実験条件でも再現性を検証する必要がある。\n\n実験18では、提案手法を137件のデータで評価した。平均精度は92.5%であり、ベースラインより2.1ポイント高かった。ただし、この差は統計的に有意ではなかった。結果は改善の可能性を示唆するが、因果関係を証明するものではない。今後は別のデータセットと異なる実験条件でも再現性を検証する必要がある。",
+      "load_seconds": 2.005,
+      "runs": [
+        {
+          "ttft_seconds": 0.0856,
+          "elapsed_seconds": 3.9629,
+          "input_tokens": 1202,
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 1202,
+            "prompt_ms": 74.304,
+            "prompt_per_token_ms": 0.061816971713810315,
+            "prompt_per_second": 16176.787252368647,
+            "predicted_n": 1125,
+            "predicted_ms": 3877.147,
+            "predicted_per_token_ms": 3.449419039145907,
+            "predicted_per_second": 289.90389067012416
+          },
+          "truncated": false,
+          "cache_hit": false
+        },
+        {
+          "ttft_seconds": 0.0659,
+          "elapsed_seconds": 4.1015,
+          "input_tokens": 1202,
+          "timings": {
+            "cache_n": 1197,
+            "prompt_n": 5,
+            "prompt_ms": 64.885,
+            "prompt_per_token_ms": 12.977,
+            "prompt_per_second": 77.05941280727441,
+            "predicted_n": 1125,
+            "predicted_ms": 4035.427,
+            "predicted_per_token_ms": 3.590237544483986,
+            "predicted_per_second": 278.53310194931043
+          },
+          "truncated": false,
+          "cache_hit": false
+        },
+        {
+          "ttft_seconds": 0.0697,
+          "elapsed_seconds": 3.9095,
+          "input_tokens": 1202,
+          "timings": {
+            "cache_n": 1197,
+            "prompt_n": 5,
+            "prompt_ms": 68.548,
+            "prompt_per_token_ms": 13.7096,
+            "prompt_per_second": 72.94158837602848,
+            "predicted_n": 1125,
+            "predicted_ms": 3839.7,
+            "predicted_per_token_ms": 3.416103202846975,
+            "predicted_per_second": 292.7312029585645
+          },
+          "truncated": false,
+          "cache_hit": false
+        }
+      ],
+      "median_seconds": 3.9629,
+      "median_ttft_seconds": 0.0697,
+      "translation": "In Experiment 1, we evaluated the proposed method on 120 data points. The average accuracy was 92.5%, which was 2.1 percentage points higher than the baseline. However, this difference was not statistically significant. While the results suggest potential improvement, they do not prove causality. In the future, it will be necessary to verify reproducibility using different datasets and experimental conditions.\n\nIn Experiment 2, we evaluated the proposed method on 121 data points. The average accuracy was 92.5%, which was 2.1 percentage points higher than the baseline. However, this difference was not statistically significant. While the results suggest potential improvement, they do not prove causality. In the future, it will be necessary to verify reproducibility using different datasets and experimental conditions.\n\nIn Experiment 3, we evaluated the proposed method on 122 data points. The average accuracy was 92.5%, which was 2.1 percentage points higher than the baseline. However, this difference was not statistically significant. While the results suggest potential improvement, they do not prove causality. In the future, it will be necessary to verify reproducibility using different datasets and experimental conditions.\n\nIn Experiment 4, we evaluated the proposed method on 123 data points. The average accuracy was 92.5%, which was 2.1 percentage points higher than the baseline. However, this difference was not statistically significant. While the results suggest potential improvement, they do not prove causality. In the future, it will be necessary to verify reproducibility using different datasets and experimental conditions.\n\nIn Experiment 5, we evaluated the proposed method on 124 data points. The average accuracy was 92.5%, which was 2.1 percentage points higher than the baseline. However, this difference was not statistically significant. While the results suggest potential improvement, they do not prove causality. In the future, it will be necessary to verify reproducibility using different datasets and experimental conditions.\n\nIn Experiment 6, we evaluated the proposed method on 125 data points. The average accuracy was 92.5%, which was 2.1 percentage points higher than the baseline. However, this difference was not statistically significant. While the results suggest potential improvement, they do not prove causality. In the future, it will be necessary to verify reproducibility using different datasets and experimental conditions.\n\nIn Experiment 7, we evaluated the proposed method on 126 data points. The average accuracy was 92.5%, which was 2.1 percentage points higher than the baseline. However, this difference was not statistically significant. While the results suggest potential improvement, they do not prove causality. In the future, it will be necessary to verify reproducibility using different datasets and experimental conditions.\n\nIn Experiment 8, we evaluated the proposed method on 127 data points. The average accuracy was 92.5%, which was 2.1 percentage points higher than the baseline. However, this difference was not statistically significant. While the results suggest potential improvement, they do not prove causality. In the future, it will be necessary to verify reproducibility using different datasets and experimental conditions.\n\nIn Experiment 9, we evaluated the proposed method on 128 data points. The average accuracy was 92.5%, which was 2.1 percentage points higher than the baseline. However, this difference was not statistically significant. While the results suggest potential improvement, they do not prove causality. In the future, it will be necessary to verify reproducibility using different datasets and experimental conditions.\n\nIn Experiment 10, we evaluated the proposed method on 129 data points. The average accuracy was 92.5%, which was 2.1 percentage points higher than the baseline. However, this difference was not statistically significant. While the results suggest potential improvement, they do not prove causality. In the future, it will be necessary to verify reproducibility using different datasets and experimental conditions.\n\nIn Experiment 11, we evaluated the proposed method on 130 data points. The average accuracy was 92.5%, which was 2.1 percentage points higher than the baseline. However, this difference was not statistically significant. While the results suggest potential improvement, they do not prove causality. In the future, it will be necessary to verify reproducibility using different datasets and experimental conditions.\n\nIn Experiment 12, we evaluated the proposed method on 131 data points. The average accuracy was 92.5%, which was 2.1 percentage points higher than the baseline. However, this difference was not statistically significant. While the results suggest potential improvement, they do not prove causality. In the future, it will be necessary to verify reproducibility using different datasets and experimental conditions.\n\nIn Experiment 13, we evaluated the proposed method on 132 data points. The average accuracy was 92.5%, which was 2.1 percentage points higher than the baseline. However, this difference was not statistically significant. While the results suggest potential improvement, they do not prove causality. In the future, it will be necessary to verify reproducibility using different datasets and experimental conditions.\n\nIn Experiment 14, we evaluated the proposed method on 133 data points. The average accuracy was 92.5%, which was 2.1 percentage points higher than the baseline. However, this difference was not statistically significant. While the results suggest potential improvement, they do not prove causality. In the future, it will be necessary to verify reproducibility using different datasets and experimental conditions.\n\nIn Experiment 15, we evaluated the proposed method on 134 data points. The average accuracy was 92.5%, which was 2.1 percentage points higher than the baseline. However, this difference was not statistically significant. While the results suggest potential improvement, they do not prove causality. In the future, it will be necessary to verify reproducibility using different datasets and experimental conditions.\n\nIn Experiment 16, we evaluated the proposed method on 135 data points. The average accuracy was 92.5%, which was 2.1 percentage points higher than the baseline. However, this difference was not statistically significant. While the results suggest potential improvement, they do not prove causality. In the future, it will be necessary to verify reproducibility using different datasets and experimental conditions.\n\nIn Experiment 17, we evaluated the proposed method on 136 data points. The average accuracy was 92.5%, which was 2.1 percentage points higher than the baseline. However, this difference was not statistically significant. While the results suggest potential improvement, they do not prove causality. In the future, it will be necessary to verify reproducibility using different datasets and experimental conditions.\n\nIn Experiment 18, we evaluated the proposed method on 137 data points. The average accuracy was 92.5%, which was 2.1 percentage points higher than the baseline. However, this difference was not statistically significant. While the results suggest potential improvement, they do not prove causality. In the future, it will be necessary to verify reproducibility using different datasets and experimental conditions.",
+      "warnings": []
+    },
+    {
+      "model": "8b",
+      "sample": "short_en_ja",
+      "source": "Our results suggest that the proposed method improves accuracy by 12.5%. However, the effect was not statistically significant.",
+      "load_seconds": 2.5058,
+      "runs": [
+        {
+          "ttft_seconds": 0.033,
+          "elapsed_seconds": 0.2136,
+          "input_tokens": 55,
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 55,
+            "prompt_ms": 32.256,
+            "prompt_per_token_ms": 0.5864727272727273,
+            "prompt_per_second": 1705.109126984127,
+            "predicted_n": 26,
+            "predicted_ms": 180.605,
+            "predicted_per_token_ms": 7.2242,
+            "predicted_per_second": 138.42363168240084
+          },
+          "truncated": false,
+          "cache_hit": false
+        },
+        {
+          "ttft_seconds": 0.0223,
+          "elapsed_seconds": 0.2001,
+          "input_tokens": 55,
+          "timings": {
+            "cache_n": 50,
+            "prompt_n": 5,
+            "prompt_ms": 21.617,
+            "prompt_per_token_ms": 4.3234,
+            "prompt_per_second": 231.29944025535457,
+            "predicted_n": 26,
+            "predicted_ms": 177.796,
+            "predicted_per_token_ms": 7.11184,
+            "predicted_per_second": 140.61058741479
+          },
+          "truncated": false,
+          "cache_hit": false
+        },
+        {
+          "ttft_seconds": 0.0213,
+          "elapsed_seconds": 0.1987,
+          "input_tokens": 55,
+          "timings": {
+            "cache_n": 50,
+            "prompt_n": 5,
+            "prompt_ms": 20.611,
+            "prompt_per_token_ms": 4.1222,
+            "prompt_per_second": 242.58890883508803,
+            "predicted_n": 26,
+            "predicted_ms": 177.378,
+            "predicted_per_token_ms": 7.09512,
+            "predicted_per_second": 140.94194319475923
+          },
+          "truncated": false,
+          "cache_hit": false
+        }
+      ],
+      "median_seconds": 0.2001,
+      "median_ttft_seconds": 0.0223,
+      "translation": "我々の結果は、提案手法が精度を12.5%向上させることを示唆している。しかし、その効果は統計的に有意ではなかった。",
+      "warnings": []
+    },
+    {
+      "model": "8b",
+      "sample": "paper_ja_en",
+      "source": "# 実験結果\n\n本研究では、提案手法を120件のデータで評価した。平均精度は92.5%であり、ベースラインより2.1ポイント高かった。\n\nただし、この差は統計的に有意ではなかった（p = 0.08）。結果は改善の可能性を示唆するが、因果関係を証明するものではない。\n\n損失関数を $L = \\sum_{i=1}^{120}(y_i-\\hat{y}_i)^2$ とした。詳細は \\cite{smith2024} と https://example.org/study を参照されたい。\n\n```python\naccuracy = 0.925\n```\n",
+      "load_seconds": 2.5058,
+      "runs": [
+        {
+          "ttft_seconds": 0.0374,
+          "elapsed_seconds": 0.9042,
+          "input_tokens": 172,
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 172,
+            "prompt_ms": 31.731,
+            "prompt_per_token_ms": 0.1844825581395349,
+            "prompt_per_second": 5420.566638303237,
+            "predicted_n": 123,
+            "predicted_ms": 866.762,
+            "predicted_per_token_ms": 7.104606557377049,
+            "predicted_per_second": 140.7537478569665
+          },
+          "truncated": false,
+          "cache_hit": false
+        },
+        {
+          "ttft_seconds": 0.0271,
+          "elapsed_seconds": 0.9035,
+          "input_tokens": 172,
+          "timings": {
+            "cache_n": 167,
+            "prompt_n": 5,
+            "prompt_ms": 26.421,
+            "prompt_per_token_ms": 5.2842,
+            "prompt_per_second": 189.2434048673404,
+            "predicted_n": 123,
+            "predicted_ms": 876.253,
+            "predicted_per_token_ms": 7.1824016393442625,
+            "predicted_per_second": 139.22919522101492
+          },
+          "truncated": false,
+          "cache_hit": false
+        },
+        {
+          "ttft_seconds": 0.0238,
+          "elapsed_seconds": 0.8809,
+          "input_tokens": 172,
+          "timings": {
+            "cache_n": 167,
+            "prompt_n": 5,
+            "prompt_ms": 23.049,
+            "prompt_per_token_ms": 4.6098,
+            "prompt_per_second": 216.92915093930324,
+            "predicted_n": 123,
+            "predicted_ms": 857.005,
+            "predicted_per_token_ms": 7.024631147540983,
+            "predicted_per_second": 142.35622896015775
+          },
+          "truncated": false,
+          "cache_hit": false
+        }
+      ],
+      "median_seconds": 0.9035,
+      "median_ttft_seconds": 0.0271,
+      "translation": "# Experimental Results\n\nIn this study, we evaluated the proposed method on 120 data points. The average accuracy was 92.5%, which was 2.1 percentage points higher than the baseline.\n\nHowever, this difference was not statistically significant (p = 0.08). While the results suggest potential for improvement, they do not prove a causal relationship.\n\nThe loss function was set to $L = \\sum_{i=1}^{120}(y_i-\\hat{y}_i)^2$. For details, please refer to \\cite{smith2024} and https://example.org/study.\n\n```python\naccuracy = 0.925\n```",
+      "warnings": []
+    },
+    {
+      "model": "8b",
+      "sample": "long_ja_en",
+      "source": "実験1では、提案手法を120件のデータで評価した。平均精度は92.5%であり、ベースラインより2.1ポイント高かった。ただし、この差は統計的に有意ではなかった。結果は改善の可能性を示唆するが、因果関係を証明するものではない。今後は別のデータセットと異なる実験条件でも再現性を検証する必要がある。\n\n実験2では、提案手法を121件のデータで評価した。平均精度は92.5%であり、ベースラインより2.1ポイント高かった。ただし、この差は統計的に有意ではなかった。結果は改善の可能性を示唆するが、因果関係を証明するものではない。今後は別のデータセットと異なる実験条件でも再現性を検証する必要がある。\n\n実験3では、提案手法を122件のデータで評価した。平均精度は92.5%であり、ベースラインより2.1ポイント高かった。ただし、この差は統計的に有意ではなかった。結果は改善の可能性を示唆するが、因果関係を証明するものではない。今後は別のデータセットと異なる実験条件でも再現性を検証する必要がある。\n\n実験4では、提案手法を123件のデータで評価した。平均精度は92.5%であり、ベースラインより2.1ポイント高かった。ただし、この差は統計的に有意ではなかった。結果は改善の可能性を示唆するが、因果関係を証明するものではない。今後は別のデータセットと異なる実験条件でも再現性を検証する必要がある。\n\n実験5では、提案手法を124件のデータで評価した。平均精度は92.5%であり、ベースラインより2.1ポイント高かった。ただし、この差は統計的に有意ではなかった。結果は改善の可能性を示唆するが、因果関係を証明するものではない。今後は別のデータセットと異なる実験条件でも再現性を検証する必要がある。\n\n実験6では、提案手法を125件のデータで評価した。平均精度は92.5%であり、ベースラインより2.1ポイント高かった。ただし、この差は統計的に有意ではなかった。結果は改善の可能性を示唆するが、因果関係を証明するものではない。今後は別のデータセットと異なる実験条件でも再現性を検証する必要がある。\n\n実験7では、提案手法を126件のデータで評価した。平均精度は92.5%であり、ベースラインより2.1ポイント高かった。ただし、この差は統計的に有意ではなかった。結果は改善の可能性を示唆するが、因果関係を証明するものではない。今後は別のデータセットと異なる実験条件でも再現性を検証する必要がある。\n\n実験8では、提案手法を127件のデータで評価した。平均精度は92.5%であり、ベースラインより2.1ポイント高かった。ただし、この差は統計的に有意ではなかった。結果は改善の可能性を示唆するが、因果関係を証明するものではない。今後は別のデータセットと異なる実験条件でも再現性を検証する必要がある。\n\n実験9では、提案手法を128件のデータで評価した。平均精度は92.5%であり、ベースラインより2.1ポイント高かった。ただし、この差は統計的に有意ではなかった。結果は改善の可能性を示唆するが、因果関係を証明するものではない。今後は別のデータセットと異なる実験条件でも再現性を検証する必要がある。\n\n実験10では、提案手法を129件のデータで評価した。平均精度は92.5%であり、ベースラインより2.1ポイント高かった。ただし、この差は統計的に有意ではなかった。結果は改善の可能性を示唆するが、因果関係を証明するものではない。今後は別のデータセットと異なる実験条件でも再現性を検証する必要がある。\n\n実験11では、提案手法を130件のデータで評価した。平均精度は92.5%であり、ベースラインより2.1ポイント高かった。ただし、この差は統計的に有意ではなかった。結果は改善の可能性を示唆するが、因果関係を証明するものではない。今後は別のデータセットと異なる実験条件でも再現性を検証する必要がある。\n\n実験12では、提案手法を131件のデータで評価した。平均精度は92.5%であり、ベースラインより2.1ポイント高かった。ただし、この差は統計的に有意ではなかった。結果は改善の可能性を示唆するが、因果関係を証明するものではない。今後は別のデータセットと異なる実験条件でも再現性を検証する必要がある。\n\n実験13では、提案手法を132件のデータで評価した。平均精度は92.5%であり、ベースラインより2.1ポイント高かった。ただし、この差は統計的に有意ではなかった。結果は改善の可能性を示唆するが、因果関係を証明するものではない。今後は別のデータセットと異なる実験条件でも再現性を検証する必要がある。\n\n実験14では、提案手法を133件のデータで評価した。平均精度は92.5%であり、ベースラインより2.1ポイント高かった。ただし、この差は統計的に有意ではなかった。結果は改善の可能性を示唆するが、因果関係を証明するものではない。今後は別のデータセットと異なる実験条件でも再現性を検証する必要がある。\n\n実験15では、提案手法を134件のデータで評価した。平均精度は92.5%であり、ベースラインより2.1ポイント高かった。ただし、この差は統計的に有意ではなかった。結果は改善の可能性を示唆するが、因果関係を証明するものではない。今後は別のデータセットと異なる実験条件でも再現性を検証する必要がある。\n\n実験16では、提案手法を135件のデータで評価した。平均精度は92.5%であり、ベースラインより2.1ポイント高かった。ただし、この差は統計的に有意ではなかった。結果は改善の可能性を示唆するが、因果関係を証明するものではない。今後は別のデータセットと異なる実験条件でも再現性を検証する必要がある。\n\n実験17では、提案手法を136件のデータで評価した。平均精度は92.5%であり、ベースラインより2.1ポイント高かった。ただし、この差は統計的に有意ではなかった。結果は改善の可能性を示唆するが、因果関係を証明するものではない。今後は別のデータセットと異なる実験条件でも再現性を検証する必要がある。\n\n実験18では、提案手法を137件のデータで評価した。平均精度は92.5%であり、ベースラインより2.1ポイント高かった。ただし、この差は統計的に有意ではなかった。結果は改善の可能性を示唆するが、因果関係を証明するものではない。今後は別のデータセットと異なる実験条件でも再現性を検証する必要がある。",
+      "load_seconds": 2.5058,
+      "runs": [
+        {
+          "ttft_seconds": 0.1552,
+          "elapsed_seconds": 8.766,
+          "input_tokens": 1202,
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 1202,
+            "prompt_ms": 139.013,
+            "prompt_per_token_ms": 0.1156514143094842,
+            "prompt_per_second": 8646.67333270989,
+            "predicted_n": 1143,
+            "predicted_ms": 8610.557,
+            "predicted_per_token_ms": 7.5398922942206665,
+            "predicted_per_second": 132.62788922946564
+          },
+          "truncated": false,
+          "cache_hit": false
+        },
+        {
+          "ttft_seconds": 0.0802,
+          "elapsed_seconds": 8.8115,
+          "input_tokens": 1202,
+          "timings": {
+            "cache_n": 1197,
+            "prompt_n": 5,
+            "prompt_ms": 79.081,
+            "prompt_per_token_ms": 15.8162,
+            "prompt_per_second": 63.226312262111,
+            "predicted_n": 1143,
+            "predicted_ms": 8731.327,
+            "predicted_per_token_ms": 7.645645359019264,
+            "predicted_per_second": 130.79340631727572
+          },
+          "truncated": false,
+          "cache_hit": false
+        },
+        {
+          "ttft_seconds": 0.0818,
+          "elapsed_seconds": 8.7239,
+          "input_tokens": 1202,
+          "timings": {
+            "cache_n": 1197,
+            "prompt_n": 5,
+            "prompt_ms": 80.823,
+            "prompt_per_token_ms": 16.1646,
+            "prompt_per_second": 61.863578436831105,
+            "predicted_n": 1143,
+            "predicted_ms": 8641.929,
+            "predicted_per_token_ms": 7.567363397548161,
+            "predicted_per_second": 132.14642240175775
+          },
+          "truncated": false,
+          "cache_hit": false
+        }
+      ],
+      "median_seconds": 8.766,
+      "median_ttft_seconds": 0.0818,
+      "translation": "In Experiment 1, the proposed method was evaluated on 120 data points. The average accuracy was 92.5%, which was 2.1 percentage points higher than the baseline. However, this difference was not statistically significant. While the results suggest potential for improvement, they do not prove a causal relationship. Future work should verify reproducibility using different datasets and experimental conditions.\n\nIn Experiment 2, the proposed method was evaluated on 121 data points. The average accuracy was 92.5%, which was 2.1 percentage points higher than the baseline. However, this difference was not statistically significant. While the results suggest potential for improvement, they do not prove a causal relationship. Future work should verify reproducibility using different datasets and experimental conditions.\n\nIn Experiment 3, the proposed method was evaluated on 122 data points. The average accuracy was 92.5%, which was 2.1 percentage points higher than the baseline. However, this difference was not statistically significant. While the results suggest potential for improvement, they do not prove a causal relationship. Future work should verify reproducibility using different datasets and experimental conditions.\n\nIn Experiment 4, the proposed method was evaluated on 123 data points. The average accuracy was 92.5%, which was 2.1 percentage points higher than the baseline. However, this difference was not statistically significant. While the results suggest potential for improvement, they do not prove a causal relationship. Future work should verify reproducibility using different datasets and experimental conditions.\n\nIn Experiment 5, the proposed method was evaluated on 124 data points. The average accuracy was 92.5%, which was 2.1 percentage points higher than the baseline. However, this difference was not statistically significant. While the results suggest potential for improvement, they do not prove a causal relationship. Future work should verify reproducibility using different datasets and experimental conditions.\n\nIn Experiment 6, the proposed method was evaluated on 125 data points. The average accuracy was 92.5%, which was 2.1 percentage points higher than the baseline. However, this difference was not statistically significant. While the results suggest potential for improvement, they do not prove a causal relationship. Future work should verify reproducibility using different datasets and experimental conditions.\n\nIn Experiment 7, the proposed method was evaluated on 126 data points. The average accuracy was 92.5%, which was 2.1 percentage points higher than the baseline. However, this difference was not statistically significant. While the results suggest potential for improvement, they do not prove a causal relationship. Future work should verify reproducibility using different datasets and experimental conditions.\n\nIn Experiment 8, the proposed method was evaluated on 127 data points. The average accuracy was 92.5%, which was 2.1 percentage points higher than the baseline. However, this difference was not statistically significant. While the results suggest potential for improvement, they do not prove a causal relationship. Future work should verify reproducibility using different datasets and experimental conditions.\n\nIn Experiment 9, the proposed method was evaluated on 128 data points. The average accuracy was 92.5%, which was 2.1 percentage points higher than the baseline. However, this difference was not statistically significant. While the results suggest potential for improvement, they do not prove a causal relationship. Future work should verify reproducibility using different datasets and experimental conditions.\n\nIn Experiment 10, the proposed method was evaluated on 129 data points. The average accuracy was 92.5%, which was 2.1 percentage points higher than the baseline. However, this difference was not statistically significant. While the results suggest potential for improvement, they do not prove a causal relationship. Future work should verify reproducibility using different datasets and experimental conditions.\n\nIn Experiment 11, the proposed method was evaluated on 130 data points. The average accuracy was 92.5%, which was 2.1 percentage points higher than the baseline. However, this difference was not statistically significant. While the results suggest potential for improvement, they do not prove a causal relationship. Future work should verify reproducibility using different datasets and experimental conditions.\n\nIn Experiment 12, the proposed method was evaluated on 131 data points. The average accuracy was 92.5%, which was 2.1 percentage points higher than the baseline. However, this difference was not statistically significant. While the results suggest potential for improvement, they do not prove a causal relationship. Future work should verify reproducibility using different datasets and experimental conditions.\n\nIn Experiment 13, the proposed method was evaluated on 132 data points. The average accuracy was 92.5%, which was 2.1 percentage points higher than the baseline. However, this difference was not statistically significant. While the results suggest potential for improvement, they do not prove a causal relationship. Future work should verify reproducibility using different datasets and experimental conditions.\n\nIn Experiment 14, the proposed method was evaluated on 133 data points. The average accuracy was 92.5%, which was 2.1 percentage points higher than the baseline. However, this difference was not statistically significant. While the results suggest potential for improvement, they do not prove a causal relationship. Future work should verify reproducibility using different datasets and experimental conditions.\n\nIn Experiment 15, the proposed method was evaluated on 134 data points. The average accuracy was 92.5%, which was 2.1 percentage points higher than the baseline. However, this difference was not statistically significant. While the results suggest potential for improvement, they do not prove a causal relationship. Future work should verify reproducibility using different datasets and experimental conditions.\n\nIn Experiment 16, the proposed method was evaluated on 135 data points. The average accuracy was 92.5%, which was 2.1 percentage points higher than the baseline. However, this difference was not statistically significant. While the results suggest potential for improvement, they do not prove a causal relationship. Future work should verify reproducibility using different datasets and experimental conditions.\n\nIn Experiment 17, the proposed method was evaluated on 136 data points. The average accuracy was 92.5%, which was 2.1 percentage points higher than the baseline. However, this difference was not statistically significant. While the results suggest potential for improvement, they do not prove a causal relationship. Future work should verify reproducibility using different datasets and experimental conditions.\n\nIn Experiment 18, the proposed method was evaluated on 137 data points. The average accuracy was 92.5%, which was 2.1 percentage points higher than the baseline. However, this difference was not statistically significant. While the results suggest potential for improvement, they do not prove a causal relationship. Future work should verify reproducibility using different datasets and experimental conditions.",
+      "warnings": []
+    }
+  ],
+  "attribution": {
+    "notice": "Built with PLaMo",
+    "generated_by": "PLaMo 3 Translate (Preferred Networks)",
+    "unofficial_tool": true,
+    "license": "PLaMo Community License Agreement",
+    "license_url": "https://huggingface.co/pfnet/plamo-3-translate-2b-GGUF/blob/main/LICENSE/ja",
+    "license_texts": {
+      "ja": "PLaMoコミュニティライセンス契約\n\nPLaMoコミュニティライセンス契約には、株式会社Preferred Networksが提供する別途定める大規模言語基盤モデルPLaMo及びその派生物を利用するためのライセンスの内容及びユーザーが遵守する事項等が定められている。ユーザーのPLaMo及びその派生物の利用には本契約が適用され、本契約に同意又は本モデル等を利用することにより、ユーザーは本契約に拘束される。\n\n\n第1条（定義）\n\n(1) 「本契約」とは、PLaMoコミュニティライセンス契約を意味する。\n\n(2) 「PFN」とは、株式会社Preferred Networksを意味する。\n\n(3) 「本モデル」とは、別途定める「PLaMo」という名称のモデルの重み、モデルコード、トークナイザー、学習スクリプト及びこれらに付随してPFNが提供するものを意味する。\n\n(4) 「ユーザー」とは、本モデルを利用する個人又は法人を意味する。\n\n(5) 「派生モデル」とは、本モデルを改変又は利用し作成されるモデルの重み、モデルコード及びその他作成されたモデルの付随物を意味する。\n\n(6) 「生成物」とは、本モデル又は派生モデルの出力結果を意味する。\n\n(7) 「本モデル等」とは、本モデル、派生モデル及び生成物の総称を意味する。\n\n(8) 「本ライセンス」とは、PFNがユーザーに対して本契約に基づき本モデル等を利用することを許諾することを意味する。\n\n(9) 「商業目的」とは、 私的使用又は学術用途の範囲を超える、事業での利用又は営利を目的とする利用を意味する。なお、商業目的にはユーザーの製品、サービス又は事業の開発、変更又は提供（ホスティングサービスやAPI経由での提供を含む。）を目的とした使用及びユーザーの組織内部における利用も含まれる。\n\n\n第2条（ユーザー）\n\nユーザーは、18歳以上又はその居住国で単独で契約を締結できる年齢に達していなければならない。但し、ユーザーの親権者又は法定代理人が本契約をユーザーが締結することに同意している場合はこの限りではない。\n\n\n第3条（本ライセンス）\n\n(1) PFNは、ユーザーが本契約に同意しかつ本契約を遵守することを条件に、ユーザーに対して、本モデル等を本契約に定める条件及び範囲内で利用することを許諾する。\n\n(2) 本ライセンスは非独占、世界的、譲渡不可及びロイヤリティ無料とする。\n\n(3) ユーザーは、以下の条件をいずれも満たす場合に限り、商業目的を含む形で本モデル等を利用することができる。なお、ユーザーがこれらの条件のいずれかを満たさなくなった場合は、ユーザーはその時点で本モデル等を商業目的で利用することはできず、商業目的で本モデル等を利用したい場合は、新たにPFNから商業用のライセンスを取得しなければならない。\n\n(i) PFNの公式登録ページ（https://forms.gle/mTL8tBLrMYXKNZD56）に事前に登録すること。\n\n(ii) ユーザー又はその関係会社の直近事業年度の収入又は売上が10億円（ユーザーの現地通貨換算額）を超えないこと。\n\n\n第4条（再配布及び表示義務）\n\n(1) ユーザーが本モデル等（派生モデルやその生成物を含む）を第三者に提供する場合、以下の条件を満たさなければならない。\n\n(i) 本契約のコピーを提供し、本契約の条件を遵守させること。\n\n(ii) 「Built with PLaMo」と明示し、関連ウェブサイト、ユーザーインターフェース、ブログ記事、製品情報ページ又は製品ドキュメントに記載すること。\n\n(iii) 本モデル等を利用して作成した AI モデルの名称に「PLaMo」を含めること。\n\n\n第5条（生成物の利用）\n\n(1) ユーザーは、生成物を本モデル又は派生モデルの生成物であることを明示することを条件に、公表することができる。\n\n(2) 生成物を利用してモデルを学習した場合、そのモデルは派生モデルとして本契約の条件が適用され、本契約のライセンス条件の下でのみ利用、配布及び商業化することができる。\n\n\n第6条（その他利用条件）\n\nユーザーは、本モデル等の利用に関して、以下に定める行為をしてはならない。\n\n(1) 法令又は公序良俗に違反する行為\n\n(2) 犯罪行為又はこれを予告、関与、助長その他これらに関連する行為\n\n(3) PFN又は第三者の権利又は利益を侵害する行為\n\n(4) PFN又は第三者の名誉若しくは信用を毀損する行為\n\n(5) 生成物がPFNの公式見解等であるものという錯誤を生む情報を流布する行為\n\n(6) 虚偽の情報を発信する行為\n\n(7) 上記の他、PFNが不適切と合理的に判断する行為\n\n\n第7条（保証の否認）\n\n(1) 本モデル及び生成物は、「現状有姿」で提供され、PFNは、これらに対して、正確性、真実性、商品性、品質、性能、特定目的への適合性、権利の非侵害など一切の保証をしない。\n\n(2) ユーザーは、法律、医療、金融又は人物評価その他重要な事項の決定に関して、生成物を唯一の証拠、評価又は意見として使用してはならない。\n\n(3) ユーザーは、本モデル等の使用及びその結果に関して全ての責任を負う。\n\n\n第8条（責任の制限）\n\n(1) 契約責任、不法行為又は製造物責任その他の法的責任のいずれかであるかを問わず、PFNが本契約及び本モデル等に関してユーザーに対して負う損害賠償の責任は、通常かつ直接の損害に限り（逸失利益、特別損害、間接損害その他の損害については、その予見可能性の有無に関わらず、責任を負わない。）、損害賠償額の上限は、500円とする。但し、PFNに故意又は重過失が認められる場合はこの限りではない。\n\n(2) 前項に関わらず、ユーザーが本モデル等を事業のために利用する場合は、PFNは本契約及び本モデル等に関してユーザーに対して一切の損害賠償責任及びその他の責任を負わない。\n\n\n第9条（ユーザーの責任）\n\n(1) ユーザーは、本モデル等の取得及び利用に関して、適用される法令（輸出入及び貿易に関連する法令を含む。）及び本契約を遵守する。\n\n(2) ユーザーは、本契約違反又は本モデル等の使用によって、PFNに損害を与えた場合は、その損害を賠償する。\n\n(3) ユーザーの本モデル等の使用に起因して、PFNが第三者から損害賠償請求その他請求を受けた場合、ユーザーは、当該請求からPFNを免責し、PFNに損害を与えないようにする。\n\n\n第10条（権利の帰属）\n\n(1) 本モデルの一切の権利は、PFN又はPFNに本モデルのライセンスをしている第三者に帰属する。\n\n(2) 派生モデルのうち、ユーザーが本モデルを改変した部分の権利はユーザーに帰属し、その他の部分の権利はPFNに帰属する。\n\n(3) 生成物の一切の権利はユーザーに帰属する。\n\n\n第11条（契約期間及び終了）\n\n(1) 本契約は、ユーザーが本契約に同意したとき又は本モデルにアクセスしたときから、本契約が解約されたときまでとする。\n\n(2) ユーザーが本契約のいずれかの条項に違反した場合、PFNは直ちに本契約を解除することができ、ユーザーは本モデル等のすべてのコピーを削除し、利用を即時に停止しなければならない。\n\n\n第12条（契約の変更）\n\nPFNは、本契約（本モデル等に関するルールや諸規定等を含む。以下本条において同じ。）を変更できるものとする。PFNは、本契約を変更する場合には、変更の内容及び変更の効力発生時期を、当該効力発生時期までにPFN所定の方法で告知するものとする。\n\n\n第13条（準拠法及び管轄裁判所）\n\n(1) 本契約の準拠法は日本法とする。\n\n(2) 本モデル等及び本契約に起因する紛争については、東京地方裁判所が専属的合意管轄裁判所とする。\n",
+      "en": "PLaMo Community License Agreement\n\nThe PLaMo Community License Agreement outlines the terms and conditions for utilizing the large-scale language foundation model PLaMo and its derivatives provided by Preferred Networks, Inc., as well as any obligations the USER must observe. The USER’s access to the PLaMo model and its derivatives is subject to this AGREEMENT. By agreeing to or utilizing this MODEL, the USER shall be bound by the terms of this AGREEMENT.\n\n\nArticle 1 (Definitions)\n\n(1) \"AGREEMENT\" refers to the PLaMo Community License Agreement.\n\n(2) \"PFN\" refers to Preferred Networks, Inc.\n\n(3) \"MODEL\" denotes the model weights, model code, tokenizer, training scripts, and other supplementary materials provided by PFN under the name \"PLaMo\" as separately specified.\n\n(4) \"USER\" means an individual or legal entity utilizing the MODEL.\n\n(5) \"DERIVED MODEL\" refers to models created through modification or use of the MODEL, including their model weights, code, and other associated materials.\n\n(6) \"OUTPUT\" means the results produced by the MODEL or DERIVED MODEL.\n\n(7) \" MODEL MATERIALS\" collectively refers to the MODEL, DERIVED MODEL, and OUTPUT.\n\n(8) \"LICENSE\" means PFN's authorization to grant the USER permission to use the MODEL MATERIALS under this AGREEMENT.\n\n(9) \"COMMERCIAL PURPOSE\" means any use beyond personal or academic use, including business applications or commercial purposes. Notably, COMMERCIAL PURPOSE also includes usage for developing, modifying, or providing products, services, or business operations (including through hosting services or APIs), and usage within the USER's organizational frameworks.\n\n\nArticle 2 (User Requirements)\n\nThe USER must be 18 years of age or older, or have reached the age of legal capacity in the USER’s country of residence, unless the USER's legal guardian or legal representative has consented to this AGREEMENT on the USER’s behalf.\n\n\nArticle 3 (This License)\n\n(1) PFN grants the USER permission to use the MODEL MATERIALS under the terms and conditions and scope specified in this AGREEMENT, provided that the USER agrees to and comply with this AGREEMENT.\n\n(2) This LICENSE is non-exclusive, worldwide, non-transferable, and royalty-free.\n\n(3) The USER may utilize the MODEL MATERIALS for COMMERCIAL PURPOSE only if the USER satisfies all of the following conditions. If the USER fails to meet any of these conditions, the USER may no longer use the MODEL MATERIALS for COMMERCIAL PURPOSE and must obtain a new commercial license from PFN if the USER wishes to use the MODEL MATERIALS for COMMERCIAL PURPOSE.\n\n(i) Prior registration on PFN's official registration page (https://forms.gle/mTL8tBLrMYXKNZD56).\n\n(ii) The USER's or the USER’s affiliated company's annual revenue or sales must not exceed 1 billion yen (converted to the local currency of the USER's jurisdiction).\n\n\nArticle 4 (Redistribution and Attribution Requirements)\n\n(1) When providing the MODEL MATERIALS to third parties, the USER must meet the following requirements:\n\n(i) Provide a copy of this AGREEMENT and ensure the recipients comply with its terms.\n\n(ii) Explicitly indicate \"Built with PLaMo\" in related websites, user interfaces, blog posts, product information pages, or product documentation.\n\n(iii) Include \"PLaMo\" in the names of AI models created using the MODEL MATERIALS.\n\n\nArticle 5 (Usage of Outputs)\n\n(1) The USER may publicly distribute the OUTPUT provided that the USER clearly indicates that it is the output of the MODEL or DERIVED MODEL.\n\n(2) If models are trained using the OUTPUT, those models shall be treated as DERIVED MODEL subject to this AGREEMENT's terms, and may only be used, distributed, and commercialized under the same license conditions.\n\n\nArticle 6 (Additional Usage Terms)\n\nThe USER must not engage in any of the following activities regarding the use of the MODEL MATERIALS:\n\n(1) Actions violating laws or public order and morals\n\n(2) Criminal activities or any actions that threaten, participate in, or facilitate such activities\n\n(3) Actions infringing upon the rights or interests of PFN or third parties\n\n(4) Actions that damage the reputation or credibility of PFN or third parties\n\n(5) Dissemination of information that could create the false impression that the OUTPUT represents PFN's official views, etc.\n\n(6) Dissemination of false information\n\n(7) Any other actions that PFN reasonably determines to be inappropriate\n\n\nArticle 7 (Warranty Disclaimer)\n\n(1) The MODEL and the OUTPUT are provided \"as is\" without any warranties from PFN regarding accuracy, truthfulness, merchantability, quality, performance, fitness for specific purposes, non-infringement, or any other matter.\n\n(2) The USER must not use the OUTPUT as the sole evidence, evaluation, or opinion regarding legal matters, medical diagnoses, financial decisions, or important personal assessments.\n\n(3) The USER assumes all responsibility for the use of the MODEL MATERIALS and any consequences arising therefrom.\n\n\nArticle 8 (Limitation of Liability)\n\n(1) Regardless of whether liability arises from contract, tort, product liability, or other legal grounds, PFN's maximum liability to the USER regarding this AGREEMENT and the MODEL MATERIALS is limited to direct and ordinary damages only (including loss of profits, special damages, indirect damages, and other damages, regardless of foreseeability). The maximum liability amount shall be 500 yen. This limitation does not apply if PFN is found to have acted with intent or gross negligence.\n\n(2) Notwithstanding the preceding paragraph, if the USER utilizes the MODEL MATERIALS for business purposes, PFN shall assume no liability whatsoever, including any damages or other obligations, regarding this AGREEMENT and the MODEL MATERIALS.\n\n\nArticle 9 (User Responsibility)\n\n(1) The USER shall comply with all applicable laws and regulations (including those related to import/export and trade) and this AGREEMENT regarding the acquisition and use of the MODEL MATERIALS.\n\n(2) If the USER causes PFN any damages due to breach of this AGREEMENT or use of the MODEL MATERIALS, the USER must compensate PFN for those damages.\n\n(3) If PFN receives any claims for damages or other demands from third parties due to USER's use of the MODEL MATERIALS, the USER shall indemnify PFN against such claims and ensure PFN is not harmed.\n\n\nArticle 10 (Ownership Rights)\n\n(1) All rights to the MODEL belong to PFN or any third party licensed by PFN to license the MODEL.\n\n(2) For DERIVED MODEL, rights pertaining to the portions modified by the USER belong to the USER, while all other rights belong to PFN.\n\n(3) All rights to the OUTPUT belong to the USER.\n\n\nArticle 11 (Contract Term and Termination)\n\n(1) This AGREEMENT shall be effective from the time the USER agrees to this AGREEMENT or access the MODEL MATERIALS and continue until termination.\n\n(2) If the USER violates any terms of this AGREEMENT, PFN may immediately terminate this AGREEMENT, and the USER must delete all copies of the MODEL MATERIALS and cease usage immediately.\n\n\nArticle 12 (Contract Modification)\n\nPFN may modify this AGREEMENT (including rules and regulations related to the MODEL MATERIALS; the same applies hereinafter). When modifying this AGREEMENT, PFN shall notify the USER of the modification details and the effective date of the change through the method specified by PFN by the effective date.\n\n\nArticle 13 (Governing Law and Jurisdiction)\n\n(1) The laws of Japan shall govern this AGREEMENT.\n\n(2) Any disputes arising from the MODEL MATERIALS or AGREEMENT shall be subject to the exclusive jurisdiction of the Tokyo District Court.\n"
+    }
+  }
+}

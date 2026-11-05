@@ -1,0 +1,41 @@
+{
+  "stats": {
+    "startTime": "2026-11-05T05:10:31.546Z",
+    "duration": 13460.240000000002,
+    "expected": 6,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "tests": [
+    {
+      "title": "workspace.spec.ts",
+      "specs": [
+        {
+          "title": "real model translation and Japanese UI",
+          "ok": true
+        },
+        {
+          "title": "glossary, named profile, persistent settings",
+          "ok": true
+        },
+        {
+          "title": "document actual translation and source-inclusive JSON download",
+          "ok": true
+        },
+        {
+          "title": "cancel and resume a persistent document job",
+          "ok": true
+        },
+        {
+          "title": "dark theme and accessibility of main views",
+          "ok": true
+        },
+        {
+          "title": "extension injection, registered shortcuts and page restoration",
+          "ok": true
+        }
+      ]
+    }
+  ]
+}

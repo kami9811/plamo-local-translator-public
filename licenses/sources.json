@@ -1,0 +1,15 @@
+{
+  "retrieved": "2026-11-05",
+  "licenses": [
+    {
+      "file": "PLaMo-Community-License-ja.txt",
+      "url": "https://huggingface.co/pfnet/plamo-3-translate-2b-GGUF/raw/f2b4599dff9b3e45c62567eac15e83186b4cb64e/LICENSE/ja",
+      "sha256": "988b37b0b21ca130ad84a092429e4e5bceec5f86dfe85a8ca3e06ea703b960ca"
+    },
+    {
+      "file": "PLaMo-Community-License-en.txt",
+      "url": "https://huggingface.co/pfnet/plamo-3-translate-2b-GGUF/raw/f2b4599dff9b3e45c62567eac15e83186b4cb64e/LICENSE/en",
+      "sha256": "d9979039b8f1a96fa81e1be61c4550d06f8542b25119e3f765c7c011a68597fb"
+    }
+  ]
+}
