@@ -1,0 +1,33 @@
+{
+  "date": "2026-11-06",
+  "old_pinned_2b": {
+    "status": 403,
+    "host": "cdn-lfs-us-1.hf.co",
+    "error": "AccessDenied"
+  },
+  "new_pinned_models": [
+    {
+      "model": "2b",
+      "revision": "232fbd7916519edecddfdae0beae7e76fe70453f",
+      "status": 206,
+      "host": "us.aws.cdn.hf.co",
+      "content_range": "bytes 0-127/1807199392",
+      "content_length": "128",
+      "gguf": true,
+      "bytes": 1807199392,
+      "sha256": "f36d0813dd95573a852ab5d76e374c543632d9e292929e922bcdbf7e53b494e0"
+    },
+    {
+      "model": "8b",
+      "revision": "2234f168757f570714b333049c9d018161ec5277",
+      "status": 206,
+      "host": "us.aws.cdn.hf.co",
+      "content_range": "bytes 0-127/5280442080",
+      "content_length": "128",
+      "gguf": true,
+      "bytes": 5280442080,
+      "sha256": "47a04e86a67bcc352fa186f01159060aae594b73993e1d49dbfc0ef0081d01ad"
+    }
+  ],
+  "scope": "先頭128バイトの取得。全体ダウンロード・実推論とは別。"
+}

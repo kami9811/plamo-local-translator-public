@@ -1,6 +1,7 @@
 """Real-model smoke check, exclusively for an isolated GitHub-hosted macOS runner."""
 from pathlib import Path
 import argparse
+import hashlib
 import json
 import os
 import platform
@@ -18,6 +19,17 @@ def main(models, output):
     if platform.system() != 'Darwin' or os.environ.get('GITHUB_ACTIONS') != 'true':
         raise SystemExit('この実モデル検証は、隔離されたmacOS CI専用です。')
     results = []
+    manifest=json.loads((ROOT/'runtime-manifest.json').read_text())
+    downloaded=[]
+    for model in models:
+        item=manifest['models'][model]
+        for name,digest in [(item['file'],item['sha256']),(f'{model}-chat_template.jinja',item['template_sha256'])]:
+            path=ROOT/'.runtime/models'/name
+            check=hashlib.sha256()
+            with path.open('rb') as source_file:
+                while chunk:=source_file.read(8*1024*1024):check.update(chunk)
+            assert check.hexdigest()==digest, 'download digest mismatch: '+name
+            downloaded.append({'model':model,'file':name,'revision':item['revision'],'bytes':path.stat().st_size,'sha256':digest,'verified':True})
     try:
         execute('start', str(ROOT))
         token = execute('key', str(ROOT))['key']
@@ -42,12 +54,12 @@ def main(models, output):
             state = request('/api/state')
             assert state['engine']['model'] == model, 'selected model differs from loaded model'
             results.append({'model': model, 'source': source, 'translation': result['translation'], 'seconds': round(time.perf_counter() - started, 3),
-                            'engine': state['engine'], 'metrics': result.get('metrics', {})})
+                            'engine': state['engine'], 'metrics': result.get('metrics', {}), 'provenance':result.get('model', {})})
     finally:
         execute('stop', str(ROOT))
     assert not port_open(8765) and not port_open(8766), 'API or inference server was left running'
     report = {'platform': platform.platform(), 'machine': platform.machine(), 'mode': 'CPU (PLAMO_GPU_LAYERS=0)',
-              'real_models': True, 'model_switch_verified': len(models) > 1, 'api_and_model_stopped': True, 'results': results}
+              'downloads':downloaded,'real_models': True, 'model_switch_verified': len(models) > 1, 'api_and_model_stopped': True, 'results': results}
     output.parent.mkdir(parents=True, exist_ok=True); output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n')
     print(json.dumps({'models': models, 'real_translation_verified': True, 'stopped': True}))
 

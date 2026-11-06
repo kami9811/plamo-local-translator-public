@@ -16,17 +16,39 @@
   "models": {
     "2b": {
       "repo": "pfnet/plamo-3-translate-2b-GGUF",
-      "revision": "f2b4599dff9b3e45c62567eac15e83186b4cb64e",
+      "revision": "232fbd7916519edecddfdae0beae7e76fe70453f",
       "file": "plamo-3-translate-2b-Q4_K_M.gguf",
-      "bytes": 1807192480,
-      "sha256": "2c288ecc7ebfe60c3561726580da3583767f3c41ca3ef5c6825bf6c4cc060787"
+      "bytes": 1807199392,
+      "sha256": "f36d0813dd95573a852ab5d76e374c543632d9e292929e922bcdbf7e53b494e0",
+      "template_sha256": "18dcc169548d794897084a04cd150a5a633717f1eb6e62de4a0e0973b377e02a",
+      "compatible_artifacts": [
+        {
+          "repo": "pfnet/plamo-3-translate-2b-GGUF",
+          "revision": "f2b4599dff9b3e45c62567eac15e83186b4cb64e",
+          "file": "plamo-3-translate-2b-Q4_K_M.gguf",
+          "bytes": 1807192480,
+          "sha256": "2c288ecc7ebfe60c3561726580da3583767f3c41ca3ef5c6825bf6c4cc060787",
+          "template_sha256": "c9139ab4d8be258257f56c6ce6a0b4848f812fe495a86657c1e139d6b0d5819a"
+        }
+      ]
     },
     "8b": {
       "repo": "pfnet/plamo-3-translate-8b-GGUF",
-      "revision": "c420296e9694ccb2455f038b3f29eee5a2200217",
+      "revision": "2234f168757f570714b333049c9d018161ec5277",
       "file": "plamo-3-translate-8b-Q4_K_M.gguf",
-      "bytes": 5280435168,
-      "sha256": "6b429549113ce0a61281ac72be195697241f89266f4247efec4893e4f580cf10"
+      "bytes": 5280442080,
+      "sha256": "47a04e86a67bcc352fa186f01159060aae594b73993e1d49dbfc0ef0081d01ad",
+      "template_sha256": "18dcc169548d794897084a04cd150a5a633717f1eb6e62de4a0e0973b377e02a",
+      "compatible_artifacts": [
+        {
+          "repo": "pfnet/plamo-3-translate-8b-GGUF",
+          "revision": "c420296e9694ccb2455f038b3f29eee5a2200217",
+          "file": "plamo-3-translate-8b-Q4_K_M.gguf",
+          "bytes": 5280435168,
+          "sha256": "6b429549113ce0a61281ac72be195697241f89266f4247efec4893e4f580cf10",
+          "template_sha256": "c9139ab4d8be258257f56c6ce6a0b4848f812fe495a86657c1e139d6b0d5819a"
+        }
+      ]
     }
   },
   "source": {

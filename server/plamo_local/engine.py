@@ -52,10 +52,19 @@ class Engine:
         self.opener=local_opener()
         self.active_cancel=None;self.api_key=secrets.token_urlsafe(32);self.gpu_layers=int(os.environ.get('PLAMO_GPU_LAYERS','99'));self.threads=min(os.cpu_count() or 4,12)
         if not 0<=self.gpu_layers<=999:raise ValueError('PLAMO_GPU_LAYERSは0〜999で指定してください。')
+    def _artifact(self,model):
+        expected=self.manifest['models'][model]
+        weights=self.root/'.runtime/models'/expected['file']
+        if weights.is_file():
+            size=weights.stat().st_size
+            for artifact in [expected,*expected.get('compatible_artifacts',[])]:
+                if size==artifact['bytes']:
+                    return weights,{k:v for k,v in artifact.items() if k!='compatible_artifacts'},True
+        return weights,{k:v for k,v in expected.items() if k!='compatible_artifacts'},False
     def status(self):
         return {'state':self.state,'model':self.loaded,'error':self.error,'load_seconds':self.load_seconds,
-                'models':[{ 'id':k,'file':v['file'],'bytes':v['bytes'],'available':(self.root/'.runtime/models'/v['file']).is_file()} for k,v in self.manifest['models'].items()]}
-    def provenance(self,model):return {'id':model,**self.manifest['models'][model],'runtime':self.manifest['llama_tag'],'context_tokens':16384}
+                'models':[{ 'id':k,'file':v['file'],'bytes':v['bytes'],'available':self._artifact(k)[2]} for k,v in self.manifest['models'].items()]}
+    def provenance(self,model):return {'id':model,**self._artifact(model)[1],'runtime':self.manifest['llama_tag'],'context_tokens':16384}
     def _request(self,path,payload=None,timeout=15):
         if path not in {'/health','/tokenize','/completion'}:raise ValueError('推論の接続先が不正です。')
         body=json.dumps(payload).encode() if payload is not None else None
@@ -79,8 +88,8 @@ class Engine:
             binary=self.root/'.runtime/llama-build/bin/llama-server'
             if not binary.is_file():binary=next((self.root/'.runtime/llama').rglob('llama-server'),None)
             if not binary:raise ValueError('llama-serverがありません。セットアップを実行してください。')
-            weights=self.root/'.runtime/models'/self.manifest['models'][model]['file']
-            if not weights.is_file():raise ValueError('モデルがありません。セットアップを実行してください。')
+            weights,artifact,available=self._artifact(model)
+            if not available:raise ValueError('モデルが未取得か、ファイルのサイズが一致しません。セットアップを実行してください。')
             env={k:v for k,v in os.environ.items() if not k.startswith('LLAMA_ARG_')}
             for key in ('LLAMA_API_KEY','HF_TOKEN','HUGGING_FACE_HUB_TOKEN','HTTP_PROXY','HTTPS_PROXY','ALL_PROXY','http_proxy','https_proxy','all_proxy'):env.pop(key,None)
             env['NO_PROXY']=env['no_proxy']='*'

@@ -20,7 +20,8 @@ def download(url, target, digest=''):
     if target.exists() and (not digest or sha(target) == digest):
         print('READY', target.name, flush=True)
         return target
-    part = target.with_suffix(target.suffix + '.part')
+    # Different pinned artifacts must never resume into each other's partial file.
+    part = target.with_suffix(target.suffix + ('.' + digest[:16] if digest else '') + '.part')
     offset = part.stat().st_size if part.exists() else 0
     request = urllib.request.Request(url, headers={'Range': f'bytes={offset}-'} if offset else {})
     with urllib.request.urlopen(request, timeout=120) as response:
@@ -87,7 +88,7 @@ def model(item):
     key, value = item
     base = f"https://huggingface.co/{value['repo']}/resolve/{value['revision']}"
     download(f"{base}/{value['file']}", RUNTIME / 'models' / value['file'], value['sha256'])
-    download(f'{base}/chat_template.jinja', RUNTIME / 'models' / f'{key}-chat_template.jinja')
+    download(f'{base}/chat_template.jinja', RUNTIME / 'models' / f'{key}-chat_template.jinja', value['template_sha256'])
 
 
 def build_from_source():
