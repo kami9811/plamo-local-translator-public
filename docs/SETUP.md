@@ -2,58 +2,90 @@
 
 Built with PLaMo。非公式ツールです。モデルの契約条件は[日本語](../licenses/PLaMo-Community-License-ja.txt)と[English](../licenses/PLaMo-Community-License-en.txt)。商用利用の登録・売上条件は別途確認してください。
 
-## 対象
+## 導入の流れ
 
-Linux x86_64 / WSL2 Ubuntu / Python 3.10以上。検証済みGPUはRTX 4090。Chrome 123以降。初回はネット接続と約20GB以上の空き容量を推奨。Pythonサーバーの実行依存は標準ライブラリのみです。
+**PC内の翻訳環境を準備 → Chromeに拡張を追加 → 翻訳環境を起動 → 接続キーを拡張へ登録 → 翻訳**の順に進めます。初回のモデル取得やビルドにはターミナルを使います。準備後の日常的な起動・停止には、ボタンで操作する補助アプリも使えます。
 
-Mac版は[Windows / Mac操作アプリの手順](DESKTOP.md#macの初回セットアップ)を参照してください。Apple SiliconとIntelに対応するセットアップを用意しています。
+Chrome 123以降、Python 3.10以上、Gitが必要です。初回はインターネット接続と、2B・8Bの両方を用意する場合で20GB程度以上の空き容量を推奨します。Pythonサーバーの実行依存は標準ライブラリのみです。
 
-## 初回
+コマンドの途中でエラーが出たら、そこで止めて原因を確認してください。次の段階へ進む目印は、各手順の末尾に記載しています。
+
+**モデル取得について：** 2026年11月6日の再検証では、公式配布先のHTTP 403でモデル取得が止まりました。新規導入でも同じ問題が起きる場合があります。取得済みのモデルは再取得せずに使えます。[確認した状況](NETWORK-SECURITY.md)
+
+<a id="windows-linux"></a>
+
+## 1-A. Windows（WSL2）・Linuxで翻訳環境を準備する
+
+WindowsではWSL2のUbuntuを使います。WSL2が未導入の場合は、先に[Microsoftの導入手順](https://learn.microsoft.com/ja-jp/windows/wsl/install)で用意してください。以降のコマンドは、WindowsのPowerShellではなく、**使うUbuntuのターミナル**で実行します。Linuxではそのままターミナルを使います。
+
+この構成はLinux x86_64 / WSL2 Ubuntu向けで、RTX 4090 / CUDA 12.6で検証しています。他のGPUやLinuxのCPUのみの構成は未検証です。
+
+まず `python3 --version` と `git --version` を実行し、Python 3.10以上とGitが使えることを確認します。Ubuntuでコマンドが見つからない場合は、`sudo apt update` の後に `sudo apt install python3 git` で用意します。
+
+ソースコードを置きたい場所で次を実行します。保存場所に迷う場合は、先に `cd ~` で自分のホームフォルダーへ移動してください。配布物と同じv0.1.4を取得する例です。すでにこのプロジェクトを取得している場合は重ねてcloneせず、そのフォルダーで作業してください。
 
 ```bash
-python3 scripts/setup_runtime.py --accept-model-license
-scripts/node.sh npm ci
-scripts/node.sh npm run build
-python3 scripts/start.py
+git clone --branch v0.1.4 https://github.com/kami9811/plamo-local-translator-public.git
+cd plamo-local-translator-public
+
+# licenses/の条件に同意する場合。通常使う2Bを先に取得します。
+python3 scripts/setup_runtime.py --accept-model-license --models 2b &&
+  scripts/node.sh npm ci &&
+  scripts/node.sh npm run build
 ```
 
-同意フラグを省くとモデル取得前に停止します。モデルを取得せずランタイムだけ準備する場合は`--runtime-only`を使います。モデルは公式Hugging Faceの固定revisionとSHA256で取得します。
+同意フラグを省くとモデル取得前に停止します。8Bも一緒に用意する場合は `--models all`、後から8Bを追加する場合は `--models 8b` を指定します。重みは2B約1.8GB、8B約5.3GBです。公式Hugging Faceの固定revisionとSHA256で取得します。モデルなしでランタイムだけ準備する場合は `--runtime-only` を使います。
 
-配布llama.cppがOSのglibcと非互換の場合は公式ソースをCUDAでビルドします。CMakeとC++コンパイラ、CUDA 12.6開発ツールを使う構成で確認しています。
+配布llama.cppがOSのglibcと非互換の場合は公式ソースをCUDAでビルドします。その場合はCMake、C++コンパイラ、CUDA開発ツールが必要です。CUDA 12.6で確認しています。
 
 ```bash
-# 必要な場合に自分の環境へ合わせて指定します。
+# CUDAのソースビルドが必要な場合だけ、自分の環境に合わせて指定します。
 PLAMO_CUDA_COMPILER=/path/to/cuda/bin/nvcc PLAMO_CUDA_ARCH=89 \
-  python3 scripts/setup_runtime.py --accept-model-license
+  python3 scripts/setup_runtime.py --accept-model-license --models 2b
 ```
 
-GPUアーキテクチャ89はRTX 4090向けです。別GPUへ変更した構成は未検証です。OSのglibcやセキュリティ設定を自動で置き換えません。
+GPUアーキテクチャ89はRTX 4090向けです。OSのglibcやセキュリティ設定を自動で置き換えません。
 
-## Windowsから起動
+`Built unpacked Chrome extension in dist/` と表示されたら準備完了です。このプロジェクトのフォルダーの場所を控え、[2. Chrome拡張を追加する](#chrome-extension)へ進みます。後で起動・停止用アプリにも同じフォルダーを指定します。
 
-日常の起動・停止・キーのコピーには[Windowsコントローラー](DESKTOP.md)を使えます。最初にプロジェクトの場所を保存すれば、以降はボタン操作だけで使えます。以下は従来の補助スクリプトを使う方法です。
+<a id="mac"></a>
 
-ソースはWSL内の任意のディレクトリに置きます。Windows補助スクリプトには自分のLinux側チェックアウト先を指定します。
+## 1-B. Macで翻訳環境を準備する
 
-```bat
-set "PLAMO_REPO=/absolute/linux/path/plamo-local-translator-public"
-start-windows.cmd
+macOS 12以上のApple Silicon / Intel向けです。Python 3.10以上を[python.org](https://www.python.org/downloads/macos/)またはHomebrewでインストールしてください。起動・停止用アプリは `/opt/homebrew/bin/python3`、`/usr/local/bin/python3`、python.orgのCurrentを探します。OS付属の開発ツール用Pythonは使いません。
+
+ターミナルで `python3 --version` と `git --version` を実行して、Python 3.10以上とGitが使えることを確認します。Gitが未導入の場合は、`git --version` をきっかけに表示されるCommand Line Toolsのインストール案内を完了してください。
+
+ソースコードを置きたい場所で次を実行します。保存場所に迷う場合は、先に `cd ~` で自分のホームフォルダーへ移動してください。すでにこのプロジェクトを取得している場合は重ねてcloneせず、そのフォルダーで作業してください。
+
+```bash
+git clone --branch v0.1.4 https://github.com/kami9811/plamo-local-translator-public.git
+cd plamo-local-translator-public
+
+# licenses/の条件に同意する場合。通常使う2Bを先に取得します。
+python3 scripts/setup_runtime.py --accept-model-license --models 2b &&
+  scripts/node.sh npm ci &&
+  scripts/node.sh npm run build
 ```
 
-`PLAMO_WSL_DISTRO`を設定した場合はそのディストリビューションを、未設定ならWSLの既定を使います。停止は同じ変数で`stop-windows.cmd`。固定のユーザー名やホームディレクトリを含めていません。
+8Bも一緒に使う場合は `--models all`、後から追加する場合は `--models 8b` を指定します。重みは2B約1.8GB、8B約5.3GBです。8Bはメモリーに余裕のあるMac向けです。
+
+セットアップはCPU種別を検出し、SHA256を確認した公式llama.cpp配布物とモデルを取得します。通常のMac推論はMetalを有効にする設定です。CPUでの従来の実モデル検証と、v0.1.4の起動・通信境界の検証は分けて記録しています。MetalとApple Siliconでの8Bは未検証です。[検証範囲](DESKTOP-VALIDATION.md)
+
+`Built unpacked Chrome extension in dist/` と表示されたら準備完了です。[2. Chrome拡張を追加する](#chrome-extension)へ進みます。
 
 <a id="chrome-extension"></a>
 
-## Chrome拡張を追加する
+## 2. Chrome拡張を追加する
 
 ### 1. 読み込むファイルを用意する
 
-拡張には、ビルドしたファイルかリリースの拡張ZIPを使います。
+上の手順でビルドした場合は、その `dist` を使います。配布済みファイルを使う場合は、[v0.1.4のリリース](https://github.com/kami9811/plamo-local-translator-public/releases/tag/v0.1.4)の「Assets」から `plamo-local-translator-extension-0.1.4.zip` をダウンロードして展開します。
 
 | 用意する方法 | 必要な操作 |
 | --- | --- |
 | 自分でビルドした場合 | `scripts/node.sh npm run build` の後、プロジェクト直下の `dist` を開く。 |
-| リリースのZIPを使う場合 | WindowsでZIPを右クリックし、「すべて展開」する。 |
+| リリースのZIPを使う場合 | ZIPを展開する。Windowsでは右クリック→「すべて展開」。 |
 
 ビルドした場合、ファイルは次の場所にあります。
 
@@ -88,22 +120,26 @@ plamo-local-translator-public/
 1. Chromeで新しいタブを開き、アドレスバーに `chrome://extensions` と入力してEnterを押します。
 2. 拡張機能の管理画面が開いたら、右上の「デベロッパーモード」をオンにします。
 3. 「パッケージ化されていない拡張機能を読み込む」をクリックします。
-4. フォルダー選択画面で、先ほど用意した `PLaMoLocalExtension` を選び、「フォルダーの選択」を押します。
+4. フォルダー選択画面で、`manifest.json` が直接入るフォルダーを選びます。Windowsで上記のコピーをした場合は `PLaMoLocalExtension`、Mac / Linuxでビルドした場合はプロジェクトの `dist` です。選択を確定してください。
 5. 拡張一覧に「PLaMo Local」のカードが表示され、オンになっていることを確認します。
 
-フォルダー選択画面では、`manifest.json` などのファイルが表示されないことがあります。選択するのはファイルを含むフォルダーです。エクスプローラーで、中に `manifest.json` があることを確認してください。ZIPの中を開いたままの状態や、ソースコード全体を指定すると読み込めません。
+フォルダー選択画面では、`manifest.json` などのファイルが表示されないことがあります。選択するのはファイルを含むフォルダーです。エクスプローラーやFinderで、中に `manifest.json` があることを確認してください。ZIPの中を開いたままの状態や、ソースコード全体を指定すると読み込めません。
 
-読み込んだフォルダーは、その後もChromeが使います。別の場所へ移動したり削除したりせず、そのまま置いてください。
+読み込んだフォルダーは、その後もChromeが使います。別の場所へ移動したり削除したりせず、そのまま置いてください。拡張が一覧に表示されたら、[3. 起動して拡張へ接続する](#pair-extension)へ進みます。
 
 <a id="pair-extension"></a>
 
-## 拡張とローカルAPIを接続する
+## 3. 起動して拡張へ接続する
 
-### 1. 接続キーをコピーする
+### 1. 翻訳環境を起動し、接続キーをコピーする
 
-Windows / Macコントローラーを使う場合は「起動」→「接続キーを表示」→「コピー」を押し、次の「Chrome拡張側の設定を開く」へ進んでください。以下はCLIでコピーする方法です。
+接続キーは、Chrome拡張を自分のPC内の翻訳環境へ接続するために使います。公開したり、他のWebサイトへ貼り付けたりしないでください。
 
-モデルを実行する側のターミナルで、リポジトリのルートから次を実行します。
+Windows / Macでは、準備済みの翻訳環境をボタンで操作する**起動・停止用アプリ**を使えます。[ダウンロードと実行先の設定](DESKTOP.md)を済ませ、「起動」→「接続キーを表示」→「コピー」を押してください。その後、次の「Chrome拡張側の設定を開く」へ進みます。
+
+アプリを使わず、ターミナルから起動する場合は次の操作をします。
+
+初回準備に使ったUbuntu / Mac / Linuxのターミナルを開きます。`scripts` と `runtime-manifest.json` が直接入るプロジェクトのフォルダーへ移動し、次を実行します。ホームフォルダーに取得した例では、`cd ~/plamo-local-translator-public` で移動できます。
 
 ```bash
 python3 scripts/start.py
@@ -126,7 +162,7 @@ PLaMo Local: http://127.0.0.1:8765/app.html
 4. 新しいタブで開いた画面の、左メニュー「接続と設定」を選びます。未接続の場合は、最初からこの画面が開くこともあります。
 5. アドレスバーが **`chrome-extension://` で始まっている**ことを確認します。
 
-`http://127.0.0.1:8765/app.html` を直接開いた画面はブラウザ版です。ブラウザ版はローカルAPIへ自動接続するため、「接続済み」と表示されても拡張への登録が済んだことにはなりません。拡張の接続キーは、上の手順で開いた `chrome-extension://...` の画面から登録してください。
+`http://127.0.0.1:8765/app.html` を直接開いた画面はブラウザー版で、v0.1.4ではこちらにも接続キーの入力が必要です。ブラウザー版とChrome拡張の登録は別です。拡張を使うためのキーは、上の手順で開いた `chrome-extension://...` の画面へ登録してください。
 
 ### 3. キーを登録して接続を確認する
 
@@ -136,7 +172,28 @@ PLaMo Local: http://127.0.0.1:8765/app.html
 
 これで拡張から翻訳できるようになります。通常のWebページを開き、英文を選択して右クリック →「PLaMoで選択文を翻訳」で試してください。初回の翻訳ではモデルの読み込みが発生する場合があります。
 
-接続できない場合は、APIを起動したリポジトリと接続キーを表示したリポジトリが同じか、キーの前後に見出しや空白を含めていないかを確認します。既定の接続先は `http://127.0.0.1:8765` です。
+接続できない場合は、起動したプロジェクトと接続キーを表示したプロジェクトが同じか、キーの前後に見出しや空白を含めていないかを確認します。既定の接続先は `http://127.0.0.1:8765` です。
+
+## 4. 使い終わったら停止する
+
+起動・停止用アプリの「停止」を押します。アプリのウィンドウを閉じるだけでは停止しません。ターミナルから止める場合は、起動に使ったプロジェクトで次を実行します。
+
+```bash
+python3 scripts/stop.py
+```
+
+次回は起動して、そのまま拡張を使えます。同じ接続キーを使う間は、毎回の再登録は不要です。最初の翻訳ではモデルを読み込みます。
+
+## Windowsの補助スクリプトを使う場合
+
+起動・停止用アプリのほかに、Windowsのコマンドプロンプトから使う補助スクリプトもあります。`PLAMO_REPO` には、初回準備をしたLinux側のプロジェクトの場所を指定します。
+
+```bat
+set "PLAMO_REPO=/absolute/linux/path/plamo-local-translator-public"
+start-windows.cmd
+```
+
+`PLAMO_WSL_DISTRO` を設定した場合はそのディストリビューションを、未設定ならWSLの既定を使います。停止は同じ変数で `stop-windows.cmd` を実行します。
 
 ## 拡張を更新したとき
 
@@ -146,7 +203,7 @@ PLaMo Local: http://127.0.0.1:8765/app.html
 
 ## 接続範囲とポート
 
-既定はAPI `127.0.0.1:8765`、推論 `127.0.0.1:8766`。LANへ公開しません。Windows ChromeからWSLのlocalhost転送が使える環境が必要です。接続キーの登録は、上の「拡張とローカルAPIを接続する」の手順を参照してください。
+既定はAPI `127.0.0.1:8765`、推論 `127.0.0.1:8766`。LANへ公開しません。Windows ChromeからWSLのlocalhost転送が使える環境が必要です。接続キーの登録は、上の[起動して拡張へ接続する](#pair-extension)を参照してください。
 
 既存のローカルサービスと並行してテストする場合はポートを分けます。
 
