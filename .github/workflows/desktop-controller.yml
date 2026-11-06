@@ -58,6 +58,10 @@ jobs:
       - name: Ensure CI API is stopped
         if: always()
         run: python3 scripts/stop.py
+      - name: Verify packaged icon with macOS
+        run: |
+          iconutil --convert iconset --output "$RUNNER_TEMP/controller.iconset" "artifacts/macos-controller/PLaMo Local Controller.app/Contents/Resources/Controller.icns"
+          test -f "$RUNNER_TEMP/controller.iconset/icon_512x512@2x.png"
       - name: Upload application and sanitized evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
@@ -69,9 +73,5 @@ jobs:
             artifacts/desktop-validation/*.png
             artifacts/desktop-validation/*tests.json
             artifacts/desktop-validation/real-models.json
-      - name: Verify packaged icon with macOS
-        run: |
-          iconutil --convert iconset --output "$RUNNER_TEMP/controller.iconset" "artifacts/macos-controller/PLaMo Local Controller.app/Contents/Resources/Controller.icns"
-          test -f "$RUNNER_TEMP/controller.iconset/icon_512x512@2x.png"
           if-no-files-found: warn
           retention-days: 14
