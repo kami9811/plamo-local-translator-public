@@ -45,6 +45,8 @@ final class FakeBackend: ControllerBackend {
         controller.stopButton.performClick(nil); check(controller.visibleKey == nil && controller.lastState == "stopped", "stop clears key")
         backend.fail = true; controller.startButton.performClick(nil); check(controller.status.stringValue == "要確認" && !controller.busy, "errors visible and controls restored")
         backend.fail = false; controller.startButton.performClick(nil)
+        controller.chromeGuideBody.isHidden = true; controller.chromeGuideButton.title = "3. Chromeで使うまで ▸"
+        controller.pathField.stringValue = "/Users/example/plamo-local-translator-public"
         controller.showWindow(nil); app.activate(ignoringOtherApps: true)
         for theme in ["light", "dark"] {
             controller.settings.theme = theme; controller.applyTheme()
@@ -58,10 +60,11 @@ final class FakeBackend: ControllerBackend {
             let visible = controller.startButton.convert(controller.startButton.bounds, to: view)
             check(visible.width >= 44 && visible.height >= 44 && view.bounds.intersects(visible), "primary action visible")
         }
-        controller.configurationBody.isHidden = false; controller.chromeGuideBody.isHidden = false
-        controller.settings.theme = "light"; controller.applyTheme(); controller.window?.setContentSize(NSSize(width: 620, height: 1300)); controller.window?.contentView?.layoutSubtreeIfNeeded()
-        if let view = controller.window?.contentView, let bitmap = view.bitmapImageRepForCachingDisplay(in: view.bounds) {
-            view.cacheDisplay(in: view.bounds, to: bitmap); try bitmap.representation(using: .png, properties: [:])!.write(to: output.appendingPathComponent("controller-settings.png"))
+        controller.configurationBody.isHidden = false; controller.configurationButton.title = "実行先の設定 ▾"; controller.chromeGuideBody.isHidden = false; controller.chromeGuideButton.title = "3. Chromeで使うまで ▾"
+        controller.settings.theme = "light"; controller.applyTheme(); controller.window?.setContentSize(NSSize(width: 620, height: 840)); controller.window?.contentView?.layoutSubtreeIfNeeded()
+        let fullGuide = controller.root
+        if let bitmap = fullGuide.bitmapImageRepForCachingDisplay(in: fullGuide.bounds) {
+            let view = fullGuide; view.cacheDisplay(in: view.bounds, to: bitmap); try bitmap.representation(using: .png, properties: [:])!.write(to: output.appendingPathComponent("controller-settings.png"))
         }
         let saved = try String(contentsOf: store.url)
         check(!saved.contains("key") && !saved.contains(String(repeating: "x", count: 32)), "keys never saved")

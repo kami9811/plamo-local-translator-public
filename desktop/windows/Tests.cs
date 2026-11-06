@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Runtime.InteropServices;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using System.Windows;
@@ -38,6 +40,11 @@ namespace PlamoLocalController
     }
     internal static class ControllerTests
     {
+        private delegate bool EnumWindowProc(IntPtr handle, IntPtr parameter);
+        [DllImport("user32.dll")] private static extern bool EnumThreadWindows(uint thread, EnumWindowProc callback, IntPtr value);
+        [DllImport("kernel32.dll")] private static extern uint GetCurrentThreadId();
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)] private static extern int GetClassName(IntPtr handle, StringBuilder name, int length);
+        [DllImport("user32.dll")] private static extern bool PostMessage(IntPtr handle, uint message, IntPtr wparam, IntPtr lparam);
         private static int passed;
         private static void Check(bool value, string description) { if (!value) throw new Exception(description); passed++; }
         private static void Render(ControllerWindow window, string path)
@@ -91,6 +98,20 @@ namespace PlamoLocalController
                 Check(File.ReadAllText(config).IndexOf(new String('x', 32), StringComparison.Ordinal) < 0, "displayed key never persisted");
                 backend.Fail = true; store.Value.Repository = "/home/example/previous"; window.RepositoryBox.Text = "/home/example/incorrect"; window.SaveButton.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
                 Check(store.Value.Repository == "/home/example/previous" && window.Configuration.IsExpanded, "invalid configuration is not saved and stays open"); backend.Fail = false;
+                // Open the real OS folder chooser, then cancel only this test thread's dialog.
+                uint pickerThread = GetCurrentThreadId(); int pickerSeen = 0;
+                Task cancelPicker = Task.Run(delegate {
+                    for (int attempt = 0; attempt < 100 && Volatile.Read(ref pickerSeen) == 0; attempt++) {
+                        Thread.Sleep(100);
+                        EnumThreadWindows(pickerThread, delegate(IntPtr handle, IntPtr unused) {
+                            StringBuilder name = new StringBuilder(128); GetClassName(handle, name, name.Capacity);
+                            if (name.ToString() == "#32770") { Interlocked.Exchange(ref pickerSeen, 1); PostMessage(handle, 0x0010, IntPtr.Zero, IntPtr.Zero); }
+                            return true;
+                        }, IntPtr.Zero);
+                    }
+                });
+                string selectedFolder = ProjectFolderPicker.Select(window, Path.GetTempPath()); cancelPicker.GetAwaiter().GetResult();
+                Check(pickerSeen == 1 && selectedFolder == null, "real native Windows folder chooser opens and cancels safely");
                 // Exercise the actual Windows->WSL argv/UTF-8 boundary with an echo only.
                 Settings echo = Settings.Normalize("", "/tmp", "light");
                 string[] values = { "日本語 with spaces", "quote\"and'", "a&b;$(echo NOT_EXECUTED)", "trailing\\", "" };
@@ -98,6 +119,8 @@ namespace PlamoLocalController
                 ProcessResult result = WslBackend.RunAsync(WslBackend.Arguments(echo, python, values)).GetAwaiter().GetResult();
                 string[] returned = new JavaScriptSerializer().Deserialize<string[]>(result.Output);
                 Check(result.ExitCode == 0 && returned.SequenceEqual(values), "real WSL argument and UTF-8 roundtrip without shell");
+                string[] installed = new WslSetupServices().ListDistributionsAsync().GetAwaiter().GetResult();
+                Check(installed.Length > 0 && installed.All(name => name.IndexOf('\0') < 0), "actual installed WSL names decoded");
                 Settings production = Settings.Normalize("", args.Length > 1 ? args[1] : "/tmp", "light");
                 if (args.Length > 1) {
                     ControlResult status = new WslBackend().ExecuteAsync("status", production).GetAwaiter().GetResult();

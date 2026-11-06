@@ -44,7 +44,11 @@ final class ControllerWindow: NSWindowController, NSWindowDelegate, NSTextFieldD
         NSLayoutConstraint.activate([root.widthAnchor.constraint(equalTo: scroll.contentView.widthAnchor)])
         brandIcon.image = icon; brandIcon.imageScaling = .scaleProportionallyUpOrDown; brandIcon.setAccessibilityElement(false)
         NSLayoutConstraint.activate([brandIcon.widthAnchor.constraint(equalToConstant: 38), brandIcon.heightAnchor.constraint(equalToConstant: 38)])
-        let brand = NSStackView(views: [brandIcon, label("PLaMo Local", size: 21, weight: .semibold), themeButton]); brand.distribution = .fill
+        let brandName = label("PLaMo Local", size: 21, weight: .semibold)
+        brandName.setContentHuggingPriority(.required, for: .horizontal)
+        let spacer = NSView(); spacer.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        themeButton.widthAnchor.constraint(equalToConstant: 132).isActive = true
+        let brand = NSStackView(views: [brandIcon, brandName, spacer, themeButton]); brand.distribution = .fill; brand.spacing = 10
         brand.setHuggingPriority(.defaultLow, for: .horizontal); add(brand)
         add(label("起動・停止と、拡張に登録する接続キーの確認。", size: 14, secondary: true))
         pathField.stringValue = settings.repository; pathField.placeholderString = "プロジェクトのフォルダーを選択してください"
