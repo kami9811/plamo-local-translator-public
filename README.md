@@ -1,124 +1,102 @@
 # PLaMo Local Translator
 
-**Built with PLaMo — 非公式のローカル翻訳ツールです。**
+Chromeで選択した英文やページ全体を、日本語に翻訳するツールです。日本語から英語への翻訳や、論文原稿の下訳にも使えます。PLaMo 3 Translateを自分のPCで動かし、原文と訳文を見比べながら読んだり編集したりできます。
 
-PLaMo 3 Translateを使って、Chromeの選択文・ページ・論文原稿をPC内で翻訳します。PFN等が提供・推奨する公式アプリではありません。
-
-## Windows / Mac用の操作アプリ（0.1.1）
-
-初回セットアップ済みなら、Windows / Macの操作アプリから「起動」「停止」「接続キーを表示・コピー」を操作できます。日常の起動にターミナルは不要です。アプリを開くだけではAPIを起動しません。
-
-[Windows / Mac版をダウンロード](https://github.com/kami9811/plamo-local-translator-public/releases/tag/controller-v0.1.1) · [初回の実行先設定からChrome接続まで](docs/DESKTOP.md) · [翻訳環境・拡張0.1.4](https://github.com/kami9811/plamo-local-translator-public/releases/tag/v0.1.4)
-
-初めて使う場合は、[導入手順](docs/SETUP.md)でモデル・Python/WSL・Chrome拡張を準備してください。[動作確認した範囲](docs/DESKTOP-VALIDATION.md)
+**Built with PLaMo。PFN等が提供・推奨する公式アプリではない、非公式の開発版です。**
 
 ![翻訳ワークスペース](docs/screenshots/workspace-light.png)
 
-## 機能
+## できること
 
-- Chromeの選択文翻訳、吹き出し、右クリック、ショートカット、通常HTMLページの全文翻訳と原文復帰。
-- 公式GGUFの2B / 8B切り替え、ローカル推論、状態表示。
-- UTF-8のtxt / md / tex原稿、段落ごとの対訳、中断再開、数式・引用・コードの保護と数値確認。
-- 用語集、分野・文脈、対訳履歴、名前付きプロファイル。
-- 原文・下訳・設定・確認指示を含むレビュー用Markdown / JSON。生成元の表示とPLaMo契約全文も含めます。
+- **Webを読む**：選択文をその場で翻訳。通常のHTMLページは全文翻訳と原文への復帰にも対応します。英→日・日→英を切り替えられます。
+- **原稿を下訳する**：テキスト貼り付け、UTF-8の.txt / .md / .texに対応。段落ごとの対訳、中断・再開、数式・引用キー・コードの保護と数値確認ができます。
+- **用語をそろえてレビューへ渡す**：用語集や文脈を指定し、原文・下訳・設定・確認事項をMarkdown / JSONへ出力できます。
 
-## 動作確認環境
+翻訳モデルは軽量な2Bを標準に、より大きな8Bも選べます。下訳は原文と照合して確認してください。PDFのOCRや元の紙面レイアウトの再現には対応していません。
 
-開発版 v0.1.4。WSL2 Ubuntu / Python 3.10 / NVIDIA RTX 4090 24GB / CUDA 12.6 / Windows Chromeで確認しています。Chrome 123以降が必要です。Windows用の操作アプリと、Apple Silicon / Intel向けMacアプリを追加しました。Macの検証条件は[デスクトップ版の検証記録](docs/DESKTOP-VALIDATION.md)に分けて記載しています。
+## 初めて使う
 
-モデル・Node.js・推論ランタイム・開発依存は初回に取得します。重みだけで約7.1GB、セットアップ全体には20GB程度以上の空き容量を推奨します。取得後の翻訳はローカルで実行します。
+使うものは、**Chrome拡張**と、**PC内でモデルを動かす翻訳環境**です。拡張が文章をPC内の翻訳環境へ渡し、返ってきた訳文を表示します。
 
-## セットアップ
+### 1. PC内の翻訳環境を準備する
 
-```bash
-git clone --branch v0.1.4 https://github.com/kami9811/plamo-local-translator-public.git
-cd plamo-local-translator-public
+Pythonと翻訳モデルなどを初回に用意します。初回の準備にはターミナルを使います。Windowsでは、Windows上でLinuxを動かす仕組みであるWSL2を使います。OSに合う手順から始めてください。
 
-# licenses/のPLaMo利用条件を読み、同意する場合のみ実行します。
-python3 scripts/setup_runtime.py --accept-model-license
-scripts/node.sh npm ci
-scripts/node.sh npm run build
-python3 scripts/start.py
-```
+| 利用環境 | 導入手順 |
+| --- | --- |
+| Windows（WSL2）・Linux | [翻訳環境の初回準備](docs/SETUP.md#windows-linux) |
+| Mac（Apple Silicon / Intel） | [Macの初回準備](docs/SETUP.md#mac) |
 
-商業目的でのモデル利用には事前登録等の別条件があります。上のフラグで登録が完了するわけではありません。[ライセンスの区分](NOTICE.md)を確認してください。
+**モデル取得について：** 2026年11月6日の再検証では、公式モデル配布先のHTTP 403を確認しています。新規導入はモデル取得で止まる場合があります。取得済みのモデルを使う更新では再取得は不要です。[確認した状況と更新方法](docs/NETWORK-SECURITY.md)
 
-起動すると `http://127.0.0.1:8765/app.html` と拡張用の接続キーが表示されます。接続キーは公開しないでください。
+### 2. Chromeに拡張を追加する
 
-### Chromeに拡張を追加する
+[v0.1.4の拡張ZIP](https://github.com/kami9811/plamo-local-translator-public/releases/tag/v0.1.4)を展開するか、自分でビルドした`dist`フォルダーを使います。Chromeの`chrome://extensions`から、**`manifest.json`が直接入っているフォルダー**を読み込みます。
 
-まず拡張ファイルを用意します。自分で `scripts/node.sh npm run build` を実行した場合は、プロジェクト直下の **`dist` フォルダー**に作成されています。リリースの拡張ZIPを使う場合は、先にZIPを「すべて展開」してください。
+[フォルダーの用意からChromeへの追加まで](docs/SETUP.md#chrome-extension)
 
-WindowsのChromeでは、展開したファイル一式をWindows側のフォルダーに置きます。WSLでビルドした場合のコピー方法は[詳しい導入手順](docs/SETUP.md#chrome-extension)を参照してください。
+### 3. 翻訳環境を起動して、拡張へ接続する
 
-1. Chromeで新しいタブを開き、アドレスバーに `chrome://extensions` と入力してEnterを押します。
-2. 画面右上の「デベロッパーモード」をオンにします。
-3. 「パッケージ化されていない拡張機能を読み込む」をクリックします。
-4. フォルダーの選択画面で、用意した拡張のフォルダーを選び、「フォルダーの選択」を押します。選ぶのは **`manifest.json` が直接入っているフォルダー**です。
-5. 一覧に「PLaMo Local」のカードが表示されたら、拡張の追加は完了です。
+翻訳環境を起動すると、拡張を自分のPCへ接続するための「接続キー」を取得できます。このキーを拡張の「接続と設定」へ登録し、**「接続済み · PC内で処理」**と表示されれば準備完了です。
 
-例えば、次の配置なら選択するフォルダーは `PLaMoLocalExtension` です。
+起動には、Windows / Mac向けの**起動・停止用アプリ**を使えます。モデルとPythonの初回準備が済んだ環境を、ボタンで操作するための補助アプリです。「起動」「停止」「接続キーの表示・コピー」ができ、普段はターミナルを開く必要がなくなります。
 
-```text
-PLaMoLocalExtension/  ← Chromeでこのフォルダーを選択
-  manifest.json
-  background.js
-  content.js
-  app.html
-  ...
-```
+[起動・停止用アプリをダウンロード（0.1.1）](https://github.com/kami9811/plamo-local-translator-public/releases/tag/controller-v0.1.1) · [実行先の設定と使い方](docs/DESKTOP.md)
 
-`manifest.json` そのものを選ぶ操作ではありません。ソースコードのリポジトリ全体ではなく、ビルド済みファイル一式が入るフォルダーを指定します。
+アプリを使わず、`python3 scripts/start.py`で起動することもできます。[起動から接続キーの登録までの手順](docs/SETUP.md#pair-extension)
 
-### 拡張に接続キーを登録する
+## 普段の使い方
 
-1. コントローラーの「起動」→「接続キーを表示」→「コピー」を押します。CLIの場合は、リポジトリのターミナルで `python3 scripts/start.py` を実行します。CLIでは、表示された「拡張の接続設定に貼り付けるキー」の、コロン `:` より後ろの文字列だけをコピーします。
-2. Chrome右上のパズルアイコン（拡張機能）を押し、一覧から「PLaMo Local」を開きます。ピン留めすると、次回からツールバーのアイコンで開けます。
-3. 小さなメニューの「原稿・用語集・接続設定」をクリックします。
-4. 新しいタブが開いたら、左メニューの「接続と設定」を選びます。
-5. 「ローカルエンジンとの接続」にある「接続キー」欄へコピーした文字列を貼り付け、「接続する」を押します。
-6. 画面上部に **「接続済み · PC内で処理」**と表示されれば、拡張とローカルAPIの接続は完了です。接続後にキーの入力欄が空になるのは正常です。
+1. 起動・停止用アプリの「起動」を押します。登録した接続キーが変わっていなければ、毎回貼り直す必要はありません。
+2. 通常のWebページで英文を選択し、右クリック→「PLaMoで選択文を翻訳」を選びます。ページ全体は拡張のメニューから「ページ翻訳 / 原文へ戻す」を使います。
+3. 利用を終えるときは、起動・停止用アプリの「停止」を押します。ウィンドウを閉じるだけでは翻訳環境は停止しません。
 
-この操作は、アドレスが **`chrome-extension://` で始まる拡張の画面**で行ってください。`http://127.0.0.1:8765/app.html` を直接開いたブラウザ版が「接続済み」でも、拡張への接続キー登録は別に必要です。
+最初の翻訳ではモデルの読み込みを待ちます。Chromeの設定画面やChrome Web Storeなどは翻訳対象外です。
 
-### 翻訳を試す
+ショートカットは選択文がWindows/Linuxで`Ctrl+Shift+Y`、Macで`Command+Shift+Y`。ページ翻訳・復帰は`Alt+Shift+U`です。未割り当てや競合があれば`chrome://extensions/shortcuts`で変更できます。
 
-通常のWebページを開き、英文を選択して右クリック →「PLaMoで選択文を翻訳」を選びます。初回はモデルの読み込みに時間がかかる場合があります。Chromeの設定画面やChrome Web Storeなどは翻訳対象外です。
+### 論文原稿の下訳
 
-推奨キーは選択文`Ctrl+Shift+Y`、ページ翻訳/復帰`Alt+Shift+U`。未割り当てや競合があれば`chrome://extensions/shortcuts`で変更できます。
+拡張の「原稿・用語集・接続設定」を開き、「用語と文脈」で設定を保存してから、「原稿ワークスペース」に原稿を投入します。原文と下訳を見比べ、警告を確認してからレビュー用ファイルを出力してください。
 
-停止は`python3 scripts/stop.py`。[詳しい導入手順](docs/SETUP.md)を参照してください。
+AgenticVibe等の後段フローには、原文も含むファイルを渡します。外部Agentを自動で呼び出す連携はありません。[引き渡し形式](docs/HANDOFF.md)
 
-## 通信とプライバシー
+## 動作環境と検証範囲
 
-翻訳中の接続先はPC内のAPIと推論エンジンです。外部クラウド翻訳・利用状況送信・自動更新の処理はありません。v0.1.4ではプロキシ・リダイレクトの拒否、拡張の接続先制限、推論のオフライン指定を追加しました。
+翻訳環境・拡張はv0.1.4、起動・停止用アプリは0.1.1です。それぞれ別に版を管理しており、この組み合わせで使います。Chrome 123以降とPython 3.10以上が必要です。
 
-初回のモデル・依存関係取得と、利用者がGitHub等の案内リンクを開く場合はインターネット通信があります。Chrome・閲覧先サイト・OSの通信を全面的に禁止するソフトではありません。[確認した範囲と更新方法](docs/NETWORK-SECURITY.md)
+- WindowsはWSL2 Ubuntu、RTX 4090 24GB / CUDA 12.6での翻訳を確認しています。
+- MacはApple Silicon / Intel向けの構成を用意しています。CPUでの従来の実モデル検証と、v0.1.4の通信境界・起動確認を区別して記録しています。MetalとApple Siliconでの8Bは未検証です。
+- モデルの重みは2Bが約1.8GB、8Bが約5.3GB。両方を準備する場合、セットアップ全体で20GB程度以上の空き容量を推奨します。
 
-## 論文の下訳とレビュー
+[翻訳・速度の検証](docs/VALIDATION.md) · [起動・停止用アプリの検証](docs/DESKTOP-VALIDATION.md) · [v0.1.4の通信検証と制限](docs/NETWORK-SECURITY.md)
 
-「用語と文脈」で設定を保存し、「原稿ワークスペース」で原稿を投入します。下訳と原文を見比べ、警告を確認してからレビュー用ファイルを出力してください。
+### 翻訳速度の実測
 
-AgenticVibe等の後段フローへは原文付きファイルを渡す構成です。外部Agentを自動で呼び出すAPI連携はありません。[引き渡し形式](docs/HANDOFF.md)
-
-## 実測
-
-RTX 4090で、モデル読み込み後・アプリの翻訳キャッシュ無効・各3回の中央値。
+RTX 4090で、モデル読み込み後・アプリの翻訳キャッシュ無効・各3回の中央値です。
 
 | 入力 | 2B | 8B |
-|---|---:|---:|
+| --- | ---: | ---: |
 | 英語127文字→日本語 | 0.095秒 | 0.200秒 |
 | 日本語2,689文字→英語 | 3.963秒 | 8.766秒 |
 
-UIの待ち時間や初回読み込みは含みません。llama.cppのプロンプトキャッシュは有効です。測定は同じ翻訳コアで行ったもので、今回の帰属表示追加による性能差を主張しません。[条件・品質例・制限](docs/VALIDATION.md)
+UIの待ち時間や初回読み込みは含みません。llama.cppのプロンプトキャッシュは有効です。これは従来の測定で、v0.1.4で測り直した値ではありません。[測定条件・品質例](docs/VALIDATION.md)
+
+## 通信と保存データ
+
+通常の翻訳はPC内の翻訳環境で処理します。クラウド翻訳・利用状況送信・自動更新の処理はありません。モデルや依存関係の取得、利用者がGitHub等の案内リンクを開く場合はインターネット通信があります。
+
+Chrome・閲覧先サイト・OSの通信全体を禁止するソフトではありません。ページに表示した訳文をサイト側のJavaScriptが読む場合があるため、機密原稿は拡張の原稿ワークスペースで扱ってください。[通信範囲・検証結果](docs/NETWORK-SECURITY.md)
+
+原稿・訳文・設定・キャッシュは翻訳環境の`.data/`、モデル等は`.runtime/`へ保存します。Gitと配布ZIPには含めません。[保存先と削除方法](docs/DESKTOP.md#stored-data)
 
 ## ライセンス
 
-独自のアプリコードは[MIT](LICENSE)。モデルとPLaMo生成部分には[PLaMo Community License](licenses/PLaMo-Community-License-ja.txt)が適用され、アプリのMITライセンスでその条件を緩和しません。
+独自のアプリコードは[MIT](LICENSE)。モデルとPLaMo生成部分には[PLaMo Community License](licenses/PLaMo-Community-License-ja.txt)が適用され、アプリのMITライセンスでその条件を緩和しません。商業目的のモデル利用には事前登録等の別条件があります。[第三者の権利・区分](NOTICE.md)
 
-訳文サンプル、ベンチマークの訳文、画像内の訳文はPLaMo 3 Translateの生成物です。**Built with PLaMo。** [第三者の権利・区分](NOTICE.md)
+訳文サンプル、ベンチマークの訳文、画像内の訳文はPLaMo 3 Translateの生成物です。**Built with PLaMo。**
 
-デザインはMaterial 3 ExpressiveとCarbonの原則を参考にした自作CSSです。公式の準拠認証や、各社との提携を表すものではありません。[デザイン方針](docs/DESIGN.md)
+日本語UIにはNoto Sans JPを同梱しています。[フォントのOFL](licenses/fonts/NotoSansJP-OFL.txt)。デザインはMaterial 3 ExpressiveとCarbonの原則を参考にした自作CSSです。完全準拠・認証・提携を表すものではありません。[デザイン方針](docs/DESIGN.md)
 
 ## 開発
 
@@ -129,6 +107,4 @@ scripts/node.sh npm run build
 python3 scripts/package.py
 ```
 
-実モデルのブラウザ検証は作業データ・設定を作成するため、専用のテスト環境で実施してください。保存データは`.data/`、モデル等は`.runtime/`。いずれもGitとリリースに含めません。[アーキテクチャ](docs/ARCHITECTURE.md)
-
-日本語UIにはNoto Sans JPを同梱しています。フォントのための外部通信は不要です。書体のOFLは `licenses/fonts/`、文字組みと配置の判断は [デザイン方針](docs/DESIGN.md) を参照してください。
+実モデルのブラウザー検証は、専用のテスト環境で実施してください。[アーキテクチャ](docs/ARCHITECTURE.md)
