@@ -4,6 +4,14 @@
 
 PLaMo 3 Translateを使って、Chromeの選択文・ページ・論文原稿をPC内で翻訳します。PFN等が提供・推奨する公式アプリではありません。
 
+## Windows / Mac用の操作アプリ
+
+初回セットアップ後は、**起動・停止・接続キーの表示／コピー**をボタンで操作できます。日常の起動にターミナルは不要です。Windows版はWSL2を使います。
+
+[操作アプリをダウンロード（開発版0.1.1）](https://github.com/kami9811/plamo-local-translator-public/releases/tag/controller-v0.1.1) · [実行先の設定からChromeで翻訳するまで](https://github.com/kami9811/plamo-local-translator-public/blob/controller-v0.1.1/docs/DESKTOP.md)
+
+初めて使う場合は、[配布版の導入手順](https://github.com/kami9811/plamo-local-translator-public/blob/controller-v0.1.1/README.md)に沿ってモデル・Python・Chrome拡張を準備してください。以下のセットアップ例も、対応するリリースタグを取得します。
+
 ![翻訳ワークスペース](docs/screenshots/workspace-light.png)
 
 ## 機能
@@ -23,7 +31,7 @@ PLaMo 3 Translateを使って、Chromeの選択文・ページ・論文原稿を
 ## セットアップ
 
 ```bash
-git clone https://github.com/kami9811/plamo-local-translator-public.git
+git clone --branch controller-v0.1.1 https://github.com/kami9811/plamo-local-translator-public.git
 cd plamo-local-translator-public
 
 # licenses/のPLaMo利用条件を読み、同意する場合のみ実行します。
