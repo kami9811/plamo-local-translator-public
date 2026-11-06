@@ -3,7 +3,7 @@ name: Desktop controllers
 on:
   push:
     branches: [main, fix/japanese-typography-layout]
-    paths: ['desktop/**', 'scripts/**', 'server/**', 'tests/test_desktop.py', 'runtime-manifest.json', '.github/workflows/desktop-controller.yml']
+    paths: ['desktop/**', 'scripts/**', 'server/**', 'tests/test_desktop.py', 'tests/test_setup_runtime.py', 'runtime-manifest.json', '.github/workflows/desktop-controller.yml']
   workflow_dispatch:
     inputs:
       run_model_tests:
@@ -45,6 +45,8 @@ jobs:
         run: python3 -m unittest discover -s tests -p test_desktop.py -v
       - name: Network boundaries (isolated fixtures)
         run: python3 -m unittest discover -s tests -p test_network.py -v
+      - name: Download integrity and legacy model compatibility (isolated fixtures)
+        run: python3 -m unittest discover -s tests -p test_setup_runtime.py -v
       - name: Set up official runtime and models
         if: github.event_name == 'workflow_dispatch' && inputs.run_model_tests
         run: python3 scripts/setup_runtime.py --accept-model-license --models ${{ matrix.models }}

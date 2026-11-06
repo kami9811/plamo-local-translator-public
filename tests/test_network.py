@@ -87,6 +87,9 @@ class NetworkBoundaries(unittest.TestCase):
             runtime = root / '.runtime'; (runtime / 'llama').mkdir(parents=True); (runtime / 'llama/llama-server').touch()
             weights = runtime / 'models' / json.loads((root / 'runtime-manifest.json').read_text())['models']['2b']['file']
             weights.parent.mkdir(parents=True); weights.write_bytes(b'fixture, not model weights')
+            fixture_manifest=json.loads((root / 'runtime-manifest.json').read_text())
+            fixture_manifest['models']['2b']['bytes']=weights.stat().st_size
+            (root / 'runtime-manifest.json').write_text(json.dumps(fixture_manifest))
             process = MagicMock(); process.poll.return_value = None
             response = MagicMock(); response.__enter__.return_value.status = 200
             dangerous = {'LLAMA_ARG_AGENT': '1', 'LLAMA_ARG_MCP_SERVERS_JSON': '{}', 'LLAMA_ARG_MODEL_URL': 'https://example.invalid/model', 'HF_TOKEN': 'fixture-not-a-token', 'HTTP_PROXY': 'http://127.0.0.1:1'}

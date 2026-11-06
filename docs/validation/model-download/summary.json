@@ -1,0 +1,45 @@
+{
+  "version": "0.1.5",
+  "date": "2026-11-06",
+  "functional_commit": "c58ee9e0d0105b2fe1e22b12af2af831763d5526",
+  "ci_url": "https://github.com/kami9811/plamo-local-translator-public/actions/runs/42210069931",
+  "ci_conclusion": "success",
+  "real_downloads": {
+    "macos_arm64": [
+      "2b"
+    ],
+    "macos_intel": [
+      "2b",
+      "8b"
+    ],
+    "model_sha256_verified": true,
+    "template_sha256_verified": true
+  },
+  "real_inference": {
+    "mode": "CPU",
+    "macos_arm64": [
+      "2b"
+    ],
+    "macos_intel": [
+      "2b",
+      "8b"
+    ],
+    "model_switch_verified": true,
+    "api_and_model_stopped": true
+  },
+  "isolated_tests": {
+    "public_python": 25,
+    "private_python": 22,
+    "public_browser_fixture": 1,
+    "private_browser_fixture": 1,
+    "typecheck": "both passed",
+    "extension_build": "both passed"
+  },
+  "limitations": [
+    "Linux/WSLではHTTP部分取得・模擬テスト・ビルドを確認。今回の実モデル再翻訳は隔離Mac CIで行った。",
+    "GPU/Metal・Apple Silicon 8Bは今回未検証。",
+    "単一の短文による動作確認であり、翻訳品質全体の評価ではない。",
+    "既存モデルの版選択はサイズ判定。取得時のSHA256検証と、起動時のサイズ判定は別。",
+    "ユーザーのAPI・モデル・インストールは起動・停止・更新していない。"
+  ]
+}

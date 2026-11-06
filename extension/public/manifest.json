@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "PLaMo Local — 翻訳と論文の下訳",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Built with PLaMo — 非公式のローカル翻訳ツール。選択文・ページ・論文原稿をPC内で翻訳します。",
   "permissions": [
     "activeTab",

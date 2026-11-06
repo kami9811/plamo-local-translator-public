@@ -1,0 +1,92 @@
+{
+  "platform": "macOS-15.8.2-arm64-arm-64bit-Mach-O",
+  "machine": "arm64",
+  "mode": "CPU (PLAMO_GPU_LAYERS=0)",
+  "downloads": [
+    {
+      "model": "2b",
+      "file": "plamo-3-translate-2b-Q4_K_M.gguf",
+      "revision": "232fbd7916519edecddfdae0beae7e76fe70453f",
+      "bytes": 1807199392,
+      "sha256": "f36d0813dd95573a852ab5d76e374c543632d9e292929e922bcdbf7e53b494e0",
+      "verified": true
+    },
+    {
+      "model": "2b",
+      "file": "2b-chat_template.jinja",
+      "revision": "232fbd7916519edecddfdae0beae7e76fe70453f",
+      "bytes": 11957,
+      "sha256": "18dcc169548d794897084a04cd150a5a633717f1eb6e62de4a0e0973b377e02a",
+      "verified": true
+    }
+  ],
+  "real_models": true,
+  "model_switch_verified": false,
+  "api_and_model_stopped": true,
+  "results": [
+    {
+      "model": "2b",
+      "source": "This study evaluates the accuracy of the proposed method.",
+      "translation": "本研究では、提案手法の精度を評価する。",
+      "seconds": 41.058,
+      "engine": {
+        "state": "ready",
+        "model": "2b",
+        "error": "",
+        "load_seconds": 39.4908,
+        "models": [
+          {
+            "id": "2b",
+            "file": "plamo-3-translate-2b-Q4_K_M.gguf",
+            "bytes": 1807199392,
+            "available": true
+          },
+          {
+            "id": "8b",
+            "file": "plamo-3-translate-8b-Q4_K_M.gguf",
+            "bytes": 5280442080,
+            "available": false
+          }
+        ]
+      },
+      "metrics": {
+        "ttft_seconds": 0.7203,
+        "elapsed_seconds": 1.2782,
+        "input_tokens": 31,
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 31,
+          "prompt_ms": 706.25,
+          "prompt_per_token_ms": 22.782258064516128,
+          "prompt_per_second": 43.89380530973451,
+          "predicted_n": 10,
+          "predicted_ms": 564.784,
+          "predicted_per_token_ms": 62.75377777777778,
+          "predicted_per_second": 15.93529561743959
+        },
+        "truncated": false,
+        "cache_hit": false
+      },
+      "provenance": {
+        "id": "2b",
+        "repo": "pfnet/plamo-3-translate-2b-GGUF",
+        "revision": "232fbd7916519edecddfdae0beae7e76fe70453f",
+        "file": "plamo-3-translate-2b-Q4_K_M.gguf",
+        "bytes": 1807199392,
+        "sha256": "f36d0813dd95573a852ab5d76e374c543632d9e292929e922bcdbf7e53b494e0",
+        "template_sha256": "18dcc169548d794897084a04cd150a5a633717f1eb6e62de4a0e0973b377e02a",
+        "runtime": "b12121",
+        "context_tokens": 16384
+      }
+    }
+  ],
+  "attribution": {
+    "notice": "Built with PLaMo",
+    "license": "PLaMo Community License",
+    "license_files": [
+      "../../../licenses/PLaMo-Community-License-ja.txt",
+      "../../../licenses/PLaMo-Community-License-en.txt"
+    ],
+    "unofficial_tool": true
+  }
+}
