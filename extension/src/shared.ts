@@ -9,7 +9,7 @@ export const BASE=typeof __PLAMO_API_BASE__==='string'?__PLAMO_API_BASE__:'http:
 if(!/^http:\/\/(127\.0\.0\.1|localhost):[0-9]{1,5}$/.test(BASE))throw new Error('接続先はPC内に限ります。');
 export const isExtension=typeof chrome!=='undefined' && !!chrome.runtime?.id;
 let token='';
-export async function readToken(){if(isExtension){const key=(await chrome.storage.local.get('connectionKey')).connectionKey;token=typeof key==='string'?key:'';}else if(!token){const r=await fetch(BASE+'/api/bootstrap',{redirect:'error',credentials:'omit',referrerPolicy:'no-referrer'});if(r.ok)token=(await r.json()).token;}return token;}
+export async function readToken(){if(isExtension){const key=(await chrome.storage.local.get('connectionKey')).connectionKey;token=typeof key==='string'?key:'';}return token;}
 export async function pair(value:string){token=value.trim();await api('/api/state');if(isExtension)await chrome.storage.local.set({connectionKey:token});}
 export async function api<T=unknown>(path:string,method='GET',body?:unknown,signal?:AbortSignal):Promise<T>{
  if(!token)await readToken();

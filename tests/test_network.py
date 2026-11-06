@@ -122,8 +122,9 @@ class NetworkBoundaries(unittest.TestCase):
                     self.assertEqual(caught.exception.code, 403); caught.exception.close()
                     with request('/api/state', {'Authorization': 'Bearer ' + app.token}) as response:
                         self.assertIn('engine', json.load(response))
-                    with request('/api/bootstrap', {'Origin': origin, 'Sec-Fetch-Site': 'same-origin'}) as response:
-                        self.assertEqual(json.load(response)['token'], app.token)
+                    with self.assertRaises(urllib.error.HTTPError) as caught:
+                        request('/api/bootstrap', {'Origin': origin, 'Sec-Fetch-Site': 'same-origin'})
+                    self.assertEqual(caught.exception.code, 403); caught.exception.close()
             app.shutdown()
 
 

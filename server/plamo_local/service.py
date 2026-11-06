@@ -148,8 +148,7 @@ class Handler(BaseHTTPRequestHandler):
         parsed=urlsplit(self.path);path=parsed.path
         if path=='/api/health' and self.command=='GET':self.json({'ok':True,'version':'0.1.4'});return
         if path=='/api/bootstrap' and self.command=='GET':
-            if self.headers.get('Sec-Fetch-Site') in {'same-origin','none'} and self.headers.get('Origin',f'http://127.0.0.1:{API_PORT}') in LOCAL_ORIGINS:self.json({'token':self.app.token});return
-            self.json({'error':'ローカルの原稿画面から接続してください。'},403);return
+            self.json({'error':'操作アプリから接続キーを取得して登録してください。'},403);return
         if not path.startswith('/api/'):
             if self.command!='GET':self.json({'error':'見つかりません。'},404);return
             name=path.lstrip('/') or 'app.html';base=self.app.root/'dist';file=(base/name).resolve()
