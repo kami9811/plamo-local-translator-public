@@ -58,6 +58,6 @@ Mac Metal、Apple Siliconの8Bは未検証。Windowsは未署名、Macはアド�
 
 旧操作アプリを閉じ、新しいZIPを別のフォルダーへ展開して起動します。既存の実行先・テーマ設定を使い続けられます。翻訳APIの自動起動・停止はしません。
 
-システム全体のキャッシュ解放や、WSLの停止・設定変更は今回行っていません。トップREADMEの入口追加は[PR #2](https://github.com/kami9811/plamo-local-translator-public/pull/2)で用意し、mainは変更していません。
+システム全体のキャッシュ解放や、WSLの停止・設定変更は今回行っていません。トップREADMEの入口と、操作アプリ・ガイドのmainへの反映は[PR #1](https://github.com/kami9811/plamo-local-translator-public/pull/1)に集約しました。READMEではダウンロードと初回設定の案内を画面紹介より前に配置しています。
 
 Built with PLaMo · 非公式。独自コード・アイコンはMIT。PLaMoモデルと生成物には同梱のPLaMo利用条件が適用されます。

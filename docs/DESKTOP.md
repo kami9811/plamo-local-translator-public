@@ -48,7 +48,7 @@ Windows側へプロジェクト全体をコピーする必要はありません�
 
 最初の準備だけターミナルを使います。Python 3.10以降を[python.org](https://www.python.org/downloads/macos/)またはHomebrewでインストールしてください。コントローラーは `/opt/homebrew/bin/python3`、`/usr/local/bin/python3`、python.orgのCurrentを探します。OS付属の開発ツール用Pythonは使いません。
 
-Mac対応のソースが入ったリリースタグを使います。既存のmainには未マージの場合があります。
+配布物と同じ版でセットアップするため、以下ではリリースタグからソースを取得します。
 
 ```bash
 git clone --branch controller-v0.1.1 https://github.com/kami9811/plamo-local-translator-public.git

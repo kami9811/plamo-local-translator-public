@@ -79,3 +79,10 @@ Windows Public/Private各30項目、Mac両CPU各20項目、Macの実API起動・
 controller-v0.1.1を公開済み。ソース2291c1b、Windows ZIP / Mac ZIP / 各SHA256の4点はGitHub digestおよび認証なしのダウンロードで一致を確認。既存の0.1.0は保持し、PrivateもPrivateのまま。Public/Privateの既存PRを更新し、トップREADMEだけの案内はPublic PR #2で用意した。mainの直接push/マージなし。GitHubアカウントは操作ごとに元へ復帰。
 
 追加依頼により図入りリリースノートをdocs/releases/controller-0.1.1.mdに保存。変更点の比較、起動→キー→Chrome接続の図、実画面、検証範囲と未実施を含めた。チャットでは環境・版を選んで実画像を比較できるリリースノートも提示する。キャッシュ解放は実施していない。
+
+
+### 2026-11-06: Public mainへの反映
+
+ユーザーから公開トップが古いままであるとの指摘と、mainへの反映依頼を受けた。従来の「mainへのマージをしない」は、このPublicへの反映について最新の指示で更新されたものとして扱う。Privateのmainや公開範囲は変更対象に含めない。
+
+実装・検証済みのPR #1に、README先頭のWindows/Mac操作アプリの入口と導入・変更点リンクを集約。READMEだけのPR #2は重複するため、#1を反映した後に整理する。直接pushではなく、レビュー対象のPRのHEADを照合してmainへマージする。マージ後にGitHubのmain上でREADME・導入手順・アイコン・配布先を確認する。配布済み0.1.1のタグ・ZIPを上書きせず、翻訳API・モデルは起動しない。

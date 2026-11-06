@@ -4,6 +4,14 @@
 
 PLaMo 3 Translateを使って、Chromeの選択文・ページ・論文原稿をPC内で翻訳します。PFN等が提供・推奨する公式アプリではありません。
 
+## Windows / Mac用の操作アプリ（0.1.1）
+
+初回セットアップ済みなら、Windows / Macの操作アプリから「起動」「停止」「接続キーを表示・コピー」を操作できます。日常の起動にターミナルは不要です。アプリを開くだけではAPIを起動しません。
+
+[Windows / Mac版をダウンロード](https://github.com/kami9811/plamo-local-translator-public/releases/tag/controller-v0.1.1) · [初回の実行先設定からChrome接続まで](docs/DESKTOP.md) · [0.1.1の変更点](docs/releases/controller-0.1.1.md)
+
+初めて使う場合は、[導入手順](docs/SETUP.md)でモデル・Python/WSL・Chrome拡張を準備してください。[動作確認した範囲](docs/DESKTOP-VALIDATION.md)
+
 ![翻訳ワークスペース](docs/screenshots/workspace-light.png)
 
 ## 機能
@@ -19,12 +27,6 @@ PLaMo 3 Translateを使って、Chromeの選択文・ページ・論文原稿を
 開発版 v0.1.3。WSL2 Ubuntu / Python 3.10 / NVIDIA RTX 4090 24GB / CUDA 12.6 / Windows Chromeで確認しています。Chrome 123以降が必要です。Windows用の操作アプリと、Apple Silicon / Intel向けMacアプリを追加しました。Macの検証条件は[デスクトップ版の検証記録](docs/DESKTOP-VALIDATION.md)に分けて記載しています。
 
 モデル・Node.js・推論ランタイム・開発依存は初回に取得します。重みだけで約7.1GB、セットアップ全体には20GB程度以上の空き容量を推奨します。取得後の翻訳はローカルで実行します。
-
-## 起動・停止をアプリで操作する
-
-初回セットアップ済みなら、Windows / Macの操作アプリから「起動」「停止」「接続キーを表示・コピー」を操作できます。日常の起動にターミナルは不要です。アプリを開くだけではAPIを起動しません。
-
-[Windows / Mac版をダウンロード](https://github.com/kami9811/plamo-local-translator-public/releases/tag/controller-v0.1.1) · [初回の実行先設定からChrome接続まで](docs/DESKTOP.md) · [検証した範囲](docs/DESKTOP-VALIDATION.md)
 
 ## セットアップ
 
