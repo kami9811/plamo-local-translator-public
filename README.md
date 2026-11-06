@@ -27,11 +27,11 @@ Pythonと翻訳モデルなどを初回に用意します。初回の準備に�
 | Windows（WSL2）・Linux | [翻訳環境の初回準備](docs/SETUP.md#windows-linux) |
 | Mac（Apple Silicon / Intel） | [Macの初回準備](docs/SETUP.md#mac) |
 
-**モデル取得について：** 2026年11月6日の再検証では、公式モデル配布先のHTTP 403を確認しています。新規導入はモデル取得で止まる場合があります。取得済みのモデルを使う更新では再取得は不要です。[確認した状況と更新方法](docs/NETWORK-SECURITY.md)
+初回は公式配布先からモデルを取得します。2Bの重みは約1.8GBです。取得済みの旧モデルも使えます。[モデルの取得と更新](docs/MODEL-DOWNLOAD.md)
 
 ### 2. Chromeに拡張を追加する
 
-[v0.1.4の拡張ZIP](https://github.com/kami9811/plamo-local-translator-public/releases/tag/v0.1.4)を展開するか、自分でビルドした`dist`フォルダーを使います。Chromeの`chrome://extensions`から、**`manifest.json`が直接入っているフォルダー**を読み込みます。
+[v0.1.5の拡張ZIP](https://github.com/kami9811/plamo-local-translator-public/releases/tag/v0.1.5)を展開するか、自分でビルドした`dist`フォルダーを使います。Chromeの`chrome://extensions`から、**`manifest.json`が直接入っているフォルダー**を読み込みます。
 
 [フォルダーの用意からChromeへの追加まで](docs/SETUP.md#chrome-extension)
 
@@ -63,13 +63,13 @@ AgenticVibe等の後段フローには、原文も含むファイルを渡しま
 
 ## 動作環境と検証範囲
 
-翻訳環境・拡張はv0.1.4、起動・停止用アプリは0.1.1です。それぞれ別に版を管理しており、この組み合わせで使います。Chrome 123以降とPython 3.10以上が必要です。
+翻訳環境・拡張はv0.1.5、起動・停止用アプリは0.1.1です。それぞれ別に版を管理しており、この組み合わせで使います。Chrome 123以降とPython 3.10以上が必要です。
 
 - WindowsはWSL2 Ubuntu、RTX 4090 24GB / CUDA 12.6での翻訳を確認しています。
-- MacはApple Silicon / Intel向けの構成を用意しています。CPUでの従来の実モデル検証と、v0.1.4の通信境界・起動確認を区別して記録しています。MetalとApple Siliconでの8Bは未検証です。
+- MacはApple Silicon / Intel向けの構成を用意しています。CPUでの実モデル検証と、通信境界・起動確認を分けて記録しています。MetalとApple Siliconでの8Bは未検証です。
 - モデルの重みは2Bが約1.8GB、8Bが約5.3GB。両方を準備する場合、セットアップ全体で20GB程度以上の空き容量を推奨します。
 
-[翻訳・速度の検証](docs/VALIDATION.md) · [起動・停止用アプリの検証](docs/DESKTOP-VALIDATION.md) · [v0.1.4の通信検証と制限](docs/NETWORK-SECURITY.md)
+[翻訳・速度の検証](docs/VALIDATION.md) · [起動・停止用アプリの検証](docs/DESKTOP-VALIDATION.md) · [通信検証と制限](docs/NETWORK-SECURITY.md)
 
 ### 翻訳速度の実測
 
@@ -80,7 +80,7 @@ RTX 4090で、モデル読み込み後・アプリの翻訳キャッシュ無効
 | 英語127文字→日本語 | 0.095秒 | 0.200秒 |
 | 日本語2,689文字→英語 | 3.963秒 | 8.766秒 |
 
-UIの待ち時間や初回読み込みは含みません。llama.cppのプロンプトキャッシュは有効です。これは従来の測定で、v0.1.4で測り直した値ではありません。[測定条件・品質例](docs/VALIDATION.md)
+UIの待ち時間や初回読み込みは含みません。llama.cppのプロンプトキャッシュは有効です。これは従来の測定で、v0.1.5で測り直した値ではありません。[測定条件・品質例](docs/VALIDATION.md)
 
 ## 通信と保存データ
 

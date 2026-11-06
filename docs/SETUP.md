@@ -10,7 +10,7 @@ Chrome 123以降、Python 3.10以上、Gitが必要です。初回はインタ�
 
 コマンドの途中でエラーが出たら、そこで止めて原因を確認してください。次の段階へ進む目印は、各手順の末尾に記載しています。
 
-**モデル取得について：** 2026年11月6日の再検証では、公式配布先のHTTP 403でモデル取得が止まりました。新規導入でも同じ問題が起きる場合があります。取得済みのモデルは再取得せずに使えます。[確認した状況](NETWORK-SECURITY.md)
+モデルとテンプレートは公式リポジトリの固定コミットから取得し、SHA256を確認します。[取得版と既存モデルの扱い](MODEL-DOWNLOAD.md)
 
 <a id="windows-linux"></a>
 
@@ -22,10 +22,10 @@ WindowsではWSL2のUbuntuを使います。WSL2が未導入の場合は、先�
 
 まず `python3 --version` と `git --version` を実行し、Python 3.10以上とGitが使えることを確認します。Ubuntuでコマンドが見つからない場合は、`sudo apt update` の後に `sudo apt install python3 git` で用意します。
 
-ソースコードを置きたい場所で次を実行します。保存場所に迷う場合は、先に `cd ~` で自分のホームフォルダーへ移動してください。配布物と同じv0.1.4を取得する例です。すでにこのプロジェクトを取得している場合は重ねてcloneせず、そのフォルダーで作業してください。
+ソースコードを置きたい場所で次を実行します。保存場所に迷う場合は、先に `cd ~` で自分のホームフォルダーへ移動してください。配布物と同じv0.1.5を取得する例です。すでにこのプロジェクトを取得している場合は重ねてcloneせず、そのフォルダーで作業してください。
 
 ```bash
-git clone --branch v0.1.4 https://github.com/kami9811/plamo-local-translator-public.git
+git clone --branch v0.1.5 https://github.com/kami9811/plamo-local-translator-public.git
 cd plamo-local-translator-public
 
 # licenses/の条件に同意する場合。通常使う2Bを先に取得します。
@@ -59,7 +59,7 @@ macOS 12以上のApple Silicon / Intel向けです。Python 3.10以上を[python
 ソースコードを置きたい場所で次を実行します。保存場所に迷う場合は、先に `cd ~` で自分のホームフォルダーへ移動してください。すでにこのプロジェクトを取得している場合は重ねてcloneせず、そのフォルダーで作業してください。
 
 ```bash
-git clone --branch v0.1.4 https://github.com/kami9811/plamo-local-translator-public.git
+git clone --branch v0.1.5 https://github.com/kami9811/plamo-local-translator-public.git
 cd plamo-local-translator-public
 
 # licenses/の条件に同意する場合。通常使う2Bを先に取得します。
@@ -70,7 +70,7 @@ python3 scripts/setup_runtime.py --accept-model-license --models 2b &&
 
 8Bも一緒に使う場合は `--models all`、後から追加する場合は `--models 8b` を指定します。重みは2B約1.8GB、8B約5.3GBです。8Bはメモリーに余裕のあるMac向けです。
 
-セットアップはCPU種別を検出し、SHA256を確認した公式llama.cpp配布物とモデルを取得します。通常のMac推論はMetalを有効にする設定です。CPUでの従来の実モデル検証と、v0.1.4の起動・通信境界の検証は分けて記録しています。MetalとApple Siliconでの8Bは未検証です。[検証範囲](DESKTOP-VALIDATION.md)
+セットアップはCPU種別を検出し、SHA256を確認した公式llama.cpp配布物とモデルを取得します。通常のMac推論はMetalを有効にする設定です。CPUでの実モデル検証と、起動・通信境界の検証は分けて記録しています。MetalとApple Siliconでの8Bは未検証です。[起動・通信の検証範囲](DESKTOP-VALIDATION.md)・[モデル取得と翻訳の再検証](MODEL-DOWNLOAD.md)
 
 `Built unpacked Chrome extension in dist/` と表示されたら準備完了です。[2. Chrome拡張を追加する](#chrome-extension)へ進みます。
 
@@ -80,7 +80,7 @@ python3 scripts/setup_runtime.py --accept-model-license --models 2b &&
 
 ### 1. 読み込むファイルを用意する
 
-上の手順でビルドした場合は、その `dist` を使います。配布済みファイルを使う場合は、[v0.1.4のリリース](https://github.com/kami9811/plamo-local-translator-public/releases/tag/v0.1.4)の「Assets」から `plamo-local-translator-extension-0.1.4.zip` をダウンロードして展開します。
+上の手順でビルドした場合は、その `dist` を使います。配布済みファイルを使う場合は、[v0.1.5のリリース](https://github.com/kami9811/plamo-local-translator-public/releases/tag/v0.1.5)の「Assets」から `plamo-local-translator-extension-0.1.5.zip` をダウンロードして展開します。
 
 | 用意する方法 | 必要な操作 |
 | --- | --- |
@@ -162,7 +162,7 @@ PLaMo Local: http://127.0.0.1:8765/app.html
 4. 新しいタブで開いた画面の、左メニュー「接続と設定」を選びます。未接続の場合は、最初からこの画面が開くこともあります。
 5. アドレスバーが **`chrome-extension://` で始まっている**ことを確認します。
 
-`http://127.0.0.1:8765/app.html` を直接開いた画面はブラウザー版で、v0.1.4ではこちらにも接続キーの入力が必要です。ブラウザー版とChrome拡張の登録は別です。拡張を使うためのキーは、上の手順で開いた `chrome-extension://...` の画面へ登録してください。
+`http://127.0.0.1:8765/app.html` を直接開いた画面はブラウザー版で、v0.1.5ではこちらにも接続キーの入力が必要です。ブラウザー版とChrome拡張の登録は別です。拡張を使うためのキーは、上の手順で開いた `chrome-extension://...` の画面へ登録してください。
 
 ### 3. キーを登録して接続を確認する
 
