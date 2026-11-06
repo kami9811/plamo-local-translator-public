@@ -1,0 +1,18 @@
+{
+  "version": "0.1.4",
+  "tested_transport_code_sha": "fdf5794797b6105e2fe702e4136d05608c120167",
+  "mac_ci": "https://github.com/kami9811/plamo-local-translator-public/actions/runs/42185695591",
+  "python_public": 20,
+  "python_private": 17,
+  "browser_fixture_each": true,
+  "official_runtime_arguments_verified": [
+    "Linux/WSL",
+    "macOS arm64",
+    "macOS Intel"
+  ],
+  "real_models_retested": false,
+  "model_download_failure": "Official Hugging Face CDN returned HTTP 403; no unofficial mirror used",
+  "whole_browser_packet_capture": false,
+  "user_api_or_model_started": false,
+  "extension_sha256": "154465ccd0f63bb28d5f527046d6f12eb42b2c28e5436d1a0b9d4de3a041cb85"
+}

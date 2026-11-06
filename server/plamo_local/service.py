@@ -15,9 +15,11 @@ LOCAL_ORIGINS={f'http://127.0.0.1:{API_PORT}',f'http://localhost:{API_PORT}'}
 
 class App:
     def __init__(self,root,data):
+        data.mkdir(parents=True,exist_ok=True,mode=0o700);data.chmod(0o700)
         self.root=root;self.data=data;self.store=Store(data);self.engine=Engine(root,data);self.tasks={};self.cancels={};self.runners={};self.guard=threading.RLock()
         tokenfile=data/'token'
-        if not tokenfile.exists():tokenfile.write_text(secrets.token_urlsafe(32));tokenfile.chmod(0o600)
+        if not tokenfile.exists():tokenfile.write_text(secrets.token_urlsafe(32))
+        tokenfile.chmod(0o600)
         self.token=tokenfile.read_text().strip()
         for job in self.store.list('job'):
             if job['status'] in {'running','queued'}:
@@ -144,10 +146,9 @@ class Handler(BaseHTTPRequestHandler):
     def dispatch(self):
         if not self._origin_ok():self.json({'error':'接続元またはHostが許可されていません。'},403);return
         parsed=urlsplit(self.path);path=parsed.path
-        if path=='/api/health' and self.command=='GET':self.json({'ok':True,'version':'0.1.3'});return
+        if path=='/api/health' and self.command=='GET':self.json({'ok':True,'version':'0.1.4'});return
         if path=='/api/bootstrap' and self.command=='GET':
-            if self.headers.get('Sec-Fetch-Site') in {'same-origin','none'} and self.headers.get('Origin',f'http://127.0.0.1:{API_PORT}') in LOCAL_ORIGINS:self.json({'token':self.app.token});return
-            self.json({'error':'ローカルの原稿画面から接続してください。'},403);return
+            self.json({'error':'操作アプリから接続キーを取得して登録してください。'},403);return
         if not path.startswith('/api/'):
             if self.command!='GET':self.json({'error':'見つかりません。'},404);return
             name=path.lstrip('/') or 'app.html';base=self.app.root/'dist';file=(base/name).resolve()
@@ -230,7 +231,7 @@ def main():
     app=App(root,data);server=ThreadingHTTPServer(('127.0.0.1',API_PORT),Handler);server.app=app
     atexit.register(app.shutdown)
     print(f'PLaMo Local: http://127.0.0.1:{API_PORT}/app.html',flush=True)
-    print('拡張用接続キー（公開しないでください）: '+app.token,flush=True)
+    print('接続キーは操作アプリ、または scripts/start.py から取得してください。',flush=True)
     signal.signal(signal.SIGTERM,lambda *_:threading.Thread(target=server.shutdown,daemon=True).start())
     try:server.serve_forever()
     except KeyboardInterrupt:pass

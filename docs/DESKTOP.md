@@ -42,7 +42,7 @@ Windows版はWPF、Mac版はAppKitを使います。モデル、原稿、接続�
 
 Windows側へプロジェクト全体をコピーする必要はありません。アプリはWSLのPythonを使います。起動済みの別のプロジェクトが8765番ポートを使っている場合は、そのAPIを勝手に停止せず、実行先の確認を促します。
 
-旧版v0.1.1〜v0.1.3のチェックアウトも、セットアップが完了していれば操作できます。コントローラー自身に共通ブリッジを同梱しているため、使っているフォルダーへのファイル追加は不要です。
+旧版v0.1.1〜v0.1.3のチェックアウトも、セットアップが完了していれば操作できます。コントローラー自身に共通ブリッジを同梱しているため、使っているフォルダーへのファイル追加は不要です。ただし、v0.1.4の通信制限を適用するには、翻訳環境と拡張を更新してください。操作アプリ0.1.1はそのまま使えます。[通信と更新方法](NETWORK-SECURITY.md)
 
 ## Macの初回セットアップ
 
@@ -51,7 +51,7 @@ Windows側へプロジェクト全体をコピーする必要はありません�
 配布物と同じ版でセットアップするため、以下ではリリースタグからソースを取得します。
 
 ```bash
-git clone --branch controller-v0.1.1 https://github.com/kami9811/plamo-local-translator-public.git
+git clone --branch v0.1.4 https://github.com/kami9811/plamo-local-translator-public.git
 cd plamo-local-translator-public
 
 # licenses/の条件に同意する場合。まず2Bだけ取得する例です。
