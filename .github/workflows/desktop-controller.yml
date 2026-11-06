@@ -43,6 +43,8 @@ jobs:
       - name: Isolated controller integration tests (fixture API)
         if: matrix.runner == 'macos-15'
         run: python3 -m unittest discover -s tests -p test_desktop.py -v
+      - name: Network boundaries (isolated fixtures)
+        run: python3 -m unittest discover -s tests -p test_network.py -v
       - name: Set up official runtime and models
         if: github.event_name == 'workflow_dispatch' && inputs.run_model_tests
         run: python3 scripts/setup_runtime.py --accept-model-license --models ${{ matrix.models }}

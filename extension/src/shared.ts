@@ -6,14 +6,15 @@ export interface Task {theme?:Options['theme'];id:string;status:string;translati
 export interface State {engine:{state:string;model:Model|null;error:string;load_seconds:number|null;models:{id:Model;available:boolean;bytes:number}[]};settings:Options;jobs:{id:string;title:string;status:string;total:number;completed:number;format:string}[];profiles:{id:string;name:string;options:Options}[]}
 declare const __PLAMO_API_BASE__: string;
 export const BASE=typeof __PLAMO_API_BASE__==='string'?__PLAMO_API_BASE__:'http://127.0.0.1:8765';
+if(!/^http:\/\/(127\.0\.0\.1|localhost):[0-9]{1,5}$/.test(BASE))throw new Error('接続先はPC内に限ります。');
 export const isExtension=typeof chrome!=='undefined' && !!chrome.runtime?.id;
 let token='';
-export async function readToken(){if(isExtension){const key=(await chrome.storage.local.get('connectionKey')).connectionKey;token=typeof key==='string'?key:'';}else if(!token){const r=await fetch(BASE+'/api/bootstrap');if(r.ok)token=(await r.json()).token;}return token;}
+export async function readToken(){if(isExtension){const key=(await chrome.storage.local.get('connectionKey')).connectionKey;token=typeof key==='string'?key:'';}else if(!token){const r=await fetch(BASE+'/api/bootstrap',{redirect:'error',credentials:'omit',referrerPolicy:'no-referrer'});if(r.ok)token=(await r.json()).token;}return token;}
 export async function pair(value:string){token=value.trim();await api('/api/state');if(isExtension)await chrome.storage.local.set({connectionKey:token});}
 export async function api<T=unknown>(path:string,method='GET',body?:unknown,signal?:AbortSignal):Promise<T>{
  if(!token)await readToken();
  if(!/^\/api\/[a-z0-9/?=&._-]+$/i.test(path))throw new Error('接続先が不正です。');
- const r=await fetch(BASE+path,{method,headers:{Authorization:'Bearer '+token,...(body!==undefined?{'Content-Type':'application/json'}:{})},body:body===undefined?undefined:JSON.stringify(body),signal});
+ const r=await fetch(BASE+path,{method,redirect:'error',credentials:'omit',referrerPolicy:'no-referrer',headers:{Authorization:'Bearer '+token,...(body!==undefined?{'Content-Type':'application/json'}:{})},body:body===undefined?undefined:JSON.stringify(body),signal});
  const data=await r.json();if(!r.ok)throw new Error(data.error||'ローカルAPIに接続できません。');return data as T;
 }
 export const wait=(ms:number)=>new Promise<void>(resolve=>setTimeout(resolve,ms));

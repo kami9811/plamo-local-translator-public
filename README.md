@@ -24,14 +24,14 @@ PLaMo 3 Translateを使って、Chromeの選択文・ページ・論文原稿を
 
 ## 動作確認環境
 
-開発版 v0.1.3。WSL2 Ubuntu / Python 3.10 / NVIDIA RTX 4090 24GB / CUDA 12.6 / Windows Chromeで確認しています。Chrome 123以降が必要です。Windows用の操作アプリと、Apple Silicon / Intel向けMacアプリを追加しました。Macの検証条件は[デスクトップ版の検証記録](docs/DESKTOP-VALIDATION.md)に分けて記載しています。
+開発版 v0.1.4。WSL2 Ubuntu / Python 3.10 / NVIDIA RTX 4090 24GB / CUDA 12.6 / Windows Chromeで確認しています。Chrome 123以降が必要です。Windows用の操作アプリと、Apple Silicon / Intel向けMacアプリを追加しました。Macの検証条件は[デスクトップ版の検証記録](docs/DESKTOP-VALIDATION.md)に分けて記載しています。
 
 モデル・Node.js・推論ランタイム・開発依存は初回に取得します。重みだけで約7.1GB、セットアップ全体には20GB程度以上の空き容量を推奨します。取得後の翻訳はローカルで実行します。
 
 ## セットアップ
 
 ```bash
-git clone --branch controller-v0.1.1 https://github.com/kami9811/plamo-local-translator-public.git
+git clone --branch v0.1.4 https://github.com/kami9811/plamo-local-translator-public.git
 cd plamo-local-translator-public
 
 # licenses/のPLaMo利用条件を読み、同意する場合のみ実行します。
@@ -88,6 +88,12 @@ PLaMoLocalExtension/  ← Chromeでこのフォルダーを選択
 推奨キーは選択文`Ctrl+Shift+Y`、ページ翻訳/復帰`Alt+Shift+U`。未割り当てや競合があれば`chrome://extensions/shortcuts`で変更できます。
 
 停止は`python3 scripts/stop.py`。[詳しい導入手順](docs/SETUP.md)を参照してください。
+
+## 通信とプライバシー
+
+翻訳中の接続先はPC内のAPIと推論エンジンです。外部クラウド翻訳・利用状況送信・自動更新の処理はありません。v0.1.4ではプロキシ・リダイレクトの拒否、拡張の接続先制限、推論のオフライン指定を追加しました。
+
+初回のモデル・依存関係取得と、利用者がGitHub等の案内リンクを開く場合はインターネット通信があります。Chrome・閲覧先サイト・OSの通信を全面的に禁止するソフトではありません。[確認した範囲と更新方法](docs/NETWORK-SECURITY.md)
 
 ## 論文の下訳とレビュー
 

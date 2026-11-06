@@ -7,6 +7,15 @@ import hashlib, json, os, subprocess, threading, time, urllib.request
 
 class Cancelled(Exception): pass
 
+class NoLocalRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return None
+
+
+def local_opener():
+    # Never route manuscript text through ambient HTTP proxies or redirects.
+    return urllib.request.build_opener(urllib.request.ProxyHandler({}), NoLocalRedirect())
+
 def options(raw: dict) -> dict:
     if not isinstance(raw,dict):raise ValueError('設定の形式が正しくありません。')
     model=raw.get('model','2b');source=raw.get('source_lang','en');target=raw.get('target_lang','ja')
@@ -40,6 +49,7 @@ class Engine:
     def __init__(self, root: Path, data: Path):
         self.root=root;self.data=data;self.manifest=json.loads((root/'runtime-manifest.json').read_text())
         self.lock=threading.RLock();self.process=None;self.loaded=None;self.state='stopped';self.error='';self.load_seconds=None;self.port=int(os.environ.get('PLAMO_INFERENCE_PORT','8766'))
+        self.opener=local_opener()
         self.active_cancel=None;self.api_key=secrets.token_urlsafe(32);self.gpu_layers=int(os.environ.get('PLAMO_GPU_LAYERS','99'));self.threads=min(os.cpu_count() or 4,12)
         if not 0<=self.gpu_layers<=999:raise ValueError('PLAMO_GPU_LAYERSは0〜999で指定してください。')
     def status(self):
@@ -47,8 +57,9 @@ class Engine:
                 'models':[{ 'id':k,'file':v['file'],'bytes':v['bytes'],'available':(self.root/'.runtime/models'/v['file']).is_file()} for k,v in self.manifest['models'].items()]}
     def provenance(self,model):return {'id':model,**self.manifest['models'][model],'runtime':self.manifest['llama_tag'],'context_tokens':16384}
     def _request(self,path,payload=None,timeout=15):
+        if path not in {'/health','/tokenize','/completion'}:raise ValueError('推論の接続先が不正です。')
         body=json.dumps(payload).encode() if payload is not None else None
-        return urllib.request.urlopen(urllib.request.Request(f'http://127.0.0.1:{self.port}'+path,data=body,headers={'Content-Type':'application/json','Authorization':'Bearer '+self.api_key}),timeout=timeout)
+        return self.opener.open(urllib.request.Request(f'http://127.0.0.1:{self.port}'+path,data=body,headers={'Content-Type':'application/json','Authorization':'Bearer '+self.api_key}),timeout=timeout)
     def _stop(self):
         if self.process and self.process.poll() is None:
             self.process.terminate()
@@ -70,13 +81,20 @@ class Engine:
             if not binary:raise ValueError('llama-serverがありません。セットアップを実行してください。')
             weights=self.root/'.runtime/models'/self.manifest['models'][model]['file']
             if not weights.is_file():raise ValueError('モデルがありません。セットアップを実行してください。')
-            env=os.environ.copy();pattern='*.dylib' if sys.platform=='darwin' else '*.so*'
+            env={k:v for k,v in os.environ.items() if not k.startswith('LLAMA_ARG_')}
+            for key in ('LLAMA_API_KEY','HF_TOKEN','HUGGING_FACE_HUB_TOKEN','HTTP_PROXY','HTTPS_PROXY','ALL_PROXY','http_proxy','https_proxy','all_proxy'):env.pop(key,None)
+            env['NO_PROXY']=env['no_proxy']='*'
+            pattern='*.dylib' if sys.platform=='darwin' else '*.so*'
             libdirs={str(x.parent) for x in (self.root/'.runtime/llama').rglob(pattern)};libdirs.add(str(self.root/'.runtime/llama-build/bin'))
             if sys.platform!='darwin':libdirs.update(['/usr/lib/wsl/lib','/usr/local/cuda-12.6/lib64'])
             library_variable='DYLD_LIBRARY_PATH' if sys.platform=='darwin' else 'LD_LIBRARY_PATH'
             env[library_variable]=':'.join(sorted(libdirs))+':'+env.get(library_variable,'')
+            keyfile=self.data/'inference.key'
+            fd=os.open(keyfile,os.O_WRONLY|os.O_CREAT|os.O_TRUNC,0o600)
+            with os.fdopen(fd,'w') as key_output:
+                os.fchmod(key_output.fileno(),0o600);key_output.write(self.api_key+'\n')
             log=(self.data/'llama.log').open('ab')
-            self.process=subprocess.Popen([str(binary),'-m',str(weights),'-c','16384','-ngl',str(self.gpu_layers),'-t',str(self.threads),'--host','127.0.0.1','--port',str(self.port),'--parallel','1','--alias','plamo-local','--api-key',self.api_key,'--no-webui'],stdout=log,stderr=log,env=env)
+            self.process=subprocess.Popen([str(binary),'-m',str(weights),'-c','16384','-ngl',str(self.gpu_layers),'-t',str(self.threads),'--host','127.0.0.1','--port',str(self.port),'--parallel','1','--alias','plamo-local','--api-key-file',str(keyfile),'--no-webui','--offline','--no-agent','--no-ui-mcp-proxy'],stdout=log,stderr=log,env=env)
             log.close()
             for _ in range(240):
                 if self.process.poll() is not None:raise RuntimeError('推論エンジンが終了しました。.data/llama.logを確認してください。')
