@@ -48,6 +48,11 @@ jobs:
       - name: Set up official runtime and models
         if: github.event_name == 'workflow_dispatch' && inputs.run_model_tests
         run: python3 scripts/setup_runtime.py --accept-model-license --models ${{ matrix.models }}
+      - name: Set up official runtime only
+        if: github.event_name != 'workflow_dispatch' || !inputs.run_model_tests
+        run: python3 scripts/setup_runtime.py --runtime-only
+      - name: Validate offline runtime arguments without model loading
+        run: python3 scripts/check_runtime_flags.py
       - name: Native application to actual API lifecycle
         run: artifacts/macos-controller/ControllerTests artifacts/desktop-validation --backend "$GITHUB_WORKSPACE"
       - name: Real model translation and shutdown
