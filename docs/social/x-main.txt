@@ -1,0 +1,5 @@
+英語の記事を読むとき、ページを離れず翻訳したくて、PLaMo 3 TranslateでChrome拡張を作りました。
+選択文もページ全体も、翻訳処理はPC内で完結。動作は動画のとおりです。
+非公式の開発版として公開しました。
+Built with PLaMo
+https://github.com/kami9811/plamo-local-translator-public/releases/tag/v0.1.3

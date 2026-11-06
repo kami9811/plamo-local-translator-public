@@ -4,6 +4,14 @@
 
 PLaMo 3 Translateを使って、Chromeの選択文・ページ・論文原稿をPC内で翻訳します。PFN等が提供・推奨する公式アプリではありません。
 
+## Windows / Mac用の操作アプリ（0.1.1）
+
+初回セットアップ済みなら、Windows / Macの操作アプリから「起動」「停止」「接続キーを表示・コピー」を操作できます。日常の起動にターミナルは不要です。アプリを開くだけではAPIを起動しません。
+
+[Windows / Mac版をダウンロード](https://github.com/kami9811/plamo-local-translator-public/releases/tag/controller-v0.1.1) · [初回の実行先設定からChrome接続まで](docs/DESKTOP.md) · [0.1.1の変更点](docs/releases/controller-0.1.1.md)
+
+初めて使う場合は、[導入手順](docs/SETUP.md)でモデル・Python/WSL・Chrome拡張を準備してください。[動作確認した範囲](docs/DESKTOP-VALIDATION.md)
+
 ![翻訳ワークスペース](docs/screenshots/workspace-light.png)
 
 ## 機能
@@ -16,14 +24,14 @@ PLaMo 3 Translateを使って、Chromeの選択文・ページ・論文原稿を
 
 ## 動作確認環境
 
-開発版 v0.1.1。WSL2 Ubuntu / Python 3.10 / NVIDIA RTX 4090 24GB / CUDA 12.6 / Windows Chromeで確認しています。Chrome 123以降が必要です。Mac、CPUのみ、他のGPUでの動作を保証するものではありません。
+開発版 v0.1.3。WSL2 Ubuntu / Python 3.10 / NVIDIA RTX 4090 24GB / CUDA 12.6 / Windows Chromeで確認しています。Chrome 123以降が必要です。Windows用の操作アプリと、Apple Silicon / Intel向けMacアプリを追加しました。Macの検証条件は[デスクトップ版の検証記録](docs/DESKTOP-VALIDATION.md)に分けて記載しています。
 
 モデル・Node.js・推論ランタイム・開発依存は初回に取得します。重みだけで約7.1GB、セットアップ全体には20GB程度以上の空き容量を推奨します。取得後の翻訳はローカルで実行します。
 
 ## セットアップ
 
 ```bash
-git clone https://github.com/kami9811/plamo-local-translator-public.git
+git clone --branch controller-v0.1.1 https://github.com/kami9811/plamo-local-translator-public.git
 cd plamo-local-translator-public
 
 # licenses/のPLaMo利用条件を読み、同意する場合のみ実行します。
@@ -37,10 +45,45 @@ python3 scripts/start.py
 
 起動すると `http://127.0.0.1:8765/app.html` と拡張用の接続キーが表示されます。接続キーは公開しないでください。
 
-1. リリースの拡張ZIPを展開するか、ビルドした`dist`フォルダーを用意する。
-2. Chromeの`chrome://extensions`でデベロッパーモードを有効にし、「パッケージ化されていない拡張機能を読み込む」から`manifest.json`のあるフォルダーを選ぶ。
-3. 拡張の「接続と設定」で接続キーを登録する。
-4. Webページで文章を選択して右クリック、または拡張のボタンから翻訳する。
+### Chromeに拡張を追加する
+
+まず拡張ファイルを用意します。自分で `scripts/node.sh npm run build` を実行した場合は、プロジェクト直下の **`dist` フォルダー**に作成されています。リリースの拡張ZIPを使う場合は、先にZIPを「すべて展開」してください。
+
+WindowsのChromeでは、展開したファイル一式をWindows側のフォルダーに置きます。WSLでビルドした場合のコピー方法は[詳しい導入手順](docs/SETUP.md#chrome-extension)を参照してください。
+
+1. Chromeで新しいタブを開き、アドレスバーに `chrome://extensions` と入力してEnterを押します。
+2. 画面右上の「デベロッパーモード」をオンにします。
+3. 「パッケージ化されていない拡張機能を読み込む」をクリックします。
+4. フォルダーの選択画面で、用意した拡張のフォルダーを選び、「フォルダーの選択」を押します。選ぶのは **`manifest.json` が直接入っているフォルダー**です。
+5. 一覧に「PLaMo Local」のカードが表示されたら、拡張の追加は完了です。
+
+例えば、次の配置なら選択するフォルダーは `PLaMoLocalExtension` です。
+
+```text
+PLaMoLocalExtension/  ← Chromeでこのフォルダーを選択
+  manifest.json
+  background.js
+  content.js
+  app.html
+  ...
+```
+
+`manifest.json` そのものを選ぶ操作ではありません。ソースコードのリポジトリ全体ではなく、ビルド済みファイル一式が入るフォルダーを指定します。
+
+### 拡張に接続キーを登録する
+
+1. コントローラーの「起動」→「接続キーを表示」→「コピー」を押します。CLIの場合は、リポジトリのターミナルで `python3 scripts/start.py` を実行します。CLIでは、表示された「拡張の接続設定に貼り付けるキー」の、コロン `:` より後ろの文字列だけをコピーします。
+2. Chrome右上のパズルアイコン（拡張機能）を押し、一覧から「PLaMo Local」を開きます。ピン留めすると、次回からツールバーのアイコンで開けます。
+3. 小さなメニューの「原稿・用語集・接続設定」をクリックします。
+4. 新しいタブが開いたら、左メニューの「接続と設定」を選びます。
+5. 「ローカルエンジンとの接続」にある「接続キー」欄へコピーした文字列を貼り付け、「接続する」を押します。
+6. 画面上部に **「接続済み · PC内で処理」**と表示されれば、拡張とローカルAPIの接続は完了です。接続後にキーの入力欄が空になるのは正常です。
+
+この操作は、アドレスが **`chrome-extension://` で始まる拡張の画面**で行ってください。`http://127.0.0.1:8765/app.html` を直接開いたブラウザ版が「接続済み」でも、拡張への接続キー登録は別に必要です。
+
+### 翻訳を試す
+
+通常のWebページを開き、英文を選択して右クリック →「PLaMoで選択文を翻訳」を選びます。初回はモデルの読み込みに時間がかかる場合があります。Chromeの設定画面やChrome Web Storeなどは翻訳対象外です。
 
 推奨キーは選択文`Ctrl+Shift+Y`、ページ翻訳/復帰`Alt+Shift+U`。未割り当てや競合があれば`chrome://extensions/shortcuts`で変更できます。
 
@@ -81,3 +124,5 @@ python3 scripts/package.py
 ```
 
 実モデルのブラウザ検証は作業データ・設定を作成するため、専用のテスト環境で実施してください。保存データは`.data/`、モデル等は`.runtime/`。いずれもGitとリリースに含めません。[アーキテクチャ](docs/ARCHITECTURE.md)
+
+日本語UIにはNoto Sans JPを同梱しています。フォントのための外部通信は不要です。書体のOFLは `licenses/fonts/`、文字組みと配置の判断は [デザイン方針](docs/DESIGN.md) を参照してください。

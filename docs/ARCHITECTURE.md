@@ -7,7 +7,7 @@ flowchart LR
   SW -->|認証付きループバックHTTP| API
   API --> Store[(SQLite: 原稿・対訳・設定・キャッシュ)]
   API --> Engine[モデルプロセス管理 / PFML3]
-  Engine -->|内部用APIキー / SSE| Llama[llama.cpp / RTX 4090]
+  Engine -->|内部用APIキー / SSE| Llama[llama.cpp / CUDA・Metal・CPU]
   API --> Export[原文付きJSON / Markdown]
 ```
 
@@ -49,3 +49,11 @@ APIは127.0.0.1:8765、推論は127.0.0.1:8766。外部URLを代理取得する�
 | データ削除 | DELETE /api/jobs/:id, /api/cache, /api/data |
 
 外部AgentのAPIは仮定せず、⑤は検証済みのファイル契約で分離しています。
+
+## デスクトップ操作アプリ
+
+WindowsはWPF / .NET Framework、MacはSwift / AppKitのネイティブ画面。コントローラー自体はHTTPで原稿を扱わず、Pythonの共有ブリッジで起動・停止・キー表示を実行します。Windowsはwsl.exeの--exec、MacはFoundation.Processを使い、パスをシェル文字列として評価しません。Windowsにはgzipで埋め込み、MacはResourcesへ同梱するため、旧版のセットアップ済みチェックアウトも操作できます。
+
+共有ブリッジはプロセスのモジュール名・作業ディレクトリ・待ち受けソケットを確認します。別チェックアウトのAPIには接続キーを送らず、停止も行いません。APIのヘルスチェックは無認証、明示的なキー表示では所有元を確認したうえで保存キーを読み、認証済みAPIへの接続を照合します。ループバック通信にプロキシやリダイレクトを使用しません。
+
+CLIのstart.py / stop.pyも同じブリッジを使います。GUI起動・終了にAPIの自動起動・自動停止を結び付けません。モデルは従来通りAPIが管理します。Macは公式Metalバイナリを選び、CPU検証用にPLAMO_GPU_LAYERS=0も受け付けます。

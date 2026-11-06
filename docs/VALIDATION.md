@@ -59,3 +59,21 @@ Built with PLaMo。本文中の訳文・benchmarks.jsonのtranslation値・画�
 ## 証拠
 
 `benchmarks.json`、`validation-evidence/`、`screenshots/`に実測・検査結果・画面を保存しています。個人の接続キーや原稿は含めていません。
+
+
+## v0.1.2 日本語UIの修正検証（2026-11-05）
+
+- PublicとPrivateの画面・共有トークン・吹き出しのソースをそろえ、両方の型チェック・ビルドに成功。Python検証はPublic 10件、Private 7件が成功。
+- 共通UIの実ブラウザ検証6件が成功。実2Bで選択文、全文と復帰、原稿、用語集、出力、中断再開を操作。厳しいCSPのサンプルページでも吹き出しの同梱フォント読み込みを確認。
+- 全4画面×ライト/ダークのaxe WCAG 2.2 AA対象チェックで検出0件。1440pxと390px幅で横はみ出しなし。これは全WCAG要件への適合認証ではありません。
+- CDPの実際のグリフ描画情報でNoto Sans JPの使用を確認。さらにWindows Chrome 156.0.8078.76から、既存Private版のWSL2 APIを開いて同梱書体の描画と横はみ出しなしを確認。既存の設定は変更していません。
+- このUI修正での推論検証は2B。8Bの速度・品質については以前の実測を継続して記載し、今回再測定したとは扱いません。
+
+根拠: `validation-evidence/typography-v0.1.2.json`。
+
+
+## v0.1.3 画像と実表示の照合（2026-11-05）
+
+v0.1.2ではworkspace-light.pngの撮影前に保存テーマを上書きしておらず、ダーク画面が誤名で登録されていた。今回の撮影は保存状態を意図的にdarkにして開始し、light/darkを切り替え、テーマ属性・color-scheme・実背景色を検証した。再生成画像のSHA256と状態はvalidation-evidence/capture-v0.1.3.jsonに記録。
+
+本文18px、原稿対訳16px。短文の入力欄180pxから長文で480pxまで伸縮することを実測。4画面×2テーマのaxe対象検出0件、390px幅の4画面ではみ出しなし。修正後の実2Bブラウザ6導線成功。Windows ChromeからPrivate版への接続・フォント描画も再確認。PrivateのPython7件、PublicのPython10件、両版の型とビルドは成功。

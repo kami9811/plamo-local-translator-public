@@ -6,7 +6,8 @@ let state:State|undefined;let activeJob='';let renderedJob='';let translationId=
 function notify(message:string,error=false){const n=$('notice');n.textContent=message;n.className='notice'+(error?' error':'');n.setAttribute('role',error?'alert':'status');n.hidden=false;}
 function failure(error:unknown){notify(error instanceof Error?error.message:String(error),true);}
 function action(id:string,fn:()=>Promise<unknown>|unknown){$(id).addEventListener('click',()=>Promise.resolve().then(fn).catch(failure));}
-function view(name:string){document.querySelectorAll<HTMLElement>('[id^="view-"]').forEach(n=>n.hidden=n.id!=='view-'+name);document.querySelectorAll<HTMLButtonElement>('nav [data-view]').forEach(n=>{if(n.dataset.view===name)n.setAttribute('aria-current','page');else n.removeAttribute('aria-current');});}
+const views:Record<string,[string,string]>={translate:['テキスト翻訳','原文と訳文を並べて、PC内で翻訳します。'],documents:['原稿ワークスペース','段落ごとの下訳を確認し、原文付きのレビュー用ファイルに書き出します。'],glossary:['用語と文脈','専門用語と参考文脈を、プロジェクトごとに保存します。'],settings:['接続と設定','ローカルエンジンとの接続、表示、保存データを管理します。']};
+function view(name:string){if(!$('notice').classList.contains('error'))$('notice').hidden=true;const current=views[name]||views.translate;$('page-title').textContent=current[0];$('page-description').textContent=current[1];document.title=current[0]+' — PLaMo Local';document.querySelectorAll<HTMLElement>('[id^="view-"]').forEach(n=>n.hidden=n.id!=='view-'+name);document.querySelectorAll<HTMLButtonElement>('nav [data-view]').forEach(n=>{if(n.dataset.view===name)n.setAttribute('aria-current','page');else n.removeAttribute('aria-current');});}
 document.querySelectorAll<HTMLButtonElement>('[data-view]').forEach(n=>n.onclick=()=>view(n.dataset.view!));
 function theme(value:string){if(value==='system')delete document.documentElement.dataset.theme;else document.documentElement.dataset.theme=value;}
 function dirty(){$('settings-saved').textContent='変更はまだ保存されていません。';}
@@ -45,6 +46,8 @@ async function showJob(){
  const done=job.segments.filter(s=>s.status==='done').length;$('job-status').textContent=`${labels[job.status]||job.status} · ${done}/${job.segments.length}`;
  $<HTMLProgressElement>('job-progress').max=job.segments.length||1;$<HTMLProgressElement>('job-progress').value=done;
  $<HTMLButtonElement>('pause-job').disabled=!['running','queued'].includes(job.status);$<HTMLButtonElement>('resume-job').disabled=['running','queued','done'].includes(job.status);$<HTMLButtonElement>('retry-job').disabled=!job.segments.some(s=>s.status==='error')||['running','queued'].includes(job.status);$<HTMLButtonElement>('delete-job').disabled=['running','queued'].includes(job.status);
+ const processing=['running','queued'].includes(job.status);
+ $('pause-job').hidden=!processing;$('resume-job').hidden=processing||job.status==='done';$('retry-job').hidden=!job.segments.some(s=>s.status==='error');
  const target=$('job-segments');target.replaceChildren();
  if(job.error)target.append(el('p',job.error,'warning'));
  for(const s of job.segments){if(s.skip)continue;const row=el('article',undefined,'pair');row.append(el('span',`${s.id} · ${labels[s.status]||s.status}`,'badge'));const grid=el('div',undefined,'pair-grid');for(const [title,text]of [['原文',s.source],['下訳',s.translation||'未翻訳']]){const col=el('div');col.append(el('h3',title),el('pre',text));grid.append(col);}row.append(grid);for(const w of s.warnings)row.append(el('p',w,'warning'));if(s.error)row.append(el('p',s.error,'warning'));target.append(row);}
@@ -52,18 +55,19 @@ async function showJob(){
 }
 async function translate(){
  const text=$<HTMLTextAreaElement>('source').value.trim();if(!text)throw new Error('原文を入力してください。');
- await saveSettings();$('notice').hidden=true;$<HTMLButtonElement>('translate').disabled=true;$<HTMLButtonElement>('cancel-translation').disabled=false;$<HTMLButtonElement>('copy-translation').disabled=true;$('translation').textContent='';$('translation-warnings').hidden=true;$('translation-metrics').textContent='';
+ fitSource();await saveSettings();$('notice').hidden=true;$<HTMLButtonElement>('translate').disabled=true;$<HTMLButtonElement>('cancel-translation').disabled=false;$('cancel-translation').hidden=false;$<HTMLButtonElement>('copy-translation').disabled=true;$('translation').textContent='';$('translation-warnings').hidden=true;$('translation-metrics').textContent='';
  try{let task=await api<Task>('/api/translations','POST',{text,options:readOptions()});translationId=task.id;
   for(;;){$('translation').textContent=task.translation;$('translation-status').textContent=labels[task.status]||task.status;
    if(['done','error','cancelled'].includes(task.status))break;await wait(120);task=await api<Task>(`/api/translations/${translationId}`);}
   if(task.status==='error')throw new Error(task.error||'翻訳に失敗しました。');
   if(task.status==='done'){$<HTMLButtonElement>('copy-translation').disabled=false;if(task.warnings.length){$('translation-warnings').textContent=task.warnings.join('\n');$('translation-warnings').hidden=false;}if(task.metrics)$('translation-metrics').textContent=task.metrics.cache_hit?'キャッシュから表示':`最初の応答 ${task.metrics.ttft_seconds.toFixed(2)}秒 · 完了 ${task.metrics.elapsed_seconds.toFixed(2)}秒`;}
- }finally{translationId='';$<HTMLButtonElement>('translate').disabled=false;$<HTMLButtonElement>('cancel-translation').disabled=true;refresh();}
+ }finally{translationId='';$<HTMLButtonElement>('translate').disabled=false;$<HTMLButtonElement>('cancel-translation').disabled=true;$('cancel-translation').hidden=true;refresh();}
 }
 action('translate',translate);action('cancel-translation',async()=>{if(translationId)await api(`/api/translations/${translationId}/cancel`,'POST',{});});
 action('copy-translation',async()=>{await navigator.clipboard.writeText($('translation').textContent||'');notify('訳文をコピーしました。');});
-action('insert-sample',()=>{$<HTMLTextAreaElement>('source').value=select('direction').value==='en-ja'?'Our results suggest that the proposed method improves accuracy by 12.5%. However, the effect was not statistically significant.':'本研究の結果は、提案手法が精度を12.5%改善する可能性を示唆する。ただし、その効果は統計的に有意ではなかった。';$('char-count').textContent=$<HTMLTextAreaElement>('source').value.length+'文字';});
-$<HTMLTextAreaElement>('source').oninput=()=>{$('char-count').textContent=$<HTMLTextAreaElement>('source').value.length+'文字';};
+action('insert-sample',()=>{$<HTMLTextAreaElement>('source').value=select('direction').value==='en-ja'?'Our results suggest that the proposed method improves accuracy by 12.5%. However, the effect was not statistically significant.':'本研究の結果は、提案手法が精度を12.5%改善する可能性を示唆する。ただし、その効果は統計的に有意ではなかった。';$('char-count').textContent=$<HTMLTextAreaElement>('source').value.length+'文字';fitSource();});
+function fitSource(){const source=$<HTMLTextAreaElement>('source');source.style.height='auto';source.style.height=Math.min(480,Math.max(180,source.scrollHeight))+'px';}
+$<HTMLTextAreaElement>('source').oninput=()=>{fitSource();$('char-count').textContent=$<HTMLTextAreaElement>('source').value.length+'文字';};
 action('load-model',async()=>{await saveSettings();await api('/api/models/load','POST',{model:select('model').value});notify('モデルを読み込んでいます。状態表示をご確認ください。');});
 action('stop-engine',async()=>{await api('/api/models/stop','POST',{});notify('翻訳を中断し、モデルを停止します。');});
 for(const id of ['model','direction','form','theme'])select(id).onchange=()=>saveSettings().catch(failure);

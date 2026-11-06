@@ -27,3 +27,7 @@ Model downloads require the explicit `--accept-model-license` option. This ackno
 Installed development-package license/notice copies and exact versions are listed in `licenses/dependencies.json`. These tools are not application runtime imports. Their original terms remain in effect.
 
 Material 3 Expressive and Carbon inform the original CSS and interaction design. Their logos, fonts, branded assets, or component libraries are not redistributed as application assets. No certification or complete design-system conformity is claimed.
+
+## Noto Sans JP
+
+Bundled Japanese typeface, copyright 2014–2021 Adobe. Distributed under the SIL Open Font License 1.1, independently of the application license. See `licenses/fonts/NotoSansJP-OFL.txt` and `licenses/fonts/provenance.json`. No font request is sent to Google Fonts or other external services at runtime.

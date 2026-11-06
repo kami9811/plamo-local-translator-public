@@ -1,0 +1,6 @@
+{
+  "native_appkit_render" : true,
+  "passed" : 13,
+  "real_api_started" : false,
+  "real_models_started" : false
+}

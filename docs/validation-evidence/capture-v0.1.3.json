@@ -1,0 +1,113 @@
+{
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "checks": [
+    {
+      "view": "テキスト翻訳",
+      "theme": "light",
+      "background": "rgb(245, 246, 244)",
+      "violations": []
+    },
+    {
+      "view": "原稿ワークスペース",
+      "theme": "light",
+      "background": "rgb(245, 246, 244)",
+      "violations": []
+    },
+    {
+      "view": "用語と文脈",
+      "theme": "light",
+      "background": "rgb(245, 246, 244)",
+      "violations": []
+    },
+    {
+      "view": "接続と設定",
+      "theme": "light",
+      "background": "rgb(245, 246, 244)",
+      "violations": []
+    },
+    {
+      "view": "テキスト翻訳",
+      "theme": "dark",
+      "background": "rgb(21, 27, 24)",
+      "violations": []
+    },
+    {
+      "view": "原稿ワークスペース",
+      "theme": "dark",
+      "background": "rgb(21, 27, 24)",
+      "violations": []
+    },
+    {
+      "view": "用語と文脈",
+      "theme": "dark",
+      "background": "rgb(21, 27, 24)",
+      "violations": []
+    },
+    {
+      "view": "接続と設定",
+      "theme": "dark",
+      "background": "rgb(21, 27, 24)",
+      "violations": []
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "workspace-light.png",
+      "theme": "light",
+      "background": "rgb(245, 246, 244)",
+      "sha256": "27cbdaee555f20ba17d3be0310b852279942a4ae6248002f8277ddec1f2b896e"
+    },
+    {
+      "file": "workspace-dark.png",
+      "theme": "dark",
+      "background": "rgb(21, 27, 24)",
+      "sha256": "0407a4e917b6dce55dfd2b6a30bc0b22df8eefaa9d26736e5dbd6786045364d3"
+    }
+  ],
+  "font_usage": {
+    "fonts": [
+      {
+        "familyName": "Noto Sans JP Thin",
+        "postScriptName": "NotoSansJP-Thin",
+        "isCustomFont": true,
+        "glyphCount": 64
+      }
+    ]
+  },
+  "editor": {
+    "short": {
+      "height": 180,
+      "fontSize": "18px",
+      "clientHeight": 180,
+      "scrollHeight": 180
+    },
+    "long": {
+      "height": 480,
+      "fontSize": "18px",
+      "clientHeight": 480,
+      "scrollHeight": 2664
+    }
+  },
+  "mobile": [
+    {
+      "view": "テキスト翻訳",
+      "overflow": false
+    },
+    {
+      "view": "原稿ワークスペース",
+      "overflow": false
+    },
+    {
+      "view": "用語と文脈",
+      "overflow": false
+    },
+    {
+      "view": "接続と設定",
+      "overflow": false
+    }
+  ],
+  "initial_theme": "dark"
+}

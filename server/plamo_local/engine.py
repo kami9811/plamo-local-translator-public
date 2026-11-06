@@ -2,6 +2,7 @@
 from __future__ import annotations
 from pathlib import Path
 import secrets
+import sys
 import hashlib, json, os, subprocess, threading, time, urllib.request
 
 class Cancelled(Exception): pass
@@ -39,7 +40,8 @@ class Engine:
     def __init__(self, root: Path, data: Path):
         self.root=root;self.data=data;self.manifest=json.loads((root/'runtime-manifest.json').read_text())
         self.lock=threading.RLock();self.process=None;self.loaded=None;self.state='stopped';self.error='';self.load_seconds=None;self.port=int(os.environ.get('PLAMO_INFERENCE_PORT','8766'))
-        self.active_cancel=None;self.api_key=secrets.token_urlsafe(32)
+        self.active_cancel=None;self.api_key=secrets.token_urlsafe(32);self.gpu_layers=int(os.environ.get('PLAMO_GPU_LAYERS','99'));self.threads=min(os.cpu_count() or 4,12)
+        if not 0<=self.gpu_layers<=999:raise ValueError('PLAMO_GPU_LAYERSは0〜999で指定してください。')
     def status(self):
         return {'state':self.state,'model':self.loaded,'error':self.error,'load_seconds':self.load_seconds,
                 'models':[{ 'id':k,'file':v['file'],'bytes':v['bytes'],'available':(self.root/'.runtime/models'/v['file']).is_file()} for k,v in self.manifest['models'].items()]}
@@ -68,10 +70,13 @@ class Engine:
             if not binary:raise ValueError('llama-serverがありません。セットアップを実行してください。')
             weights=self.root/'.runtime/models'/self.manifest['models'][model]['file']
             if not weights.is_file():raise ValueError('モデルがありません。セットアップを実行してください。')
-            env=os.environ.copy();libdirs={str(x.parent) for x in (self.root/'.runtime/llama').rglob('*.so*')};libdirs.add('/usr/lib/wsl/lib');libdirs.add(str(self.root/'.runtime/llama-build/bin'));libdirs.add('/usr/local/cuda-12.6/lib64')
-            env['LD_LIBRARY_PATH']=':'.join(sorted(libdirs))+':'+env.get('LD_LIBRARY_PATH','')
+            env=os.environ.copy();pattern='*.dylib' if sys.platform=='darwin' else '*.so*'
+            libdirs={str(x.parent) for x in (self.root/'.runtime/llama').rglob(pattern)};libdirs.add(str(self.root/'.runtime/llama-build/bin'))
+            if sys.platform!='darwin':libdirs.update(['/usr/lib/wsl/lib','/usr/local/cuda-12.6/lib64'])
+            library_variable='DYLD_LIBRARY_PATH' if sys.platform=='darwin' else 'LD_LIBRARY_PATH'
+            env[library_variable]=':'.join(sorted(libdirs))+':'+env.get(library_variable,'')
             log=(self.data/'llama.log').open('ab')
-            self.process=subprocess.Popen([str(binary),'-m',str(weights),'-c','16384','-ngl','99','-t','12','--host','127.0.0.1','--port',str(self.port),'--parallel','1','--alias','plamo-local','--api-key',self.api_key,'--no-webui'],stdout=log,stderr=log,env=env)
+            self.process=subprocess.Popen([str(binary),'-m',str(weights),'-c','16384','-ngl',str(self.gpu_layers),'-t',str(self.threads),'--host','127.0.0.1','--port',str(self.port),'--parallel','1','--alias','plamo-local','--api-key',self.api_key,'--no-webui'],stdout=log,stderr=log,env=env)
             log.close()
             for _ in range(240):
                 if self.process.poll() is not None:raise RuntimeError('推論エンジンが終了しました。.data/llama.logを確認してください。')

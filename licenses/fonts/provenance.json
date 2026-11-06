@@ -1,0 +1,10 @@
+{
+  "family": "Noto Sans JP",
+  "source_repository": "https://github.com/google/fonts",
+  "revision": "66a36c8c94b1a5d992ee4e7f392fccfe4945767c",
+  "source_path": "ofl/notosansjp/NotoSansJP[wght].ttf",
+  "source_sha256": "c2f3b4d463500a2ddcd3849cded1fceeb9fd6d1c32e6cbecd568453ba50fc68f",
+  "distributed_sha256": "19ccb4f5c8793cf63ff87f84034b9ae76b3f4393da1300db4b7356e6fbf096f5",
+  "conversion": "fonttools 4.60.1 / brotli 1.1.0; WOFF2 format only, no glyph subsetting",
+  "license": "SIL Open Font License 1.1; see NotoSansJP-OFL.txt"
+}

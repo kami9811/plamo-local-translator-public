@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <title>PLaMo Local — local translation</title>
+  <rect x="64" y="64" width="896" height="896" rx="206" fill="#146b54"/>
+  <path d="M294 205h296a64 64 0 0 1 64 64v208a64 64 0 0 1-64 64H328l-98 74V269a64 64 0 0 1 64-64Z" fill="#a3e5c5"/>
+  <path d="m316 440 64-157h44l64 157h-48l-10-29h-61l-10 29Zm66-66h36l-18-54Z" fill="#123a2b"/>
+  <path d="M468 451h318a64 64 0 0 1 64 64v210a64 64 0 0 1-64 64h-36v64l-86-64H468a64 64 0 0 1-64-64V515a64 64 0 0 1 64-64Z" fill="#fffdf4"/>
+  <g fill="none" stroke="#146b54" stroke-width="27" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M627 527v25M536 557h182M572 573c13 55 65 104 130 128M682 573c-13 55-65 104-130 128"/>
+  </g>
+</svg>

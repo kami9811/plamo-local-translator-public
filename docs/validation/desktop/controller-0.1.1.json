@@ -1,0 +1,18 @@
+{
+  "controller_version": "0.1.1",
+  "translator_version": "0.1.3",
+  "tested_code_sha": "b9500a5a04ab98e96b88079859a07510bc4b88eb",
+  "mac_ci": "https://github.com/kami9811/plamo-local-translator-public/actions/runs/42178600422",
+  "mac_ci_success": true,
+  "windows_native_checks": 30,
+  "mac_native_checks_each": 20,
+  "public_python_tests": 16,
+  "private_python_tests": 13,
+  "real_models_retested_for_011": false,
+  "users_api_or_models_started": false,
+  "global_cache_cleared": false,
+  "artifacts_sha256": {
+    "plamo-local-controller-windows-0.1.1.zip": "16426f7e6310a2a2f2336f8dd6add158bb23f9784fa22dfe46f08c2cfc8aa159",
+    "plamo-local-controller-macos-0.1.1.zip": "41f5a8134d9f0ca02f5b2f95955badc1d5eb5b86d308c52f6be4c60fad21aed7"
+  }
+}
