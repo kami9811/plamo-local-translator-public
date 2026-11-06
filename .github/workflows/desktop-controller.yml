@@ -5,6 +5,11 @@ on:
     branches: [main, fix/japanese-typography-layout]
     paths: ['desktop/**', 'scripts/**', 'server/**', 'tests/test_desktop.py', 'runtime-manifest.json', '.github/workflows/desktop-controller.yml']
   workflow_dispatch:
+    inputs:
+      run_model_tests:
+        description: '公式モデルの再取得とCPU推論も検証する'
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -38,10 +43,12 @@ jobs:
       - name: Isolated controller integration tests (fixture API)
         run: python3 -m unittest discover -s tests -p test_desktop.py -v
       - name: Set up official runtime and models
+        if: github.event_name == 'workflow_dispatch' && inputs.run_model_tests
         run: python3 scripts/setup_runtime.py --accept-model-license --models ${{ matrix.models }}
       - name: Native application to actual API lifecycle
         run: artifacts/macos-controller/ControllerTests artifacts/desktop-validation --backend "$GITHUB_WORKSPACE"
       - name: Real model translation and shutdown
+        if: github.event_name == 'workflow_dispatch' && inputs.run_model_tests
         env:
           PLAMO_GPU_LAYERS: '0'
         run: |
@@ -62,5 +69,9 @@ jobs:
             artifacts/desktop-validation/*.png
             artifacts/desktop-validation/*tests.json
             artifacts/desktop-validation/real-models.json
+      - name: Verify packaged icon with macOS
+        run: |
+          iconutil --convert iconset --output "$RUNNER_TEMP/controller.iconset" "artifacts/macos-controller/PLaMo Local Controller.app/Contents/Resources/Controller.icns"
+          test -f "$RUNNER_TEMP/controller.iconset/icon_512x512@2x.png"
           if-no-files-found: warn
           retention-days: 14

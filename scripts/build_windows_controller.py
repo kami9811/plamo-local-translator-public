@@ -9,7 +9,7 @@ import subprocess
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '0.1.0'
+VERSION = '0.1.1'
 
 
 def windows_path(path):
@@ -39,9 +39,11 @@ def build(tests=False):
     args = [str(compiler), '/nologo', '/codepage:65001', '/optimize+', '/debug-', '/platform:anycpu',
             '/target:' + ('exe' if tests else 'winexe'), '/out:' + windows_path(executable),
             '/resource:' + windows_path(resource) + ',controller.bridge.py.gz',
-            '/win32manifest:' + windows_path(source / 'app.manifest')]
+            '/win32manifest:' + windows_path(source / 'app.manifest'),
+            '/win32icon:' + windows_path(ROOT / 'desktop/assets/controller.ico'),
+            '/resource:' + windows_path(ROOT / 'desktop/assets/controller-128.png') + ',controller.icon.png']
     args += ['/reference:' + windows_path(r) for r in references]
-    args += [windows_path(source / name) for name in ['Core.cs', 'Window.cs', 'Program.cs']]
+    args += [windows_path(source / name) for name in ['Core.cs', 'Setup.cs', 'Window.cs', 'Program.cs']]
     if tests:
         args += ['/main:PlamoLocalController.ControllerTests', windows_path(source / 'Tests.cs')]
     subprocess.run(args, check=True)

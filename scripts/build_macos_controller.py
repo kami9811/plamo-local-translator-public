@@ -8,7 +8,7 @@ import shutil
 import subprocess
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '0.1.0'
+VERSION = '0.1.1'
 
 
 def build(tests=False):
@@ -37,11 +37,13 @@ def build(tests=False):
     subprocess.run(['lipo', '-create', str(out / 'arm64'), str(out / 'x86_64'), '-output', str(binary)], check=True)
     info = dict(CFBundleName='PLaMo Local Controller', CFBundleDisplayName='PLaMo Local コントローラー',
                 CFBundleIdentifier='io.github.kami9811.plamo-local-controller', CFBundleExecutable=binary.name,
-                CFBundleVersion='1', CFBundleShortVersionString=VERSION, CFBundlePackageType='APPL',
+                CFBundleVersion='2', CFBundleIconFile='Controller.icns', CFBundleShortVersionString=VERSION, CFBundlePackageType='APPL',
                 LSMinimumSystemVersion='12.0', NSHighResolutionCapable=True,
                 NSHumanReadableCopyright='MIT · Built with PLaMo · 非公式ツール')
     (contents / 'Info.plist').write_bytes(plistlib.dumps(info))
     shutil.copyfile(ROOT / 'desktop/controller_bridge.py', resources / 'controller_bridge.py')
+    shutil.copyfile(ROOT / 'desktop/assets/controller.icns', resources / 'Controller.icns')
+    shutil.copyfile(ROOT / 'desktop/assets/controller-128.png', resources / 'controller-128.png')
     shutil.copyfile(ROOT / 'desktop/MACOS-README.txt', resources / 'はじめに.txt')
     for name in ['LICENSE', 'NOTICE.md']:
         if (ROOT / name).is_file():

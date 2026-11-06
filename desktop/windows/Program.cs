@@ -9,8 +9,8 @@ using System.Windows;
 [assembly: AssemblyDescription("Local API controls for PLaMo Local Translator")]
 [assembly: AssemblyCompany("PLaMo Local Translator contributors")]
 [assembly: AssemblyProduct("PLaMo Local Controller")]
-[assembly: AssemblyVersion("0.1.0.0")]
-[assembly: AssemblyFileVersion("0.1.0.0")]
+[assembly: AssemblyVersion("0.1.1.0")]
+[assembly: AssemblyFileVersion("0.1.1.0")]
 [assembly: ComVisible(false)]
 
 namespace PlamoLocalController

@@ -20,9 +20,22 @@ final class FakeBackend: ControllerBackend {
         let output = URL(fileURLWithPath: CommandLine.arguments[1]); try FileManager.default.createDirectory(at: output, withIntermediateDirectories: true)
         let store = SettingsStore(url: output.appendingPathComponent("test-settings.json"))
         try store.save(ControllerSettings(repository: "/Users/example/plamo-local-translator", theme: "light"))
-        let backend = FakeBackend(); let controller = ControllerWindow(backend: backend, store: store)
+        let backend = FakeBackend(); let controller = ControllerWindow(backend: backend, store: store, icon: NSImage(contentsOfFile: "desktop/assets/controller-128.png"))
         var checks = 0
         func check(_ condition: Bool, _ message: String) { precondition(condition, message); checks += 1 }
+        check(controller.brandIcon.image != nil, "original header icon loads")
+        let validProject = output.appendingPathComponent("example-project")
+        for name in ["scripts/start.py", "scripts/stop.py", "runtime-manifest.json", "server/plamo_local/service.py"] {
+            let file = validProject.appendingPathComponent(name); try FileManager.default.createDirectory(at: file.deletingLastPathComponent(), withIntermediateDirectories: true); try Data().write(to: file)
+        }
+        try controller.acceptFolder(validProject.path)
+        check(controller.pathField.stringValue == validProject.path, "valid project folder accepted")
+        var wrongFolderRejected = false; do { try controller.acceptFolder(output.path) } catch { wrongFolderRejected = true }
+        check(wrongFolderRejected && controller.pathField.stringValue == validProject.path, "wrong folder rejected without changing selection")
+        controller.saveButton.performClick(nil)
+        check(backend.actions == ["status"] && controller.configurationBody.isHidden, "confirm/save validates without starting API")
+        backend.actions.removeAll()
+        check(controller.chromeGuideButton.title.contains("Chrome"), "in-app Chrome guide exists")
         check(backend.actions.isEmpty, "opening app must not call API")
         check(!controller.copyButton.isEnabled && controller.visibleKey == nil, "key hidden")
         controller.startButton.performClick(nil); check(backend.actions == ["start"] && controller.lastState == "running", "start dispatch")
@@ -45,11 +58,16 @@ final class FakeBackend: ControllerBackend {
             let visible = controller.startButton.convert(controller.startButton.bounds, to: view)
             check(visible.width >= 44 && visible.height >= 44 && view.bounds.intersects(visible), "primary action visible")
         }
+        controller.configurationBody.isHidden = false; controller.chromeGuideBody.isHidden = false
+        controller.settings.theme = "light"; controller.applyTheme(); controller.window?.setContentSize(NSSize(width: 620, height: 1300)); controller.window?.contentView?.layoutSubtreeIfNeeded()
+        if let view = controller.window?.contentView, let bitmap = view.bitmapImageRepForCachingDisplay(in: view.bounds) {
+            view.cacheDisplay(in: view.bounds, to: bitmap); try bitmap.representation(using: .png, properties: [:])!.write(to: output.appendingPathComponent("controller-settings.png"))
+        }
         let saved = try String(contentsOf: store.url)
         check(!saved.contains("key") && !saved.contains(String(repeating: "x", count: 32)), "keys never saved")
         var rejected = false; do { _ = try PythonBackend.normalizedRepository("relative/path") } catch { rejected = true }
         check(rejected, "relative path rejected")
-        let result: [String: Any] = ["passed": checks, "native_appkit_render": true, "real_api_started": false, "real_models_started": false]
+        let result: [String: Any] = ["passed": checks, "native_appkit_render": true, "real_api_started": false, "real_models_started": false, "setup_guide_verified": true, "icon_verified": true]
         try JSONSerialization.data(withJSONObject: result, options: [.prettyPrinted, .sortedKeys]).write(to: output.appendingPathComponent("macos-ui-tests.json"))
         print("macOS controller: \(checks) checks passed. No real API/model was started by UI tests.")
         controller.window?.orderOut(nil)

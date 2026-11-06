@@ -55,6 +55,16 @@ final class PythonBackend: ControllerBackend {
         return value
     }
 
+    static func projectRepository(_ input: String) throws -> String {
+        let path = try normalizedRepository(input)
+        let root = URL(fileURLWithPath: path)
+        let required = ["scripts/start.py", "scripts/stop.py", "runtime-manifest.json", "server/plamo_local/service.py"]
+        guard required.allSatisfy({ FileManager.default.fileExists(atPath: root.appendingPathComponent($0).path) }) else {
+            throw ControllerError.message("初回セットアップしたプロジェクトを選んでください。scriptsとruntime-manifest.jsonが入る場所です。scripts自体やdist、アプリは選びません。")
+        }
+        return path
+    }
+
     static func python() throws -> String {
         let candidates = ["/opt/homebrew/bin/python3", "/usr/local/bin/python3",
                           "/Library/Frameworks/Python.framework/Versions/Current/bin/python3"]

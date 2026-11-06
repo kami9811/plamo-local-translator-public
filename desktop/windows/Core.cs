@@ -29,7 +29,7 @@ namespace PlamoLocalController
                 repo = "/" + String.Join("/", pieces, 2, pieces.Length - 2);
             }
             if (!repo.StartsWith("/", StringComparison.Ordinal) || repo.IndexOfAny(new char[] { '\0', '\r', '\n' }) >= 0)
-                throw new ArgumentException("Linux側の絶対パス、またはエクスプローラーのWSL共有パスを指定してください。");
+                throw new ArgumentException("「フォルダーを選択」でWSL内の翻訳プロジェクトを選んでください。Linuxの絶対パスやWSL共有パスの貼り付けも使えます。");
             if (distro.StartsWith("-", StringComparison.Ordinal) || distro.IndexOfAny(new char[] { '\0', '\r', '\n', '/', '\\' }) >= 0)
                 throw new ArgumentException("WSLディストリビューション名を確認してください。");
             return new Settings { Distribution = distro, Repository = repo, Theme = theme == "dark" || theme == "light" ? theme : "system" };
@@ -154,7 +154,7 @@ namespace PlamoLocalController
             }
         }
 
-        public static async Task<ProcessResult> RunAsync(IList<string> args)
+        public static async Task<ProcessResult> RunAsync(IList<string> args, bool detectUnicode = false)
         {
             if (!File.Exists(WslExecutable)) throw new InvalidOperationException("WSLが見つかりません。WSL2とUbuntuを先にセットアップしてください。");
             ProcessStartInfo start = new ProcessStartInfo(WslExecutable, WindowsArguments.Join(args));
@@ -173,8 +173,15 @@ namespace PlamoLocalController
                 }
                 byte[] output = await stdout.ConfigureAwait(false);
                 await stderr.ConfigureAwait(false); // Never display raw stderr; it can contain private data.
-                return new ProcessResult { ExitCode = process.ExitCode, Output = Encoding.UTF8.GetString(output).Trim('\uFEFF', '\0', '\r', '\n', ' ') };
+                return new ProcessResult { ExitCode = process.ExitCode, Output = DecodeOutput(output, detectUnicode).Trim('\uFEFF', '\0', '\r', '\n', ' ') };
             }
+        }
+
+        public static string DecodeOutput(byte[] data, bool detectUnicode)
+        {
+            // wsl.exe list uses UTF-16LE on supported Windows builds; inference emits UTF-8.
+            bool utf16 = detectUnicode && data.Length > 1 && ((data[0] == 0xFF && data[1] == 0xFE) || Array.IndexOf(data, (byte)0, 0, Math.Min(data.Length, 128)) >= 0);
+            return (utf16 ? Encoding.Unicode : Encoding.UTF8).GetString(data);
         }
 
         public async Task<ControlResult> ExecuteAsync(string action, Settings settings)
