@@ -72,3 +72,10 @@ Windows Public/Private各30項目、Mac両CPU各20項目、Macの実API起動・
 モデル/推論は変更せず、今回は実モデル再測定を省いた。0.1.0の実モデル記録と0.1.1のUI/実API記録をDESKTOP-VALIDATIONとJSONで区別する。手元の翻訳API・モデルは新たに起動/停止せず、WSL全体の停止・キャッシュ消去・グローバル設定変更もしていない。
 
 配布はcontroller-v0.1.1の新しい開発版で行い、旧版は保持する。main向けREADME入口は独立した文書PRを用意し、mainの直接push・マージは行わない。GitHub操作後は元のアカウントへ復帰する。
+
+
+### 2026-11-06: 0.1.1公開とリリースノート
+
+controller-v0.1.1を公開済み。ソース2291c1b、Windows ZIP / Mac ZIP / 各SHA256の4点はGitHub digestおよび認証なしのダウンロードで一致を確認。既存の0.1.0は保持し、PrivateもPrivateのまま。Public/Privateの既存PRを更新し、トップREADMEだけの案内はPublic PR #2で用意した。mainの直接push/マージなし。GitHubアカウントは操作ごとに元へ復帰。
+
+追加依頼により図入りリリースノートをdocs/releases/controller-0.1.1.mdに保存。変更点の比較、起動→キー→Chrome接続の図、実画面、検証範囲と未実施を含めた。チャットでは環境・版を選んで実画像を比較できるリリースノートも提示する。キャッシュ解放は実施していない。
