@@ -1,0 +1,11 @@
+{
+  "real_models": false,
+  "api": "intercepted fixture, no user API started",
+  "translation_fixture_rendered_as_text": true,
+  "external_fetch_blocked_by_csp": true,
+  "external_redirect_not_followed": true,
+  "app_request_origins": [
+    "http://127.0.0.1:8765"
+  ],
+  "whole_browser_packet_capture": false
+}

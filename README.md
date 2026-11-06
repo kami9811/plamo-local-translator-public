@@ -8,7 +8,7 @@ PLaMo 3 Translateを使って、Chromeの選択文・ページ・論文原稿を
 
 初回セットアップ済みなら、Windows / Macの操作アプリから「起動」「停止」「接続キーを表示・コピー」を操作できます。日常の起動にターミナルは不要です。アプリを開くだけではAPIを起動しません。
 
-[Windows / Mac版をダウンロード](https://github.com/kami9811/plamo-local-translator-public/releases/tag/controller-v0.1.1) · [初回の実行先設定からChrome接続まで](docs/DESKTOP.md) · [0.1.1の変更点](docs/releases/controller-0.1.1.md)
+[Windows / Mac版をダウンロード](https://github.com/kami9811/plamo-local-translator-public/releases/tag/controller-v0.1.1) · [初回の実行先設定からChrome接続まで](docs/DESKTOP.md) · [翻訳環境・拡張0.1.4](https://github.com/kami9811/plamo-local-translator-public/releases/tag/v0.1.4)
 
 初めて使う場合は、[導入手順](docs/SETUP.md)でモデル・Python/WSL・Chrome拡張を準備してください。[動作確認した範囲](docs/DESKTOP-VALIDATION.md)
 

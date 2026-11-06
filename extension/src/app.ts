@@ -36,7 +36,7 @@ async function refresh(){
    for(const job of next.jobs){const button=el('button');button.setAttribute('aria-current',String(activeJob===job.id));button.append(el('span',job.title),el('small',`${labels[job.status]||job.status} · ${job.completed}/${job.total}`));button.onclick=()=>{activeJob=job.id;renderedJob='';showJob().catch(failure);list.dataset.signature='';};list.append(button);}}
   const profiles=select('profile-select');const ps=JSON.stringify(next.profiles.map(p=>[p.id,p.name]));if(profiles.dataset.signature!==ps){profiles.dataset.signature=ps;const old=profiles.value;profiles.replaceChildren(new Option('選択してください',''));for(const p of next.profiles)profiles.add(new Option(p.name,p.id));profiles.value=old;}
   if(activeJob)await showJob();
- }catch(e){$('connection-state').textContent='未接続';$('connection-dot').classList.remove('ok');if(initial){view('settings');notify('ローカルエンジンを起動し、拡張の場合は接続キーを登録してください。',true);}}
+ }catch(e){$('connection-state').textContent='未接続';$('connection-dot').classList.remove('ok');if(initial){view('settings');notify('ローカルエンジンを起動し、この画面に接続キーを登録してください。',true);}}
  finally{refreshBusy=false;}
 }
 async function showJob(){

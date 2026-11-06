@@ -1,0 +1,12 @@
+{
+  "platform": "Linux/WSL",
+  "accepted_flags": [
+    "--offline",
+    "--no-agent",
+    "--no-ui-mcp-proxy",
+    "--no-webui",
+    "--api-key-file"
+  ],
+  "real_models_started": false,
+  "api_started": false
+}
