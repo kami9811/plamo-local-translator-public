@@ -1,10 +1,25 @@
 # デスクトップ版の検証記録
 
-2026-11-05。コントローラー0.1.0 / 翻訳アプリ0.1.3。Built with PLaMo。以下の訳文はPLaMo 3 Translateの生成物です。[モデル・生成物の条件](../licenses/PLaMo-Community-License-ja.txt)
+2026-11-06更新。コントローラー0.1.1 / 翻訳アプリ0.1.3。Built with PLaMo。以下の訳文はPLaMo 3 Translateの生成物です。[モデル・生成物の条件](../licenses/PLaMo-Community-License-ja.txt)
 
-## 検証の範囲
+## 0.1.1の追加検証（2026-11-06）
 
-[最終Mac CI](https://github.com/kami9811/plamo-local-translator-public/actions/runs/42007817736)は両ジョブ成功。検証したコードは `eb9d83ef8ef7e7a74edce58d8a756e72129c07f1`。その後の変更は文書・検証記録・画面画像です。
+[更新版Mac CI](https://github.com/kami9811/plamo-local-translator-public/actions/runs/42178600422)は両ジョブ成功。アプリのコードは `b9500a5a04ab98e96b88079859a07510bc4b88eb`。その後の変更は文書・画像・検証記録です。
+
+| 対象 | 追加で確認したこと |
+| --- | --- |
+| Windows（Public / Private） | それぞれ30項目通過。独自アイコン、WSL一覧のUTF-16/UTF-8処理と実取得、共有パスからの実行先抽出、実Windowsのフォルダー選択ダイアログの起動・キャンセル、設定確認がstatusだけを呼ぶこと、誤った設定を保存しないこと、Chromeガイドの入口、従来の3操作・設定保存・実WSL引数を確認。起動/停止のボタン操作は代替バックエンド。手元の実API/モデルは起動・停止していない。 |
+| Macネイティブ画面 | Apple Silicon / Intelで各20項目通過。独自アイコン、正しい/誤ったフォルダー選択、statusによる確認・保存、接続ガイド、コピー欄の幅、ライト/ダークの表示、従来のキー表示/コピー/クリアとエラー回復を確認。画面テストは代替バックエンド。 |
+| Mac実API・配布 | 両MacでAppKit→Python→実APIの起動・明示キー表示・停止を再確認。Universalビルド・アドホック署名、CFBundleIconFileと同梱ICNS、macOSのiconutilによる展開を確認。 |
+| 回帰・情報管理 | Public Python16件、Private13件、型チェック・拡張ビルド・Windowsビルドが成功。公開履歴の秘密情報検査で検出0件。両ZIPのSHA256、ライセンス、実キー・私用パス・モデル/原稿/設定の非同梱を確認。 |
+
+推論処理・モデルは変更しておらず、0.1.1では実モデルの速度を再測定していません。共通ブリッジの隔離API6件は更新CIのarm64で実施し、Intelでの同一テストは重複実行を省いています。以下の0.1.0時点の実モデル検証を基準にし、UI/実APIの検証と区別します。生成した導入ガイドの文言はChrome拡張の実際のラベルと照合しました。拡張側のキー登録はコントローラーから自動取得しないため、Chromeで接続済みを確認する手順です。
+
+機械可読の追加結果は[controller-0.1.1.json](validation/desktop/controller-0.1.1.json)と、同フォルダーのwindows-setup / macos-011の各JSONに保存しています。
+
+## 0.1.0時点の検証の範囲
+
+[0.1.0のMac CI](https://github.com/kami9811/plamo-local-translator-public/actions/runs/42007817736)は両ジョブ成功。検証したコードは `eb9d83ef8ef7e7a74edce58d8a756e72129c07f1`。その後の変更は文書・検証記録・画面画像です。
 
 | 対象 | 結果と条件 |
 | --- | --- |
@@ -41,12 +56,17 @@ Windowsのユーザー環境では、依頼に従い実API・実モデルを新�
 
 ## 画面
 
-以下はテスト用の設定と代替バックエンドを表示したネイティブ画面です。個人の原稿・実際の接続キーは使っていません。
+以下は0.1.1のテスト用設定と代替バックエンドを表示したネイティブ画面です。個人の原稿・実際の接続キーは使っていません。
 
 ![Windows ライト](screenshots/windows-controller-light.png)
 ![Windows ダーク](screenshots/windows-controller-dark.png)
 ![Mac ライト](screenshots/macos-controller-light.png)
 ![Mac ダーク](screenshots/macos-controller-dark.png)
+
+WindowsとMacの設定・Chromeガイドを開いた状態。Macの設定画像はスクロール領域全体のネイティブ描画です。
+
+![Windows 設定](screenshots/windows-controller-settings.png)
+![Mac 設定と接続ガイド](screenshots/macos-controller-settings.png)
 
 ## 未検証・制限
 
