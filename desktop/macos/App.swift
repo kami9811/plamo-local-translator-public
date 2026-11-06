@@ -37,7 +37,7 @@ final class ControllerWindow: NSWindowController, NSWindowDelegate, NSTextFieldD
         window.center(); window.delegate = self; window.isReleasedWhenClosed = false
         root.orientation = .vertical; root.alignment = .leading; root.spacing = 16
         root.edgeInsets = NSEdgeInsets(top: 24, left: 24, bottom: 24, right: 24)
-        root.translatesAutoresizingMaskIntoConstraints = false
+        root.translatesAutoresizingMaskIntoConstraints = false; root.wantsLayer = true
         let scroll = NSScrollView(); scroll.hasVerticalScroller = true; scroll.autohidesScrollers = true
         scroll.drawsBackground = true; scroll.backgroundColor = .windowBackgroundColor
         window.contentView = scroll; scroll.documentView = root
@@ -58,7 +58,7 @@ final class ControllerWindow: NSWindowController, NSWindowDelegate, NSTextFieldD
         config.addArrangedSubview(label("1. 翻訳プロジェクトのフォルダー", size: 13, weight: .semibold))
         let pathRow = NSStackView(views: [pathField, browseButton]); pathRow.distribution = .fill; config.addArrangedSubview(pathRow)
         pathRow.widthAnchor.constraint(equalTo: config.widthAnchor).isActive = true
-        pathField.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        pathField.setContentHuggingPriority(NSLayoutConstraint.Priority(100), for: .horizontal); browseButton.setContentHuggingPriority(.required, for: .horizontal)
         config.addArrangedSubview(label("Finderで、初回セットアップしたplamo-local-translator-publicを選びます。scriptsフォルダーとruntime-manifest.jsonが入る場所です。", size: 12, secondary: true))
         config.addArrangedSubview(label("アプリの.app、ダウンロードしたZIP、拡張のdistフォルダーは選びません。保存先が分からない場合は、セットアップしたターミナルでpwdを実行し、表示されたパスを貼り付けます。", size: 12, secondary: true))
         saveButton.title = "確認して保存"
@@ -89,7 +89,7 @@ final class ControllerWindow: NSWindowController, NSWindowDelegate, NSTextFieldD
         keyField.isEditable = false; keyField.isSelectable = false; keyField.font = .monospacedSystemFont(ofSize: 13, weight: .regular)
         keyField.setAccessibilityLabel("接続キー")
         let keyRow = NSStackView(views: [keyField, copyButton]); keyRow.distribution = .fill; keyRow.alignment = .centerY; keys.addArrangedSubview(keyRow)
-        keyRow.widthAnchor.constraint(equalTo: keys.widthAnchor).isActive = true; keyField.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        keyRow.widthAnchor.constraint(equalTo: keys.widthAnchor).isActive = true; keyField.setContentHuggingPriority(NSLayoutConstraint.Priority(100), for: .horizontal); copyButton.widthAnchor.constraint(equalToConstant: 88).isActive = true
         keys.addArrangedSubview(label("接続キーは、このMacのChrome拡張だけで使います。", size: 12, secondary: true)); add(card(keys))
         chromeGuideBody.orientation = .vertical; chromeGuideBody.alignment = .leading; chromeGuideBody.spacing = 10
         for text in ["初回と接続キーが変わったときだけ登録します。", "① このアプリで「起動」→「接続キーを表示」→「コピー」。", "② Chrome右上のパズル → PLaMo Local →「原稿・用語集・接続設定」を開き、左の「接続と設定」を選びます。", "③「接続キー」欄へ貼り付けて「接続する」。上部に「接続済み · PC内で処理」が出れば利用できます。", "通常のWebページで英文を選択 → 右クリック →「PLaMoで選択文を翻訳」。最初の翻訳ではモデルの準備を待ちます。"] {
@@ -207,6 +207,7 @@ final class ControllerWindow: NSWindowController, NSWindowDelegate, NSTextFieldD
     }
     func applyTheme() {
         window?.appearance = settings.theme == "dark" ? NSAppearance(named: .darkAqua) : settings.theme == "light" ? NSAppearance(named: .aqua) : nil
+        window?.effectiveAppearance.performAsCurrentDrawingAppearance { root.layer?.backgroundColor = NSColor.windowBackgroundColor.cgColor }
         let dark = settings.theme == "dark" || (settings.theme == "system" && NSApp.effectiveAppearance.bestMatch(from: [.aqua, .darkAqua]) == .darkAqua)
         for button in [stopButton, keyButton, copyButton, saveButton, browseButton, themeButton, helpButton] {
             button.layer?.backgroundColor = (dark ? NSColor(srgbRed: 0.16, green: 0.20, blue: 0.18, alpha: 1) : NSColor(srgbRed: 0.90, green: 0.94, blue: 0.91, alpha: 1)).cgColor

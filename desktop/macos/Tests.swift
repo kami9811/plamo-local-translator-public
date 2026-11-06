@@ -57,6 +57,7 @@ final class FakeBackend: ControllerBackend {
             try bitmap.representation(using: .png, properties: [:])!.write(to: output.appendingPathComponent("controller-" + theme + ".png"))
             let header = controller.themeButton.convert(controller.themeButton.bounds, to: view)
             check(view.bounds.contains(header), "header and theme visible without clipping")
+            check(controller.copyButton.frame.width <= 100 && controller.keyField.frame.width >= 250, "key row gives space to key, not copy button")
             let visible = controller.startButton.convert(controller.startButton.bounds, to: view)
             check(visible.width >= 44 && visible.height >= 44 && view.bounds.intersects(visible), "primary action visible")
         }

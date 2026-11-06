@@ -41,6 +41,7 @@ jobs:
           mkdir -p artifacts/desktop-validation
           artifacts/macos-controller/ControllerTests artifacts/desktop-validation
       - name: Isolated controller integration tests (fixture API)
+        if: matrix.runner == 'macos-15'
         run: python3 -m unittest discover -s tests -p test_desktop.py -v
       - name: Set up official runtime and models
         if: github.event_name == 'workflow_dispatch' && inputs.run_model_tests
